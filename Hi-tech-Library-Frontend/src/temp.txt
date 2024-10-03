@@ -1,0 +1,1247 @@
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Authors, Billdetails, BooksRegistration, Booktitles, Currency, Department, DocType, Location, Publishers, Vendors } from 'src/app/Models/all-model';
+import { AllDataService } from 'src/app/Services/all-data.service';
+
+@Component({
+  selector: 'app-add-books',
+  templateUrl: './add-books.component.html',
+  styleUrls: ['./add-books.component.css']
+})
+export class AddBooksComponent implements OnInit{
+constructor(private service:AllDataService,private cdr: ChangeDetectorRef){
+  this.quantity = 1;
+  this.isbnNumbers = new Array(this.quantity).fill('');
+}
+entry_by:any
+collegeID:any
+ngOnInit(): void {
+  this.collegeID=sessionStorage.getItem('college_id')
+  this.entry_by=sessionStorage.getItem('user_id')
+
+  this.getAllBooks();
+  this.getLastAccessionNo();
+  this.getBookTitle();
+  this.getAuthors();
+  this.getPublisher();
+  this.getVendor();
+  this.getDocumenttype();
+  this.getColleg();
+  this.getdepartment();
+  this.getCurrency();
+  this.getLocations();
+}
+  BookDetails: boolean = true;
+ 
+ 
+  currentStep = 1;
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
+  
+  nextStep() {
+    if (this.currentStep < 4) {
+      this.currentStep++;
+    }
+  }
+
+
+  previewImage: string = 'https://www.hi-techgroup.org/logos/Hi-Tech_Medical_College_&_Hospital.png';
+  fileName: any;
+bookImage:any;
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    this.bookImage=file
+    // console.log( this.BooksModel.book_image);
+    
+    if (file) {
+      this.fileName = file.name;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewImage = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.previewImage = 'https://www.hi-techgroup.org/logos/Hi-Tech_Medical_College_&_Hospital.png';
+      this.fileName = null;
+    }
+  }
+
+  fields: any[] = [{inputField:''  }];
+  
+  addField() {
+    if (this.fields.length >= 3) {
+      alert("You can't add more than three input fields.");
+      return;
+    }
+
+    this.fields.push({ inputField: null });
+  }
+
+  removeField(index: number) {
+    if (this.fields.length > 1) {
+      this.fields.splice(index, 1);
+    }
+  }
+
+//prerequisite
+//All Book Titles
+BookTitles:any;
+getBookTitle(){
+  this.service.getBookTitles(this.collegeID).subscribe((res:any)=>{
+    this.BookTitles=res;
+  })
+}
+
+//All Authors
+Authors:any;
+getAuthors(){
+  this.service.getAuthors(this.collegeID).subscribe((res:any)=>{
+    this.Authors=res;
+  })
+}
+//All Authors
+Publishers:any;
+getPublisher(){
+  this.service.getPublishers(this.collegeID).subscribe((res:any)=>{
+    this.Publishers=res;
+  })
+}
+//All Vendors
+
+Vendors:any;
+getVendor(){
+  this.service.getVendors(this.collegeID).subscribe((res:any)=>{
+    this.Vendors=res;
+    // console.log(res);
+    
+  })
+}
+//All Document Type
+documentType:any;
+getDocumenttype(){
+  this.service.getDocType(this.collegeID).subscribe((res:any)=>{
+    this.documentType=res;
+  })
+}
+selectedVendorID:any;
+onVendorChange(ev:any){
+  console.log(ev);
+  this.selectedVendorID=ev
+  this.getBillNo()
+  
+}
+//All Bill Details
+Billno:any;
+getBillNo(){
+  if(this.selectedVendorID){
+    this.service.getBillDetailsByVendorAndClg(this.selectedVendorID,this.collegeID).subscribe((res:any)=>{
+      console.log(res);
+      
+      this.Billno=res;
+    })
+  }
+}
+//All Colleges
+College:any;
+getColleg(){
+  this.service.getCollege(this.collegeID).subscribe((res:any)=>{
+    this.College=res;
+  })
+}
+//All Department
+dept:any;
+
+getdepartment(){
+  this.service.getdept(this.collegeID).subscribe((res:any)=>{
+    this.dept=res;
+  })
+}
+//All Currency
+currency:any;
+getCurrency(){
+  this.service.getCurrency(this.collegeID).subscribe((res:any)=>{
+    this.currency=res;
+  })
+}
+//All Location
+location:any;
+getLocations(){
+  this.service.getLocation(this.collegeID).subscribe((res:any)=>{
+    // console.log(res);
+    this.location = res.map((locationItem: any) => {
+      locationItem.label = `Almirah: ${locationItem.almirah_no}, Shelf: ${locationItem.shelf_no}, Rack: ${locationItem.rack_no}`;
+      return locationItem;
+    });
+  })
+}
+
+
+
+
+BooksModel=new BooksRegistration()
+
+quantity: number = 0;
+  isbnNumbers: string[] = [];
+  
+addBooks(formvalid:any){
+ if(this.isbnNumbers){
+  const selectedIsbnNumbers = this.isbnNumbers.filter(isbn => isbn.trim() !== '');
+  this.BooksModel.isbn_no=selectedIsbnNumbers
+ }
+    // console.log( this.BooksModel.isbn_no);
+  // console.log(this.BooksModel);
+  
+  const formData = new FormData();
+    formData.append('accession_no', this.BooksModel.accession_no);
+    formData.append('book_title_id', this.BooksModel.book_title_id);
+    formData.append('first_author_id', this.BooksModel.first_author_id);
+    formData.append('second_author_id', this.fields[1] ? this.fields[1].inputField : '');
+    formData.append('third_author_id', this.fields[2] ? this.fields[2].inputField : '');
+    formData.append('publisher_id', this.BooksModel.publisher_id);
+    formData.append('volume', this.BooksModel.volume);
+    formData.append('editor', this.BooksModel.editor);
+    formData.append('edition', this.BooksModel.edition);
+    formData.append('edition_year', this.BooksModel.edition_year);
+    formData.append('translator', this.BooksModel.translator);
+    formData.append('compiler', this.BooksModel.compiler);
+    formData.append('publish_year', this.BooksModel.publish_year);
+    formData.append('no_of_pages', this.BooksModel.no_of_pages);
+    formData.append('isbn_no', this.BooksModel.isbn_no);
+    formData.append('language', this.BooksModel.language);
+    formData.append('series', this.BooksModel.series);
+    formData.append('source', this.BooksModel.source);
+    formData.append('content', this.BooksModel.content);
+    formData.append('currency_id', this.BooksModel.currency_id);
+    formData.append('document_id', this.BooksModel.document_id);
+    formData.append('dept_id', this.BooksModel.dept_id);
+    
+   if(this.selectedVendorID){
+    formData.append('vendor_id', this.selectedVendorID);
+   }
+    formData.append('bill_id', this.BooksModel.bill_id);
+    formData.append('suppl_copies', this.BooksModel.suppl_copies);
+    formData.append('abstract', this.BooksModel.abstract);
+    formData.append('nature_of_binding', this.BooksModel.nature_of_binding);
+    // formData.append('entry_date', this.BooksModel.entry_date);
+    formData.append('notes', this.BooksModel.notes);
+    formData.append('keywords', this.BooksModel.keywords);
+    formData.append('call_no', this.BooksModel.call_no);
+    formData.append('book_price', this.BooksModel.book_price);
+    formData.append('college_id', this.BooksModel.college_id);
+    formData.append('location_id', this.BooksModel.location_id);
+    formData.append('accession_no_from', this.LastAccessioNo);
+    formData.append('accession_no_to', this.result);
+    formData.append('college_id', this.collegeID);
+    formData.append('book_image',  this.bookImage);
+    formData.append('entry_by', this.entry_by);
+    // formData.append('bill_doc', this.BooksModel.bill_doc);
+
+    this.service.addAllBooks(formData).subscribe((res)=>{
+      console.log(res);
+      alert(res)
+    },(err:any)=>{
+      console.log(err);
+      
+      alert('Something Went wrong');
+    })
+}
+
+range(quantity: number) {
+  return Array.from(Array(quantity).keys());
+}
+
+ResetBtn(formvalid:any){
+formvalid.reset();
+}
+
+AllBooks:any;
+getAllBooks(){
+  this.service.getAllBooks(this.collegeID).subscribe((res:any)=>{
+    this.AllBooks=res;
+
+ 
+  })
+}
+
+LastAccessioNo:any;
+getLastAccessionNo(){
+  this.service.getLastAccessionNo().subscribe((res:any)=>{
+    this.LastAccessioNo=res;
+    // console.log(res);
+    
+  })
+}
+result:any;
+// quantity:any;
+takeQuantity() {
+  if (this.quantity < 0) {
+    this.quantity = 0; // Set quantity to 0 if it's negative
+  }
+  const parsedLastAccessionNo = parseInt(this.LastAccessioNo.toString());
+  const parsedQuantity = parseInt(this.quantity.toString());
+
+  if (!isNaN(parsedLastAccessionNo) && !isNaN(parsedQuantity)) {
+    this.result = parsedLastAccessionNo + parsedQuantity;
+  } else {
+    this.result = 0;
+  }
+  this.cdr.detectChanges();
+}
+
+
+
+
+
+// ---------------------------Configuration-----------------------
+// Add ------Book TItle
+
+BooktitlesModel=new Booktitles();
+addBookTitle(validForm: any) {
+  this.BooktitlesModel.college_id=this.collegeID
+  this.BooktitlesModel.entry_by=this.entry_by
+  if (validForm.valid) {
+    this.service.addBookTitles(this.BooktitlesModel).subscribe((res:any)=>{
+      // console.log(res);
+      alert(res);
+      validForm.reset();
+    },
+    (error:any) => {
+      alert('Something Went Wrong');
+      
+    })
+  }else {
+    if (validForm.controls.book_title_name.invalid) {
+      alert('Please enter the Book Title Name.');
+    }
+   
+  }
+  
+}
+
+
+//Add-------Authers
+
+AuthorModel=new Authors();
+  
+
+addAuthors(validForm: any) {
+  this.AuthorModel.college_id = this.collegeID;
+  this.AuthorModel.entry_by = this.entry_by;
+  if (validForm.valid) {
+    this.service.addAuthors(this.AuthorModel).subscribe((res: any) => {
+      alert(res);
+      validForm.reset();
+    }, (err: any) => {
+      alert(err);
+    });
+  } else {
+    if (validForm.controls.author_name.invalid) {
+      alert('Please enter the Author name.');
+    }
+  }
+}
+
+
+//Add---Publisher
+
+PublishersModel=new Publishers();
+  
+addPublisher(validForm: any) {
+  this.PublishersModel.college_id=this.collegeID
+  this.PublishersModel.entry_by=this.entry_by
+    if (validForm.valid) {
+      this.service.addPublishers(this.PublishersModel).subscribe((res:any)=>{
+        // console.log(res);
+        alert(res);
+        // this.getAllPublisher();
+        validForm.reset();
+      })
+    }else {
+      if (validForm.controls.publisher_name.invalid) {
+        alert('Please enter the Publisher name.');
+      }
+      if (validForm.controls.publisher_place.invalid) {
+        alert('Please enter the Publisher Place.');
+      }
+     
+     
+    }
+    
+  }
+
+
+
+
+//Add-------Vendors
+VendorsModel=new Vendors();
+
+  addVendor(validForm: any) {
+    // console.log(this.VendorsModel);
+    this.VendorsModel.college_id=this.collegeID
+    this.VendorsModel.entry_by=this.entry_by
+    if (validForm.valid) {
+        this.service.addVendors(this.VendorsModel).subscribe(
+            (res: any) => {
+               console.log(res);
+                   alert(res);
+                    // this.getAllVendors();
+            },
+            (error:any) => {
+               alert('Something went wrong');
+               
+            }
+        );
+        validForm.reset();
+    }else {
+      if (validForm.controls.vendor_name.invalid) {
+        alert('Please enter the Vendor name.');
+      }
+      if (validForm.controls.vendor_email.invalid) {
+        alert('Please enter the Vendor Email.');
+      }
+      if (validForm.controls.vendor_contact.invalid) {
+        alert('Please enter the Vendor Contact.');
+      }
+      if (validForm.controls.vendor_address.invalid) {
+        alert('Please enter the Vendor Address.');
+      }
+    }
+}  
+
+
+// Add-------- Bill Details
+inputType = 'text';
+
+fileNameforbill:any;
+BillDocs:any;
+onFileSelectedforBill(event: any) {
+  const file: File = event.target.files[0];
+  if (file) {
+    // You can perform any additional processing on the selected file here.
+    // console.log('Selected file:', file);
+    this.fileNameforbill=file.name;
+    this.BilldetailsModel.bill_doc=file;
+    // console.log(this.BillDocs);
+    
+  }
+}
+
+
+
+BilldetailsModel=new Billdetails()
+
+addBilldetails(formvalid: any) {
+if (formvalid.valid) {
+  const formData = new FormData();
+  formData.append('bill_num', this.BilldetailsModel.bill_num);
+  formData.append('vendor_id', this.BilldetailsModel.vendor_id);
+  formData.append('bill_date', this.BilldetailsModel.bill_date);
+  formData.append('entry_by', this.entry_by);
+  formData.append('bill_doc', this.BilldetailsModel.bill_doc);
+  formData.append('college_id', this.collegeID);
+
+  this.service.addBillDetails(formData).subscribe(
+    (res: any) => {
+      // console.log(res);
+      
+      alert(res);
+      // this.getBills();
+      
+      formvalid.reset();
+      
+    },
+    (error: any) => {
+      alert('Something went wrong !')
+    }
+  );
+}else {
+  if (formvalid.controls.bill_num.invalid) {
+    alert('Please enter the Bill Number.');
+  }
+  if (formvalid.controls.bill_date.invalid) {
+    alert('Please enter the Bill Date.');
+  }
+  if (formvalid.controls.bill_doc.invalid) {
+    alert('Please upload Bill Receipt.');
+  }
+  if (formvalid.controls.vendor_id.invalid) {
+    alert('Please Select Vendor Name.');
+  }
+}
+}
+
+
+//Add--------Departments
+
+
+
+// allCollege: any[] = [];
+// getAllCollege() {
+//   this.service.getCollege(this.collegeID).subscribe((res: any) => {
+//     this.allCollege = res
+//   })
+// }
+
+college_idd: any='';
+onCollegeChange(selectedCollegeId: any) {
+  this.filteredCourses = []; 
+  if (selectedCollegeId) {
+    this.college_idd = selectedCollegeId;
+    // console.log(this.collegeID);
+    
+    this.getSingleCourses();
+  }
+}
+
+filteredCourses:any = [];
+getSingleCourses() {
+  this.service.getSingleCourseBasedOncollege(this.collegeID).subscribe((res: any) => {
+    this.filteredCourses = res;
+    // console.log(res);
+  });
+}
+DeptModel = new Department();
+//Add Department
+AddDepartment(validForm: any) {
+  this.DeptModel.entry_by = this.entry_by;
+
+  // // Debugging: Log values
+  // console.log('DeptModel:', this.DeptModel);
+  // console.log('validForm:', validForm.value);
+
+  if (validForm.valid) {
+    this.service.adddept(this.DeptModel).subscribe((res: any) => {
+      alert(res);
+      console.log(res);
+    }, (err: any) => {
+      alert('Something went wrong');
+    });
+    validForm.reset();
+  } else {
+    if (validForm.controls.College_id.invalid) {
+      alert('Please select the college Name.');
+    }
+    if (validForm.controls.course_id.invalid) {
+      alert('Please fill the course name.');
+    }
+    if (validForm.controls.Department_name.invalid) {
+      alert('Please fill the department name.');
+    }
+  }
+}
+
+
+
+
+//aDD------------dOCTYPE
+
+
+DocTypeModel=new DocType();
+
+addDocType(validForm: any) {
+  this.DocTypeModel.college_id=this.collegeID;
+  this.DocTypeModel.entry_by=this.entry_by;
+  if (validForm.valid) {
+    this.service.adddocumentType(this.DocTypeModel).subscribe((res:any)=>{
+      alert(res);
+      console.log(res);
+      validForm.reset();
+    },(err:any)=>{
+      alert(err)
+    })
+  }else {
+    if (validForm.controls.document_type.invalid) {
+      alert('Please enter Document Type.');
+    }
+   
+  }
+  
+}
+
+
+//add----------book location
+
+LocationModel=new Location();
+
+  addLocation(validForm: any) {
+    // alert(this.collegeID)
+    this.LocationModel.college_id=this.collegeID
+    this.LocationModel.entry_by=this.entry_by
+    console.log(this.LocationModel);
+    
+    if (validForm.valid) {
+      this.service.addLocation(this.LocationModel).subscribe((res:any)=>{
+        console.log(res);
+        alert(res);
+        validForm.reset();
+      },(err:any)=>{
+        alert('Something went wrong');
+      })
+    }else {
+      if (validForm.controls.almirah_no.invalid) {
+        alert('Please enter the Almirah no.');
+      }
+      if (validForm.controls.shelf_no.invalid) {
+        alert('Please enter the Shelf no.');
+      }
+      if (validForm.controls.rack_no.invalid) {
+        alert('Please enter the Rack no.');
+      }
+     
+    }
+    
+  }
+
+
+//Add-----------Currency
+CurrencyModel = new Currency()
+
+AddCurrency(validForm: any) {
+  // console.log(this.CurrencyModel);
+  this.CurrencyModel.entry_by=this.entry_by
+  this.CurrencyModel.college_id=this.collegeID
+  if (validForm.valid) {
+    this.service.addCurrency(this.CurrencyModel).subscribe((res: any) => {
+      alert(res);
+      validForm.reset();
+    },
+    (err:any)=>{
+      alert('Something went Wrong')
+    })
+  } else {
+    if (validForm.controls.curr_type.invalid) {
+      alert('Please enter currency type.');
+    }
+  }
+
+}
+
+}
+
+
+
+
+
+
+
+html
+-----------
+<div class="container mt-2">
+    <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">NEW BOOKS</span></p>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Eleventh navbar example">
+        <div class="container-fluid">
+          <a class="navbar-brand fw-bolder"  style="font-size: 13px;">Configuration</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+  
+          <div class="collapse navbar-collapse" id="navbarsExample09">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link " aria-current="page"  style="white-space: nowrap; cursor: pointer; font-size: 14px;" data-bs-toggle="modal" data-bs-target="#addBookTitle">Add Book Title</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addAuther"  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Author</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " data-bs-toggle="modal" data-bs-target="#addPublisher"  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Publisher</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " data-bs-toggle="modal" data-bs-target="#addVendors"  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Vendors</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " data-bs-toggle="modal" data-bs-target="#addBillNos"  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Bill No</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " data-bs-toggle="modal" data-bs-target="#addDept"  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Department</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " data-bs-toggle="modal" data-bs-target="#addDocType"  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Document Type</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " data-bs-toggle="modal" data-bs-target="#addLocation"  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add LOcation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " data-bs-toggle="modal" data-bs-target="#addCurrency"  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Currency Type</a>
+              </li>
+             
+              
+            </ul>
+          
+          </div>
+        </div>
+      </nav>
+
+
+  
+  <!-- Modal For Book Title -->
+  <div class="modal fade" id="addBookTitle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">BOOK TITLE</span></p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="addBookTitle(formValid)" #formValid="ngForm">
+                <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" class="form-control" id="collegeAddress" required
+                      placeholder="Enter Book Title Name" name="book_title_name" [(ngModel)]="BooktitlesModel.book_title_name">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <button class="button2">SAVE</button>
+                </div>
+              </div>
+            </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Auther -->
+  <div class="modal fade" id="addAuther" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">AUTHER</span></p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addAuthors(formValidd)" #formValidd="ngForm">
+            <div class="row">
+            <div class="col-md-6 mb-3">
+              <input type="text" name="author_name" class="form-control" id="collegeAddress" required
+              placeholder="Enter Author Name"  [(ngModel)]="AuthorModel.author_name">
+            
+            </div>
+            <div class="col-md-6 mb-3">
+              <button class="button2">SAVE</button>
+            </div>
+          </div>
+        </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Publisher -->
+  <div class="modal fade" id="addPublisher" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">PUBLISHER</span></p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="addPublisher(FormValid)" #FormValid="ngForm">
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <input type="text" name="publisher_name" [(ngModel)]="PublishersModel.publisher_name" class="form-control text-center" id="collegeContact" required
+                            placeholder="Enter Publisher Name">
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <input type="text" name="publisher_place" [(ngModel)]="PublishersModel.publisher_place" class="form-control text-center" id="collegeAddress" required
+                            placeholder="Enter Publisher Place">
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <button class="button2" type="submit">SAVE</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Vendors -->
+  <div class="modal fade" id="addVendors" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">VENDORS</span></p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="addVendor(FormValidation)" #FormValidation="ngForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                            <input type="text" class="form-control text-center" name="vendor_name" id="CollegeName" required
+                                placeholder="Enter Vendor Name" [(ngModel)]="VendorsModel.vendor_name">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                            <input type="text" class="form-control text-center" name="vendor_email" id="CollegeEmail" required
+                                placeholder="Enter Vendor Email" [(ngModel)]="VendorsModel.vendor_email">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                            <input type="text" class="form-control text-center" name="vendor_contact" id="collegeContact" required
+                                placeholder="Enter Vendor Contact" [(ngModel)]="VendorsModel.vendor_contact">
+                    </div>
+                    <div class="col-md-6 mb-3 ">
+                            <input type="text" class="form-control text-center" name="vendor_address" id="collegeAddress" required
+                                placeholder="Enter Vendor Address" [(ngModel)]="VendorsModel.vendor_address">
+                    </div>
+                </div>
+                <div class="text-center mt-2 mb-3">
+                    <button class="button2">SAVE</button>
+                </div>
+            </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Bill No -->
+  <div class="modal fade" id="addBillNos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">Bill Details</span></p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="addBilldetails(formvalid)" #formvalid="ngForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <ng-select name="vendor_id" class="mb-3" [(ngModel)]="BilldetailsModel.vendor_id"
+                            [items]="Vendors"  placeholder="Select Vendor" [addTag]="true"
+                            bindValue="vendor_id" bindLabel="vendor_name" required>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <input type="text" name="bill_num" [(ngModel)]="BilldetailsModel.bill_num"
+                            class="form-control " id="CollegeEmail" required placeholder="Enter Bill No">
+                    </div>
+                    <div class="col-md-6 mb-3">
+
+                        <input [type]="inputType" name="bill_date" [(ngModel)]="BilldetailsModel.bill_date"
+                            class="form-control " placeholder="Enter Bill Date" (focus)="inputType = 'date'">
+
+
+                    </div>
+                    <div class="col-md-6 ">
+                        <div class="input-group">
+                            <input type="file" name="bill_doc" style="display: none" (change)="onFileSelectedforBill($event)"
+                                #fileInput>
+                            <input type="text"  class="form-control " id="BillFile" required
+                                [placeholder]="fileNameforbill || 'Upload bill Document'" (click)="fileInput.click()" readonly>
+                            <span class="input-group-text" (click)="fileInput.click()">
+                                <i class="fas fa-file"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3 mb-3">
+                    <button class="button2">SAVE</button>
+                </div>
+            </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal For Departments -->
+  <div class="modal fade" id="addDept" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">DEPARTMENTS</span></p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="AddDepartment(FormValidationn)" #FormValidationn="ngForm">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <ng-select name="College_id" class="mb-3" [(ngModel)]="DeptModel.college_id" [items]="College"
+                       placeholder="Select College"  bindValue="college_id" bindLabel="college_name"
+                      (ngModelChange)="onCollegeChange($event)" required>
+                    </ng-select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <ng-select name="course_id" class="mb-3" [(ngModel)]="DeptModel.course_id" [items]="filteredCourses"
+                       placeholder="Select Course"  bindValue="course_id" bindLabel="course_name"
+                      required>
+                    </ng-select>
+                  </div>
+        
+                  <div class="col-md-12 mb-3">
+                    <div class="input-group">
+                      <input type="text" name="Department_name" class="form-control text-center" id="deptName" required
+                        placeholder="Enter Department Name" [(ngModel)]="DeptModel.dept_name">
+                    </div>
+                  </div>
+                  <div class="text-center mb-4">
+                    <button class="button2">SUBMIT</button>
+                  </div>
+                </div>
+              </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Modal For Document Type -->
+  <div class="modal fade" id="addDocType" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">DOC-TYPE</span></p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="addDocType(formValidde)" #formValidde="ngForm">
+                <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" class="form-control " id="collegeAddress" required
+                      placeholder="Enter Document Type" name="document_type" [(ngModel)]="DocTypeModel.document_type">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <button class="button2">SAVE</button>
+                </div>
+              </div>
+            </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Location -->
+  <div class="modal fade" id="addLocation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">BOOK-LOCATION</span></p>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="addLocation(formValidab)" #formValidab="ngForm">
+                <div class="row" >
+                 <div class="col-md-6 mb-3">
+                         <input type="text" class="form-control text-center" name="almirah_no" [(ngModel)]="LocationModel.almirah_no" id="deptName" required
+                             placeholder="Enter Almirah No">
+                 </div>
+                 <div class="col-md-6 mb-3">
+                         <input type="text" class="form-control text-center" name="shelf_no" [(ngModel)]="LocationModel.shelf_no" id="deptName" required
+                             placeholder="Enter Shelf No">
+                 </div>
+                 <div class=" col-md-6 mb-3">
+                         <input type="text" class="form-control text-center" name="rack_no" [(ngModel)]="LocationModel.rack_no" id="deptName" required
+                             placeholder="Enter Rack No">
+                 </div>
+                 <div class=" col-md-3 mb-3">
+                         <button class="button2" type="submit">SUBMIT</button>
+                 </div>
+                 </div>
+             </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Currency -->
+  <div class="modal fade" id="addCurrency" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">CURRENCY</span></p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="AddCurrency(FormValidationgb)" #FormValidationgb="ngForm">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input type="text" class="form-control" name="curr_type"
+                        [(ngModel)]="CurrencyModel.curr_type" id="CourseName" required
+                        placeholder="Enter Currency Name">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="button2">SUBMIT</button>
+                </div>
+            </div>
+        </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    <div class="card box8" [hidden]="!BookDetails">
+        <form (ngSubmit)="addBooks(formvalid)" #formvalid="ngForm">
+            <div class="card-body mt-3 ">
+                <div class="text-start ">
+                    <div class="row">
+                        <div class="col-md-4" [hidden]="currentStep !== 1">
+                            <strong>Book Title:</strong>
+                            <ng-select name="book_title_id" class="mb-3" [(ngModel)]="BooksModel.book_title_id"
+                                [items]="BookTitles" appendTo="body" placeholder="Select Book Title" [addTag]="true"
+                                bindValue="book_title_id" bindLabel="book_title_name" required>
+                            </ng-select>
+                            <div>
+                                <strong>Author Name:</strong>
+                                <div class="input-group mb-3">
+                                    <ng-select class="custom-select-style " [items]="Authors" appendTo="body"
+                                        placeholder="Enter Author Name" [addTag]="true" bindValue="author_id"
+                                        bindLabel="author_name" name="first_author_id"
+                                        [(ngModel)]="BooksModel.first_author_id"></ng-select>
+                                    <span class="input-group-text" (click)="addField()">
+                                        <i class="fas fa-plus text-success"></i>
+                                    </span>
+                                </div>
+
+
+                                <div *ngFor="let field of fields.slice(1); let i = index">
+                                    <div class="input-group mb-3">
+                                        <ng-select class="custom-select-style " [items]="Authors" appendTo="body"
+                                            [placeholder]="'Enter Author ' + (i+1) + ' Name'" [addTag]="true"
+                                            name="field{{i}}" [(ngModel)]="fields[i + 1].inputField"
+                                            bindValue="author_id" bindLabel="author_name" required>
+                                        </ng-select>
+                                        <span class="input-group-text" (click)="removeField(i + 1)">
+                                            <i class="fas fa-minus text-danger"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p><strong>Publisher:</strong><ng-select name="publisher_id" class="mb-3"
+                                    [(ngModel)]="BooksModel.publisher_id" [items]="Publishers" appendTo="body"
+                                    placeholder="Select Publisher " [addTag]="true" bindValue="publisher_id"
+                                    bindLabel="publisher_name" required>
+                                </ng-select></p>
+                            <p><strong>Volume:</strong><input type="text" class="form-control" name="volume"
+                                    [(ngModel)]="BooksModel.volume"></p>
+                            <p><strong>Editor:</strong><input type="text" class="form-control" name="editor"
+                                    [(ngModel)]="BooksModel.editor"></p>
+                                    <p><strong>Supply Copies</strong> <input type="text" class="form-control"
+                                        name="suppl_copies" [(ngModel)]="BooksModel.suppl_copies"></p>
+                               
+
+                        </div>
+
+
+
+
+                        <div class="col-md-4" [hidden]="currentStep !== 1">
+                            <p><strong>Translator:</strong><input type="text" class="form-control" name="translator"
+                                    [(ngModel)]="BooksModel.translator"></p>
+                            <p><strong>Compiler</strong> <input type="text" class="form-control" name="compiler"
+                                    [(ngModel)]="BooksModel.compiler"></p>
+                            <p><strong>Edition:</strong> <input type="text" class="form-control" name="edition"
+                                    [(ngModel)]="BooksModel.edition"></p>
+                            <p><strong>Edition Year:</strong> <input type="text" class="form-control"
+                                    name="edition_year" [(ngModel)]="BooksModel.edition_year"></p>
+                            <p><strong>Publish Year:</strong> <input type="text" class="form-control"
+                                    name="publish_year" [(ngModel)]="BooksModel.publish_year"></p>
+                                    <p><strong>Abstract</strong> <input type="text" class="form-control" name="abstract"
+                                        [(ngModel)]="BooksModel.abstract"></p>
+                        </div>
+
+
+                        <div class="col-md-4" [hidden]="currentStep !== 1">
+                            <p><strong>No of Pages:</strong> <input type="text" class="form-control" name="no_of_pages"
+                                    [(ngModel)]="BooksModel.no_of_pages"></p>
+                                    <p><strong>Source</strong> <input type="text" class="form-control" name="source"
+                                        [(ngModel)]="BooksModel.source"></p>
+                            <p><strong>Languages:</strong> <input type="text" class="form-control" name="language"
+                                    [(ngModel)]="BooksModel.language"></p>
+                            <p><strong>Content</strong> <input type="text" class="form-control" name="content"
+                                    [(ngModel)]="BooksModel.content"></p>
+                            <p><strong>Series</strong> <input type="text" class="form-control" name="series"
+                                    [(ngModel)]="BooksModel.series"></p>
+                                    <p><strong>Nature Of Binding</strong> <input type="text" class="form-control"
+                                        name="nature_of_binding" [(ngModel)]="BooksModel.nature_of_binding"></p>
+
+
+                        </div>
+
+
+                        <div class="col-md-4" [hidden]="currentStep !== 2">
+                            <p><strong>Vendor</strong>
+                                <!-- <ng-select name="x r_id" class="mb-3" [(ngModel)]="BooksModel.vendor_id"
+                                    [items]="Vendors" appendTo="body" placeholder="Select Vendor " [addTag]="true"
+                                    bindValue="vendor_id" bindLabel="vendor_name" required>
+                                </ng-select> -->
+                                <ng-select name="issue_type_id" class="mb-3" [(ngModel)]="BooksModel.vendor_id"
+                                    [items]="Vendors" bindValue="vendor_id" bindLabel="vendor_name" appendTo="body"
+                                    placeholder="Select Vendor" (ngModelChange)="onVendorChange($event)">
+                                </ng-select>
+                            </p>
+                            <p><strong>Document Type</strong> <ng-select name="document_id" class="mb-3"
+                                [(ngModel)]="BooksModel.document_id" [items]="documentType" appendTo="body"
+                                placeholder="Select Document " [addTag]="true" bindValue="document_id"
+                                bindLabel="document_type" required>
+                            </ng-select></p>
+
+                            <p><strong>Keywords</strong> <input type="text" class="form-control" name="keywords"
+                                [(ngModel)]="BooksModel.keywords"></p>
+
+
+                           
+                            <p><strong>Enter No of Quantity</strong> <input type="number" name="quant"
+                                    class="form-control" [(ngModel)]="quantity" (input)="takeQuantity()"></p>
+
+                                    
+                                    <p><strong>Call No</strong> <input type="text" class="form-control" name="call_no"
+                                        [(ngModel)]="BooksModel.call_no"></p>
+
+
+
+
+
+
+
+                        </div>
+                        <div class="col-md-4" [hidden]="currentStep !== 2">
+                            <p><strong>Bill No</strong>
+                                <ng-select name="bill_id" class="mb-3" [(ngModel)]="BooksModel.bill_id" [items]="Billno"
+                                    appendTo="body" placeholder="Select Bill Number" [addTag]="true" bindValue="bill_id"
+                                    bindLabel="bill_num">
+                                </ng-select>
+                            </p>
+
+
+                            
+                            <p><strong>Location</strong>
+                                <ng-select name="location_id" class="mb-3" [(ngModel)]="BooksModel.location_id"
+                                    [items]="location" appendTo="body" placeholder="Select location " [addTag]="true"
+                                    bindValue="location_id" bindLabel="label" required>
+                                </ng-select>
+                            </p>
+                            <strong>Book Image</strong>
+                            <div class="input-group mb-3">
+                                <input type="file" style="display: none" (change)="onFileSelected($event)" #fileInput>
+                                <input type="text" class="form-control text-center" id="BillFile" required
+                                    [placeholder]="fileName || 'Upload Book Image'" (click)="fileInput.click()"
+                                    readonly>
+                                <span class="input-group-text" (click)="fileInput.click()">
+                                    <i class="fas fa-book"></i>
+                                </span>
+                            </div>
+
+                            <p  *ngFor="let i of range(quantity); let idx = index"><strong>ISBN No</strong>  <input type="text" name="isbn_no"n class="form-control" [(ngModel)]="isbnNumbers[idx]" placeholder="ISBN No {{i + 1}}"></p>
+                          
+                              
+
+                            <p class="UNIQUE" [hidden]="currentStep !== 2"><strong>Accession No From:</strong> <input
+                                    type="text" placeholder="Accession No From" name="LastAccessioNo"
+                                    class="text-danger form-control" [(ngModel)]="LastAccessioNo" readonly></p>
+
+
+
+                            <!-- </p> -->
+
+
+
+
+
+                        </div>
+
+                        <!-- ---------------- -->
+                        <div class="col-md-4" [hidden]="currentStep !== 2">
+                            <!-- <p><strong>College</strong>
+                                <ng-select name="college_id" class="mb-3" [(ngModel)]="BooksModel.college_id"
+                                    [items]="College" appendTo="body" placeholder="Select College " [addTag]="true"
+                                    bindValue="college_id" bindLabel="college_name" required>
+                                </ng-select>
+                            </p> -->
+                            <p><strong>Department</strong> <ng-select name="dept_id" class="mb-3"
+                                    [(ngModel)]="BooksModel.dept_id" [items]="dept" appendTo="body"
+                                    placeholder="Select Department " [addTag]="true" bindValue="dept_id"
+                                    bindLabel="dept_name" required>
+                                </ng-select></p>
+                                <p><strong>Currency Type</strong> <ng-select name="currency_id" class="mb-3"
+                                        [(ngModel)]="BooksModel.currency_id" [items]="currency" appendTo="body"
+                                        placeholder="Select Currency Type " [addTag]="true" bindValue="curr_id"
+                                        bindLabel="curr_type" required>
+                                    </ng-select></p>
+
+                            <p><strong>Notes</strong> <input type="text" class="form-control" name="notes"
+                                    [(ngModel)]="BooksModel.notes"></p>
+
+                            <p><strong>Book Price</strong> <input type="text" class="form-control" name="book_price"
+                                    [(ngModel)]="BooksModel.book_price"></p>
+                           
+
+                            <span class="UNIQUE" [hidden]="currentStep !== 2"> <span class="fw-bolder">Accession No To:
+                                </span><input type="text" placeholder="Accession No To" name="accession_to"
+                                    [(ngModel)]="result" class="text-danger form-control" readonly></span>
+                        </div>
+
+                        <div class="text-center fromto" [hidden]="currentStep !== 2">
+
+                        </div>
+
+                    </div>
+                    <div class="float-end mt-3 md-2 mb-3">
+                        <button type="button" class="button2 ms-2" (click)="previousStep()"
+                            [hidden]="currentStep === 1">Previous</button>
+                        <button type="button" class="button2 ms-2" (click)="nextStep()"
+                            [hidden]="currentStep === 2">Next</button>
+
+
+                        <button type="submit" class="button2 ms-3" [hidden]="currentStep !== 2">Submit</button>
+                        <button type="button" class="button1 ms-3" [hidden]="currentStep !== 2"
+                            (click)="ResetBtn(formvalid)">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>

@@ -1,0 +1,62 @@
+<!-- <img [src]="downloadedImageUrl" width="200"> -->
+<div class="container mt-2">
+   <button class="btn btn-primary m-2" (click)=" printDiv()">Print</button>
+    <div #printableDiv style="border: 2px solid #274472;border-radius: 15px; ">    
+            <div class="row m-3">
+                <div class="col-sm text_heading mt-2">
+                    <h6>Hi-Tech Library</h6><p class="p1">Hi-Tech Medical College</p>
+                    <p>Pandara, Rasulgarh, Bhubaneswar,<br>
+                        Odisha-751025</p>
+                 </div>
+                 <div class="col-sm img-heading mt-2">
+                    <img [src]="downloadedImageUrl" class="img-fluid float-end imm" width="150">
+                 </div>     
+            </div>
+            <div class="row report_body m-3">
+                <div class="col">
+                    <h6 class="p-2 text-center"  style="color:#274472;">Book Transaction <span class="text-danger">Report</span></h6>
+                    <!-------------------report body-->
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Hrdyhe</th>
+                            
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    <!--------report body ended-------->
+                </div>
+            </div>
+    </div>
+
+</div>

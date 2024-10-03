@@ -1,0 +1,171 @@
+.c-body{
+  background-image: url('src/assets/backImage.jpg');background-size: cover;
+  min-height: 100vh;
+}
+
+.modal-mine{
+  min-width: 1000px;
+}
+
+.card{
+    background-color: #274472;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.825), 0 6px 20px 0 rgba(0,0,0,0.19); 
+    }
+    
+    .button2{
+        background-color: #7E909A;
+        color:white;
+        border: none; 
+        padding: 5px 12px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: -1px 1px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.825), 0 6px 20px 0 rgba(0,0,0,0.19);
+      }
+
+
+      /* .container-fluid{
+   height: 100vh;
+} */
+
+.my-body{
+  margin: 10px 100px 50px 100px;
+  background-color: #ffffffc5;
+  min-height: 500px;
+  box-shadow: 10px 10px 10px 10px #1f1f1f;
+}
+.my-head{
+  min-height: 60px;
+}
+
+.navbar-expand-md{
+  background-color: #ffffff82;
+}
+h5{
+  font-weight: 700;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      color:#274472;
+      margin-left: 5px;
+      margin-top: 8px;
+  }
+.bt{
+  width: 100px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  background-color: #274472;
+  color: #fff;
+  letter-spacing: 2px;
+  font-weight: 300;
+  border-radius: 50px;
+  border: 1px solid #274472;
+  padding: 4px;
+  box-shadow: 2px 2px 2px 2px #888888;
+  font-size: 12px;
+
+}
+h1{
+  margin-top: 120px;
+  padding-left: 60px;
+  font-size: 50px;
+  font-weight: 900;
+  /* background-image: url("https://i.pinimg.com/736x/b1/30/1f/b1301f8a753a2fc4a6f1e92c434dc33c--sensual-seduction-colour-red.jpg");
+  background-size: cover;
+  background-position: center;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent; */
+}
+
+.right{
+  width: 100%;
+  padding-left: 120px;
+  padding-right: 180px;
+  padding-top: 60px;
+}
+@media(max-width:1200px){
+  .right{
+    width: 100%;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 60px;
+  }
+
+  }
+@media(max-width:900px){
+  .modal-mine{
+    min-width: 100px;
+  }
+  .my-body{
+      margin: 20px;
+     background-color: transparent;
+
+  }
+
+  .bt{
+     margin-top: 10px;
+  }
+  /* h5{
+      font-weight: 600;
+          font-size: 15px;
+          margin-left:0px;
+          margin-top: auto;
+      }*/
+      img{
+          width: 100px;
+      } 
+      h1{
+         display: none;
+      }
+
+      .right{
+        width:auto;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 0px;
+      }
+}
+
+
+.find-book-button {
+  min-width: 120px; /* Adjust the minimum width as needed */
+}
+
+
+
+.fixed-size-card {
+  width: 200px; /* Set the desired card width */
+  height: 300px; /* Set the desired card height */
+  margin-bottom: 20px; /* Adjust the margin as needed */
+  display: flex;
+  flex-direction: column;
+}
+
+.card-img-container {
+  flex-grow: 1; /* Allow the image container to grow within the card */
+  overflow: hidden;
+  
+}
+
+.card-img-top {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Use "contain" to fit the entire image within the container without cropping */
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.zoom{
+  transform: scale(1); /* Initial scale is 1 (normal size) */
+  transition: transform 0.3s ease;
+}
+.zoom:hover{
+  transform: scale(1.1);
+}
+.ng{
+  width: 300px;
+}

@@ -1,0 +1,123 @@
+<div class="container mt-3" [hidden]="table">
+  <p class="fw-bolder"><span style="color: #274472 ;">LIBRARY</span><span class="ms-2 text-danger">CARD</span></p>
+  <div class="row">
+    <div class="col">
+      <div class="head-ser">
+          <!---------toggle start-->
+          <div class="btn-show d-flex m-2">
+              <div class="btn-1 ps-3" [style.color]="color" [style.backgroundColor]="bccolor" [style.borderRadius]="brad" [style.paddingRight]="pd" (click)="stClick()">
+                  Student
+              </div>
+              <div class="btn-1" [style.color]="color_ep" [style.backgroundColor]="bccolor_ep" [style.borderRadius]="brad_ep" [style.paddingRight]="pd_ep"[style.paddingLeft]="pd_ep" (click)="epClick()">
+                  Employee
+              </div>
+           </div>
+           <!---------toggle ended-->
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-9 mb-3"></div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Search....." [(ngModel)]="Search_Users">
+        </div>
+      </div>
+
+      <!-------------Table For Student-------->
+      <div class="table-responsive">
+        <table class="table" id="example">
+          <thead>
+            <tr>
+              <th>Sl_no</th>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Card no</th>
+              <th>contact</th>
+              <!-- <th>Address</th> -->
+              <th [hidden]="st">Batch year</th>
+              <th [hidden]="ep">Designation</th>
+              <!-- <th>Gender</th> -->
+              <th >College</th>
+              <th [hidden]="st">Course</th>
+              <th [hidden]="st">Department</th>
+              <th>Card</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of getUserdata | forUsersSearch:Search_Users | paginate: { itemsPerPage: 6, currentPage: p }; let i = index ">
+            <td>{{i+1}}</td>
+            <td><img src="{{imgPath}}{{data.image}}" width="60"></td>
+            <td>{{data.name}}</td>
+            <td>{{data.email}}</td>
+            <td>{{data.library_card_number}}</td>
+            <td>{{data.contact}}</td>
+            <!-- <td>{{data.address}}</td> -->
+            <td [hidden]="st">{{data.batch_year}}</td>
+            <td [hidden]="ep">{{data.designation}}</td>
+            <!-- <td>{{data.gender}}</td> -->
+            <td>{{data.college_name}}</td>
+            <td [hidden]="st">{{data.course_name}}</td>
+            <td [hidden]="st">{{data.dept_name}}</td>
+            <td><button class="btn text-primary" (click)="cardGenerate(data)"><i class="fa-solid fa-address-card"></i></button></td>
+            
+          </tr>
+        </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+     <!------------------------Table for employee-->
+ 
+     <!------------------------Table for employee ended-->
+
+    </div>
+  </div>
+</div> 
+
+
+<!-----------------------Card for student-[---------------]-->
+<div [hidden]="card" #printableDiv>
+  <div (click)="backTotable()" style="cursor: pointer;"><i class="fa-solid fa-arrow-left"></i></div> 
+
+
+
+  <div class="containe">
+    <div class="padding">
+        <div class="font">
+        <img src="assets/img_my/hitech_logo.jpeg" style="width:80px;margin:10px;">
+
+            <div class="top">
+                <img src="{{imgPath}}{{img_card}}">
+            </div>
+            <div class="bottom">
+                <p>{{card_name}}</p>
+                <p class="desi">{{card_college}}</p>
+
+                <p class="no">Library Card No: {{card_no}}</p>
+                <p class="no" [hidden]="ep">Designation:  {{card_designition}}</p>
+                <p class="no" [hidden]="st">Course:{{card_course}}</p>
+                <p class="no" [hidden]="st">Department:{{card_dpt}}</p>
+                <p class="no" [hidden]="st">Batch Year:{{card_bth_year}}</p>
+                <p class="no">Mobile No:{{mob_no}}</p>
+                <p class="no">Address:{{address_card}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back">
+        <h1 class="Details">information</h1>
+        <hr class="hr">
+        <div class="details-info">
+            <p><b>•The card should be presented while using the library materials </b></p>
+            <p><b>•The card is not transferable </b></p>
+            <p><b>• In case of loss or any damaged by the card holder a duplicate can be obtained on payment of Rs. 25/-</b></p>
+            <p><b>• The student is responsible for its safe custody </b></p>
+            <p><b>•The library card is to be submitted to the issuing authority after date of expiry of the card </b></p>
+            </div>
+            <div class="logo d-lg-flex">
+                <svg id="barcode"></svg>
+                <img src="{{SignatureimgPath}}{{authorised_signature}}" alt="Signature">
+            </div>
+        </div>
+</div>
+
+  <div class="mt-2" (click)="printDiv()"><i class="fa-solid fa-download" style="cursor: pointer;"></i></div>
+</div>

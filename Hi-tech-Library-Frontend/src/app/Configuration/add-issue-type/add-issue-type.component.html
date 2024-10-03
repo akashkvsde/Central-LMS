@@ -1,0 +1,75 @@
+<div class="container mt-3">
+    <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">ISSUE TYPE</span></p>
+    <div class="card">
+        <div class="card-header bg-white">
+            
+            <form (ngSubmit)="addIssueType(FormValidation)" #FormValidation="ngForm">
+                <div class="row">
+                <div class="col-md-4 mb-3">
+                   
+                        <input type="text" name="issue_type" class="form-control text-center" id="collegeContact" required
+                            placeholder="Enter Issue Type"  [(ngModel)]="IssuetypeModel.issue_type">
+                </div>
+                <div class="col-md-4 mb-3">
+                   
+                        <input type="number" name="issue_days" [(ngModel)]="IssuetypeModel.issue_days" class="form-control text-center" id="collegeContact" required
+                            placeholder="Enter Issue days in numbers" >
+                </div>
+                <div class="col-md-4 mb-3">
+                    <button class="button2">SAVE</button>
+                </div>
+            </div>
+            </form>
+        </div>
+<div class="card-body" style="color:#274472;border:2px solid #274472;">
+    <p class="fw-bolder  text-center"><span style="color: #274472 ;">ALL</span><span class="ms-2 text-danger">ISSUE TYPE</span></p>
+    <div class="students-table hide">
+        <div class="row  justify-content-between">
+            <div class="col-md-2 mb-2">
+
+            </div>
+            <div class="col-md-3 mb-2">
+                <input type="text" class="form-control text-center" placeholder="Search Here"
+                    [(ngModel)]="issuetype_search">
+            </div>
+        </div>
+        <div class="">
+            <div class="table-responsive">
+                <table class="custom-table table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sl.no</th>
+                            <th>Issue Type</th>
+                            <th>Issue Days</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let issueType of issueTypes | forIssuetype:issuetype_search; let i = index">
+                            <tr>
+                                <td>{{ i + 1 }}</td>
+                                <ng-container *ngIf="!issueType.isEditing; else editRow">
+                                    <td>{{ issueType.issue_type }}</td>
+                                    <td>{{ issueType.issue_days }}</td>
+                                   
+                                    <td>
+                                        <span class="me-5" (click)="EditCollege(issueType)"><i class="fas fa-edit"></i></span>
+                                        <span *ngIf="isSuperAdmin"  (click)="DeleteIssuetype(issueType.issue_type_id)"><i class="fas fa-trash-alt"></i></span>
+                                    </td>
+                                </ng-container>
+                                <ng-template #editRow>
+                                    <td><input type="text" name="issue_type" class="form-control" [(ngModel)]="issueType.issue_type" /></td>
+                                    <td><input type="number" name="issue_days" class="form-control" [(ngModel)]="issueType.issue_days" /></td>
+                                    <td>
+                                        <button class="button2" (click)="UpdateIssueType(issueType,issueType.issue_type_id)">Update</button>
+                                        <button class="button1 ms-3" (click)="CancelEdit(issueType)">Cancel</button>
+                                    </td>
+                                </ng-template>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

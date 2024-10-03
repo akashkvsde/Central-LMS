@@ -1,0 +1,144 @@
+<div class="container-fluid c-body">
+  <div class="row">
+    <div class="col my-head">
+      <nav class="navbar navbar-expand-md navbar-light" aria-label="Fourth navbar example">
+        <div class="container-fluid">
+          <h5>Hi-Tech <span class="text-danger">Library</span></h5>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04"
+            aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse d-flex align-items-center justify-content-center" id="navbarsExample04">
+            <form>
+              <div class="row align-items-center">
+                <div class="col-md-10 ng">
+                  <ng-select name="college_id" class="mt-2" [(ngModel)]="CourseModel.college_id" [items]="allColleges"
+                    appendTo="body" placeholder="Select College" [addTag]="true" bindValue="college_id"
+                    bindLabel="college_name" required  (ngModelChange)="openModal($event)">
+                  </ng-select>
+                </div>
+                <div class="col-md-2 text-center">
+                  <!-- <button class="btn btn-primary find-book-button mt-2" (click)="getCollegeID(CourseModel.college_id)"
+                    data-bs-toggle="modal" data-bs-target="#exampleModal">Find Book</button> -->
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </nav>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col my-body d-md-flex">
+      <div class="left">
+        <h1 style="color:#274472">Welcome To <span class="text-danger">Hi-Tech </span><br>CentralLibrary</h1>
+      </div>
+      <div class="right">
+
+        <!-----card section-->
+        <div class="card my-3 ">
+          <form class="card-body cardbody-color p-3" (ngSubmit)="Login(formValid)" #formValid="ngForm">
+
+            <div class="text-center">
+              <img id="imgPreview" src="assets/img_my/bookopening.gif"
+                class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3" width="100px" alt="profile">
+            </div>
+            <div class="mb-3">
+              <input type="text" name="email" class="form-control" id="Name" aria-describedby="nameError"
+                placeholder="Enter Email...." [(ngModel)]="LoginModel.email" required>
+            </div>
+            <div class="mb-3 position-relative d-flex align-items-center">
+              <input type="{{ showMobileNumber ? 'text' : 'password' }}" name="password" class="form-control" placeholder="Enter Password..." [(ngModel)]="LoginModel.password" required>
+              <span *ngIf="showMobileNumber" class="position-absolute end-0 pe-2" (click)="toggleMobileNumberVisibility()">
+                <i class="fa-solid fas fas fa-eye"></i>
+              </span>
+              <span *ngIf="!showMobileNumber" class="position-absolute end-0 pe-2" (click)="toggleMobileNumberVisibility()">
+                <i class="fa-solid fas fa-eye-slash"></i>
+              </span>
+            </div>
+
+
+            <div class="text-center">
+              <button type="submit" class="button2 px-3 mb-5 w-100">Login</button>
+            </div>
+            <!-- <div id="emailHelp" class="form-text text-center mb-3 text-dark">Not Registered? <a routerLink="register"
+                                          class="text-dark fw-bold">Create an Account</a>
+                                      </div> -->
+            <!-- <div class="text-center">
+              <a href="" class="text-decoration-none" style="color:#EA6A47">Forgot Password?</a>
+            </div> -->
+          </form>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!---------------Modals---------->
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog modal-dialog-centered modal-mine" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">All Books</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeModal()"></button>
+        </div>
+        <div class="row mt-2">
+          <div class="col-2"></div>
+          <div class="col-8">
+            <input type="text" class="form-control" placeholder="Search Book Title" [(ngModel)]="searchBookTitle">
+          </div>
+          <div class="col-2 mb-3"></div>
+        </div>
+      <div class="modal-body">
+
+        <!--body started-->
+        <div class="card-container" *ngIf="hideshow">
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5">
+            <!-- Small Cards -->
+            <div class="col mb-4 d-flex justify-content-center" *ngFor="let a of allBooksData | forBookSearch:searchBookTitle | paginate: { itemsPerPage: 5, currentPage: p }">
+              <div class="card fixed-size-card bg-transparent shadow-lg zoom ">
+                <div class="card-img-container mt-2">
+                  <img class="card-img-top" alt="Image"
+                  src="{{a?.book_image ? imagePath + a.book_image : 'assets/noBook.jpg'}}"
+                  alt="Profile Picture" >
+                </div>
+                <div class="card-body">
+                  <p class="card-text text-dark">
+                      <ng-container *ngIf="a.author_name !== undefined || a.author_name !== null || a.book_title_name !== undefined || a.book_title_name !== null || a.edition !== undefined || a.edition !== null">
+                        <span style="font-weight: 600;color:#274472">{{a.book_title_name}}</span>, {{a.author_name}}
+                      </ng-container>
+                    </p>
+                    
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+        </div>
+
+        <!--body ended-->
+      </div>
+      <div class="modal-footer">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

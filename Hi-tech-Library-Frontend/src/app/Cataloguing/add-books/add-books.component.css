@@ -1,0 +1,78 @@
+.button2{
+    background-color: #274472;
+    color:white;
+    border: none; 
+    padding: 5px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: -1px 1px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.825), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }
+
+
+  .custom-select-style {
+    display: block;
+    /* width: 88%; */
+    width: 86%;
+    height: calc(1.5em + 0.75rem + 2px);
+    /* padding: 0.375rem 0.75rem; */
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    border: none;
+  }
+  
+  .custom-select-style::placeholder {
+    color: #6c757d;
+  }
+  
+  .custom-select-style:hover {
+    border-color: #adb5bd;
+  }
+  
+  .custom-select-style:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .custom-select-style:disabled {
+    background-color: #e9ecef;
+    opacity: 1;
+  }
+
+  .card-body{
+    font-size: 14px;
+  }
+
+  .fromto input{
+    border: none;
+  }
+
+  .UNIQUE input{
+    /* border: red; */
+    border: none;
+  }
+  .UNIQUE input:focus{
+    outline: none;
+    border-color: initial;
+    box-shadow: none;
+
+  }
+
+
+  .box8{
+    box-shadow: 0px 0px 5px 2px #999;
+  }
+
+  

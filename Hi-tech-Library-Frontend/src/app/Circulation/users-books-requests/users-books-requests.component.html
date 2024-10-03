@@ -1,0 +1,64 @@
+
+<div class="container mt-3">
+    <p class="fw-bolder"><span style="color: #274472 ;">USER</span><span class="ms-2 text-danger">BOOK REQUEST</span></p>
+    <div class="row">
+      <!-- <div class="col-md-5">
+            <p><strong>Departments:</strong>
+              <input type="text" class="form-control"  placeholder="Enter Department">
+        </div> -->
+        <div class="col-md-5">
+            <p><strong>Library Card No:</strong>
+              <input type="text" class="form-control" [(ngModel)]="library_card_no" placeholder="Enter Library Card">
+        </div>
+    </div>
+    <!-- <h4 class="mt-2 text-center mb-5" style="color: #274472;">Users Book <span class="text-danger">Requests</span></h4> -->
+    <div class="students-table hide mt-3">
+        <div class="">
+            <div class="table-responsive">
+                <table class="custom-table table table-bordered table-striped">
+                    <thead style="color: #274472;">
+                        <tr>
+                            <th>Sl.no</th>
+                            <th>User Image</th>
+                            <th>User Name</th>
+                            <th>Library Card No</th>
+                            <th>Book Image</th>
+                            <th>Book Title</th>
+                            <th>Acession Number</th>
+                            <th>Issue Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let bk of bkrqstdtls | paginate: { itemsPerPage: 6, currentPage: p } | forUserBookrequests:library_card_no; index as i">
+                            <td>{{i+1}}</td>
+                            <td>
+                              <img class=" profile-img img-fluid" width="70px" id="img"
+                              src="{{useImgPath}}{{bk?.image}}"
+                              alt="Profile Picture">
+                            </td>
+                            <td>{{bk.name}}</td>
+                            <td>{{bk.library_card_number}}</td>
+                            <td>
+                              <img class=" profile-img img-fluid" width="70px" id="img"
+                              src="{{bk?.book_image ? imgPath + bk?.book_image : 'assets/noBook.jpg'}}"
+                              alt="Profile Picture">
+                              
+                            </td>
+                            <td>{{bk.book_title_name}}</td>
+                            <td>{{bk.accession_no}}</td>
+                            <td>{{bk.issue_type}}</td>
+                              <td>
+                                <!-- <span class="me-5"><i class="fas fa-edit"></i></span>
+                                <span><i class="fas fa-trash-alt"></i></span> -->
+                                <button class="btn" style="background-color: #274472;color: #fff;" (click)="BookIssue(bk)">Accept</button>&nbsp;
+                                <!-- <button class="btn btn-danger">Decline</button> -->
+                            </td>
+                        </tr>
+                        </tbody>
+                </table>
+                <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

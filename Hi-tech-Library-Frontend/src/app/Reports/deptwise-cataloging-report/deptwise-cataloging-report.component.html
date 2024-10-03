@@ -1,0 +1,74 @@
+
+<div class="card-header mt-2">
+    <p class="fw-bolder xp"><span style="color: #274472 ;">SUBJECT WISE</span><span class="ms-2 text-danger">CATALOGING REPORT</span></p>
+</div>
+
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center xp" >
+        <div class="col-md-6">
+            <!-- <div class="card">
+                <div class="card-body"> -->
+                 <form>
+                    <div class="text-center">
+                        <ng-select class="" [items]="Subject" appendTo="body" placeholder="Enter Subject" bindLabel="subject_name" bindValue="subject_name" [(ngModel)]="subwise.subject_id" name="subject" (ngModelChange)="Search()"></ng-select>
+                        <!-- <button class="button1 mt-3" type="submit">Search</button> -->
+                    </div>
+                 </form>
+                <!-- </div>
+            </div> -->
+        </div>
+    </div>
+
+<div class="xx" [hidden]="!BookDetails" >
+    <div class="col-sm xp" align="right">
+        <a (click)="exportToExcel()"><i class="fa-solid fa-file-excel fa-2xl p-2" style="color:green;"></i></a>
+         <a (click)="printDiv()"> <i class="fa-solid fa-print fa-2xl p-2"></i></a>   
+     </div>
+    <div class="card" #printableDiv>
+        <h5 class="text-center">Subject Wise Cataloging Report </h5>
+        <div class="row m-3">
+            <div class="col-sm text_heading mt-2">
+                <h6>Hi-Tech Library</h6><p class="p1">{{college_data?.college_name}}<br>
+                {{college_data?.college_address}}</p>
+             </div>
+             <div class="col-sm img-heading mt-2">
+                <img src="assets/img_my/hitech_logo.jpeg" class="img-fluid float-end imm" width="150">
+             </div>     
+        </div>
+    <div class="students-table hide mt-3" >
+        <div class="">
+            <div class="table-responsive">
+                <table class="custom-table table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sl.no</th>
+                            <th>Book Title</th>
+                            <th>Editor</th>
+                            <th>Author</th>
+                            <th>Call No.</th>
+                            <th>Accession No.</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ad of alldata | paginate: { itemsPerPage: 10, currentPage: p }; index as i">
+                            <td>{{i+1}}</td>
+                            <td>{{ad.book_title_name}}</td>
+                            <td>{{ad.editor ?? 'NA'}}</td>
+                            <td>{{ad.author_name ?? 'NA'}}</td>
+                            <td>{{ad.call_no}}</td>
+                            <td>{{ad.accession_no}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+   
+</div>

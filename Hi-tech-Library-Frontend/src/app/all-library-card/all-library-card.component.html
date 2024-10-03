@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="row m-5">
+        <h6 class="mb-2">All Student <span class="text-danger">Library Card</span></h6>
+        <div class="col d-md-flex gap-2">
+            <input type="text" class="form-control" #batch_year placeholder="Enter batch Year">
+            <select class="form-select" aria-label="Disabled select example" #dpt_id (change)="getCarddata(batch_year.value, dpt_id.value)">
+                <option selected>---Select Department--</option>
+                <option [hidden]="hide">{{notfound}}</option>
+                <option *ngFor="let data of departments" value="{{data.dept_id}}">{{data.dept_name}}</option>
+              </select>
+        </div>
+    </div>
+</div>
+
+<!--------------------------card element-------------------->
+<h4 class="text-center text-danger">{{nofound_card}}</h4>
+<div class="container" [hidden]="all_lib_area" >
+    <button class="btn btn-primary mt-2 mb-2" (click)="printDiv()">print</button>
+    <div class="row" #printableDiv>
+
+        <div class="col-md-6 mt-2" *ngFor="let data of lib_cards">
+            <div>
+ 
+                <div class="containe">
+                  <div class="padding">
+                      <div class="font">
+                      <img src="assets/img_my/hitech_logo.jpeg" style="width:80px;margin:10px;">
+              
+                          <div class="top">
+                              <img src="{{imgPath}}{{data.image}}">
+                          </div>
+                          <div class="bottom">
+                              <p>{{data.name}}</p>
+                              <p class="desi">{{data.college_name}}</p>
+              
+                              <p class="no">Library Card No: {{data.library_card_number}}</p>
+                              <!-- <p class="no" >Designation: {{card_designition}}</p> -->
+                              <p class="no" >Course:{{data.course_name}}</p>
+                              <p class="no" >Department:{{data.dept_name}}</p>
+                              <p class="no" >Batch Year:{{data.batch_year}}</p>
+                              <p class="no">Mobile No:{{data.contact}}</p>
+                              <p class="no">Address:{{data.address}}</p>
+                          </div>
+                      </div>
+                  </div>
+              
+                  <div class="back">
+                      <h1 class="Details">information</h1>
+                      <hr class="hr">
+                      <div class="details-info">
+                          <p><b>•The card should be presented while using the library materials </b></p>
+                          <p><b>•The card is not transferable </b></p>
+                          <p><b>• In case of loss or any damaged by the card holder a duplicate can be obtained on payment of Rs. 25/-</b></p>
+                          <p><b>• The student is responsible for its safe custody </b></p>
+                          <p><b>•The library card is to be submitted to the issuing authority after date of expiry of the card </b></p>
+                          </div>
+                          <div class="logo d-lg-flex">
+                            <svg #barcode [attr.id]="data.library_card_number"></svg>
+                              <img src="{{imagePath2}}{{data?.signature}}" alt="Signature">
+                          </div>
+                      </div>
+              </div>
+              
+              </div>
+        </div>
+
+    </div>
+
+   
+</div>

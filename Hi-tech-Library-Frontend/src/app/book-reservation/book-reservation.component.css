@@ -1,0 +1,8 @@
+@media (max-width:600px){
+    .input{
+        margin-top: 10px;
+    }
+    h6{
+        text-align: center;
+    }
+}

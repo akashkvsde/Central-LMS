@@ -1,0 +1,330 @@
+<div class="container mt-3">
+  <div class="row">
+    <div class="col">
+      <div class="head-ser">
+        <h5 class="text-center" style="color: #274472;">Edit Book <span class="text-danger">Group</span></h5>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-9 mb-3"></div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Search....." [(ngModel)]="Search_Books">
+        </div>
+      </div>
+    
+
+      <div class="table-responsive">
+        <table id="example" class="table">
+          <thead>
+            <tr>
+              <th>Sl no</th>
+              <th>Image</th>
+                <th>Title</th>
+                <th>Subject</th>
+                <th>Accession no</th>
+                <th>Volume</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>Editor</th>
+                <th>Isbn no</th>
+                <th>Book Status</th>
+                <th>Edition year</th>
+                <th>Bill No</th>
+                <th>Doc type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of fetchdata | forBookSearch:Search_Books | paginate: { itemsPerPage: 10, currentPage: p }; let index = index">
+            <td>{{index+1}}</td>
+            <td><img src="{{data?.book_image ? imgPath + data?.book_image : 'assets/noBook.jpg'}}" width="60"></td>
+            <td>{{data.book_title_name}}</td>
+            <td>{{data.subject_name}}</td>
+            <td>{{data.accession_no}}</td>
+            <td>{{data.volume}}</td>
+            <td>{{data.author_name}}</td>
+            <td>{{data.publisher_name}}</td>
+            <td>{{data.editor}}</td>
+            <td>{{data.isbn_no}}</td>
+            <td>{{data.book_status}}</td>
+            <td>{{data.edition_year}}</td>
+            <td>{{data.bill_num}}</td>
+            <td>{{data.document_type}} </td>
+            <td class="d-flex mt-3" ><button type="button" class="btn text-primary"  data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editBookind(data)"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button class="btn text-danger" *ngIf="isSuperAdmin" (click)="deleteBook(data.book_id)"><i class="fa-solid fa-trash"></i></button></td>
+          </tr>       
+        </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+
+    </div>
+  </div>
+</div>  
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+  <form  (ngSubmit)="updateForm()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Book In Group</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="close()"></button>
+      </div>
+      
+      <div class="modal-body">
+
+        <!-----title----->
+          <div class="mb-3">
+            <label for="book_title_name" class="form-label">Book title</label>
+            <input type="text" id="book_title_id" class="form-control" name="book_title_id" [(ngModel)]="updatemodel.book_title_id" [hidden]="true">
+            <input type="text" id="book_title_name" class="form-control" #title name="book_title_name" [(ngModel)]="updatemodel.book_title_name" (keyup)="serachTitle(title.value)">
+            <div style="max-height: 200px; overflow-y: auto;" [hidden]="clickhide">
+              <ul *ngFor="let ti of title_req_data">
+                <li (click)="getTitleValue(ti.book_title_id,ti.book_title_name)" style="cursor: pointer;">{{ti.book_title_name}}</li>
+              </ul>
+            </div>
+          </div>
+
+           <!-----Author----->
+          <div class="mb-3">
+            <label for="first_author_id" class="form-label">First Author</label>
+            <input type="text" id="first_author_id" class="form-control" name="first_author_id" [(ngModel)]="updatemodel.first_author_id" [hidden]="true">
+            <input type="text" id="author_name" class="form-control" #auth name="author_name" [(ngModel)]="updatemodel.author_name" (keyup)="serachAuthor(auth.value)">
+            <div style="max-height: 200px; overflow-y: auto;" [hidden]="clickhideau">
+              <ul *ngFor="let ti of author_req_data">
+                <li (click)="getAuthorValue(ti.author_id,ti.author_name)" style="cursor: pointer;">{{ti.author_name}}</li>
+              </ul>
+            </div>
+          </div>
+
+           <!-----Second Author----->
+           <div class="mb-3">
+            <label for="second_author_id" class="form-label">Second Author</label>
+            <input type="text" id="second_author_id" class="form-control" name="second_author_id" [(ngModel)]="updatemodel.second_author_id" [hidden]="true">
+            <input type="text" id="second_author_name" class="form-control" #authtwo name="second_author_name" [(ngModel)]="updatemodel.second_author_name" (keyup)="serachAuthorTwo(authtwo.value)">
+            <div style="max-height: 200px; overflow-y: auto;" [hidden]="clickhideautwo">
+              <ul *ngFor="let ti of second_author_req_data">
+                <li (click)="getSeAuthorValue(ti.author_id,ti.author_name)" style="cursor: pointer;">{{ti.author_name}}</li>
+              </ul>
+            </div>
+          </div>
+
+              <!-----Third Author----->
+              <div class="mb-3">
+                <label for="third_author_id" class="form-label">Third Author</label>
+                <input type="text" id="third_author_id" class="form-control" name="third_author_id" [(ngModel)]="updatemodel.third_author_id" [hidden]="true">
+                <input type="text" id="third_author_name" class="form-control" #auththree name="third_author_name" [(ngModel)]="updatemodel.third_author_name" (keyup)="serachAuthorThree(auththree.value)">
+                <div style="max-height: 200px; overflow-y: auto;" [hidden]="clickhideauthree">
+                  <ul *ngFor="let ti of third_author_req_data">
+                    <li (click)="getThAuthorValue(ti.author_id,ti.author_name)" style="cursor: pointer;">{{ti.author_name}}</li>
+                  </ul>
+                </div>
+              </div>
+
+                 <!-----Publisher----->
+                 <div class="mb-3">
+                  <label for="publisher_id" class="form-label">Publisher</label>
+                  <input type="text" id="publisher_id" class="form-control" name="publisher_id" [(ngModel)]="updatemodel.publisher_id" [hidden]="true">
+                  <input type="text" id="publisher_name" class="form-control" #publ name="publisher_name" [(ngModel)]="updatemodel.publisher_name" (keyup)="serachPublisher(publ.value)">
+                  <div style="max-height: 200px; overflow-y: auto;" [hidden]="publish_hide">
+                    <ul *ngFor="let ti of publisher_req_data">
+                      <li (click)="getPuublish(ti.publisher_id,ti.publisher_name)" style="cursor: pointer;">{{ti.publisher_name}}</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-----Currency----->
+              <div class="mb-3">
+                <label for="currency" class="form-label">Curreny</label>
+                <select  class="form-control" id="currency"  [(ngModel)]="updatemodel.currency_id" name="currency_id">
+                  <option *ngFor="let cu of curr" value="{{cu.curr_id}}" >{{cu.curr_type}}</option>
+                </select>
+              </div>
+             
+              <!------------amount-->
+              <div class="mb-3">
+                <label for="book_price" class="form-label">Amount</label>
+                <input type="text" id="book_price" class="form-control"  [(ngModel)]="updatemodel.book_price" name="book_price"/>
+              </div>
+
+               <!-----Book Status----->
+               <div class="mb-3">
+                    <label for="Book_status" class="form-label">Book status</label>
+                    <select  class="form-control" id="Book_status"  [(ngModel)]="updatemodel.book_status" name="Book_status">
+                      <option value="issued">issued</option>
+                      <option value="Damaged">damaged</option>
+                      <option value="inlibrary">inlibrary</option>
+                      <option value="lost">lost</option>
+                    </select>
+               </div>
+
+                   <!-----Vendor----->
+                   <div class="mb-3">
+                    <label for="vendor_id" class="form-label">Vendor</label>
+                    <input type="text" id="vendor_id" class="form-control" name="vendor_id" [(ngModel)]="updatemodel.vendor_id" [hidden]="true">
+                    <input type="text" id="vendor_name" class="form-control" #vnd name="vendor_name" [(ngModel)]="updatemodel.vendor_name" (keyup)="serachVendor(vnd.value)">
+                    <div style="max-height: 200px; overflow-y: auto;" [hidden]="ven_hide">
+                      <ul *ngFor="let ti of vendor_req_data">
+                        <li (click)="getVendor(ti.vendor_id,ti.vendor_name)" style="cursor: pointer;">{{ti.vendor_name}}{{ti.vendor_id}}</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-----Document----->
+                  <div class="mb-3">
+                    <label for="document_id" class="form-label">Document</label>
+                    <select type="text" id="document_id" class="form-control" [(ngModel)]="updatemodel.document_id" name="document_id">
+                      <option *ngFor="let do of doc" value="{{do.document_id}}">{{do.document_type}}</option>
+                    </select>
+                  </div>
+
+                 <!-----Bill----->
+                 <div class="mb-3">
+                  <label for="bill_id" class="form-label">Bill Details</label>
+                  <input type="text" id="bill_id" class="form-control" name="bill_id" [(ngModel)]="updatemodel.bill_id" [hidden]="true">
+                  <input type="text" id="bill_num" class="form-control" #bil name="bill_num" [(ngModel)]="updatemodel.bill_num" (keyup)="serachBill(bil.value)">
+                  <div style="max-height: 200px; overflow-y: auto;" [hidden]="bill_hide">
+                    <ul *ngFor="let ti of bill_req_data">
+                      <li (click)="getBill(ti.bill_id,ti.bill_num)" style="cursor: pointer;">{{ti.bill_num}}</li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <!-----SUBJECT----->
+                 <div class="mb-3">
+                  <label for="subject_id" class="form-label">Subject</label>
+                  <input type="text" id="subject_id" class="form-control" name="subject_id" [(ngModel)]="updatemodel.subject_id" [hidden]="true">
+                  <input type="text" id="subject_name" class="form-control" #subs name="subject_name" [(ngModel)]="updatemodel.subject_name" (keyup)="serachSub(subs.value)">
+                  <div style="max-height: 200px; overflow-y: auto;" [hidden]="sub_hide">
+                    <ul *ngFor="let ti of sub_req_data">
+                      <li (click)="getSubject(ti.subject_id,ti.subject_name)" style="cursor: pointer;">{{ti.subject_name}}</li>
+                    </ul>
+                  </div>
+                </div>
+
+                    <!-----Location----->
+               <div class="mb-3">
+                      <label for="Enter_location_id" class="form-label">Location</label>
+                      <select  id="Enter_location_id" class="form-control" [(ngModel)]="updatemodel.location_id" name="location_id">
+                        <option *ngFor="let do of bok_location" value="{{do.location_id}}">almirah_no:{{do.almirah_no}},rack_no:{{do.rack_no}},shelf_no:{{do.shelf_no}}</option>
+                      </select>
+               </div>  
+
+                <!------------Edition Year-->
+              <div class="mb-3">
+                <label for="edition_year" class="form-label">Edition Year</label>
+                <input type="text" id="edition_year" class="form-control"  [(ngModel)]="updatemodel.edition_year" name="edition_year"/>
+              </div>
+
+              <!------------volume-->
+              <div class="mb-3">
+                <label for="volume" class="form-label">Volume</label>
+                <input type="text" id="volume" class="form-control"   [(ngModel)]="updatemodel.volume" name="volume"/>
+              </div>
+
+              
+
+                <!------------Editor-->
+                <div class="mb-3">
+                  <label for="editor" class="form-label">Editor</label>
+                  <input type="text" id="editor" class="form-control"   [(ngModel)]="updatemodel.editor" name="editor"/>
+                </div>
+
+                <!------------Publish year-->
+                <div class="mb-3">
+                  <label for="publish_year" class="form-label">Publish year</label>
+                  <input type="text" id="publish_year" class="form-control"   [(ngModel)]="updatemodel.publish_year" name="publish_year"/>
+                </div>
+
+
+                <!------------No Of Pages-->
+                <div class="mb-3">
+                  <label for="no_of_pages" class="form-label">No Of Pages</label>
+                  <input type="text" id="no_of_pages" class="form-control"   [(ngModel)]="updatemodel.no_of_pages" name="no_of_pages"/>
+                 </div>
+
+               <!------------Isbn no-->
+               <div class="mb-3">
+                <label for="isbn_no" class="form-label">Isbn no</label>
+                <input type="text" id="isbn_no" class="form-control"    [(ngModel)]="updatemodel.isbn_no" name="isbn_no"/>
+               </div>  
+              
+              <!------------Language-->
+              <div class="mb-3">
+                <label for="language" class="form-label">Language</label>
+                <input type="text" id="language" class="form-control" [(ngModel)]="updatemodel.language" name="language"/>
+              </div> 
+                 
+              <!------------Series-->
+              <div class="mb-3">
+               <label for="series" class="form-label">Series</label>
+               <input type="text" id="series" class="form-control" [(ngModel)]="updatemodel.series" name="series"/>
+              </div>  
+
+                <!------------Source-->
+                <div class="mb-3">
+                  <label for="source" class="form-label">Source</label>
+                  <input type="text" id="source" class="form-control" [(ngModel)]="updatemodel.source" name="source"/>
+                 </div>
+
+
+                   <!------------Content-->
+               <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <input type="text" id="content" class="form-control" [(ngModel)]="updatemodel.content" name="content"/>
+               </div>
+
+                 <!------------Supply Copies-->
+              <div class="mb-3">
+                <label for="suppl_copies" class="form-label">Supply Copies</label>
+                <input type="text" id="suppl_copies" class="form-control"  [(ngModel)]="updatemodel.suppl_copies" name="suppl_copies"/>
+               </div>
+
+               <!------------Nature Of Binding-->
+               <div class="mb-3">
+                <label for="nature_of_binding" class="form-label">Nature Of Binding</label>
+                <input type="text" id="nature_of_binding" class="form-control"   [(ngModel)]="updatemodel.nature_of_binding" name="nature_of_binding"/>
+               </div>
+
+                <!------------Notes-->
+                <div class="mb-3">
+                  <label for="note" class="form-label">Notes</label>
+                  <input type="text" id="note" class="form-control"  [(ngModel)]="updatemodel.notes" name="notes"/>
+                </div>
+
+                <!------------Keywords------------>
+                <div class="mb-3">
+                <label for="keyword" class="form-label">Keywords</label>
+                <input type="text" id="keyword" class="form-control"  [(ngModel)]="updatemodel.keywords" name="keywords"/>
+                </div>
+
+                <!------------Call no------------>
+                <div class="mb-3">
+                  <label for="Call no" class="form-label">Call no</label>
+                  <input type="text" id="Call no" class="form-control"  [(ngModel)]="updatemodel.call_no" name="call_no"/>
+                </div>
+
+                <!------------abstract------------>
+                <div class="mb-3">
+                  <label for="abstract" class="form-label">abstract</label>
+                  <input type="text" id="abstract" class="form-control"  [(ngModel)]="updatemodel.abstract" name="abstract"/>
+                </div>
+
+                <!------------Upload Book Image------------>
+                 <div class="mb-3">
+                  <label for="Upload Book Image" class="form-label">Upload Book Image</label>
+                  <input type="file" id="Upload Book Image" class="form-control" name="book_image" (change)="getFile($event)"/>
+                </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Close</button>
+        <button type="submit" class="btn btn-primary"  data-bs-dismiss="modal" >Save</button>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>

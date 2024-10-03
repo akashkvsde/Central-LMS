@@ -1,0 +1,56 @@
+
+<div class="container mt-2">
+  <p class="fw-bolder"><span style="color: #274472 ;">VIEW</span><span class="ms-2 text-danger">BOOK TRANSACTION</span></p>
+    <!-- <div class="row" > -->
+      <input type="date" class="form-control" style="width: 150px;" #date (change)="getDatedata(date.value)">
+      <div class="col">
+        <h6 class="p-2 text-center"  style="color:#274472;">Daily Book <span class="text-danger">Transaction</span></h6>
+   
+        <!-------------Table For Student-------->
+        <div class="table-responsive">
+          <table class="table" id="example">
+            <thead>
+              <tr>
+                  <th>Sl_no</th>
+                  <th>Book title</th>
+                  <th>Vol</th>
+                  <th>Access no</th>
+                  <th>Date of issue</th>
+                  <th>Issued by</th>
+                  <th>Book status</th>
+                  <th>Department</th>
+                  <th>Username</th>
+                  <th>Card no</th>
+                  <th>User type</th>
+                  <th>Return date</th>
+                  <th>Return by</th>
+              </tr>
+           </thead>
+           <tbody>
+            <tr *ngFor="let data of getdata | paginate: { itemsPerPage: 9, currentPage: p }; let index = index" >
+              <td>{{(p - 1) * 7 + index + 1}}</td>
+              <td>{{data.book_title_name}}</td>
+              <td>{{data.volume ?? 'NA'}}</td>
+              <td>{{data.accession_no}}</td>
+              <td>{{data.issue_date}}</td>
+              <td>{{data.issued_by}}</td>
+              <td>{{data.book_issue_status}}</td>
+              <td>{{data.dept_name}}</td>
+              <td>{{ data.username ? data.username : data.empname }}</td>
+              <td>{{data.library_card_number ?? 'NA'}}</td>
+              <td>{{data.user_type}}</td>
+              <td>{{data.return_date ?? 'Not Returned'}}</td>
+              <td>{{data.return_by?? 'Not Returned'}}</td>
+            </tr>          
+        </tbody>
+      
+          </table>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+       <!------------------------Table for employee---------->
+   
+       <!------------------------Table for employee ended----->
+
+      <!-- </div> -->
+    </div>
+  </div> 

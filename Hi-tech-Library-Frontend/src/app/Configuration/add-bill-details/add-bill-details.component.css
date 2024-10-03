@@ -1,0 +1,50 @@
+/*  */
+span{
+  cursor: pointer;
+}
+
+
+
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.custom-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.custom-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.custom-table tr:hover {
+  background-color: #e9e9e9;
+}
+
+.custom-table td {
+  text-align: left;
+}
+
+.fa-edit{
+color: #488A99;
+}
+.fa-trash-alt{
+color:  #AC3E31;
+}
+
+/* your-component.component.css */
+.bill-image {
+  max-width: 50%;
+  max-height: 50px; /* Set the desired maximum height */
+  width: auto;
+  height: auto;
+}

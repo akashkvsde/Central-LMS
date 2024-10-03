@@ -1,0 +1,708 @@
+<div class=" mt-2">
+  <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">NEW BOOKS</span></p>
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Eleventh navbar example">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bolder" style="font-size: 13px;">Configuration</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample09"
+        aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExample09">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" style="white-space: nowrap; cursor: pointer; font-size: 14px;"
+              data-bs-toggle="modal" data-bs-target="#addBookTitle">Add Book Title</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addAuther"
+              style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Author</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addPublisher"
+              style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Publisher</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addVendors"
+              style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Vendors</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addBillNos"
+              style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Bill No</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addDept"
+              style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Department</a>
+          </li> -->
+          <li><a class="nav-link" data-bs-toggle="modal" data-bs-target="#addClassification"
+              style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Subjects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addDocType"
+              style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Document Type</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#addLocation"
+              style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Location</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="moreOptionsDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              More Options
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="moreOptionsDropdown">
+              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addCurrency"
+                  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Currency Type</a></li>
+              <!-- <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#addClassification"
+                  style="white-space: nowrap; font-size: 14px; cursor: pointer;">Add Subjects</a>
+              </li> -->
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+
+
+  <!-- Modal For Book Title -->
+  <div class="modal fade" id="addBookTitle" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">BOOK TITLE</span>
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addBookTitle(formValidse)" #formValidse="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" id="collegeAddress" required placeholder="Enter Book Title Name"
+                  name="book_title_name" [(ngModel)]="BooktitlesModel.book_title_name">
+              </div>
+              <div class="col-md-6 mb-3">
+                <button class="button2">SAVE</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Auther -->
+  <div class="modal fade" id="addAuther" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">AUTHER</span></p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addAuthors(formValidd)" #formValidd="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" name="author_name" class="form-control" id="collegeAddress" required
+                  placeholder="Enter Author Name" [(ngModel)]="AuthorModel.author_name">
+
+              </div>
+              <div class="col-md-6 mb-3">
+                <button class="button2" data-bs-dismiss="modal" aria-label="Close">SAVE</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Publisher -->
+  <div class="modal fade" id="addPublisher" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">PUBLISHER</span>
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addPublisher(FormValid)" #FormValid="ngForm">
+            <div class="row">
+              <div class="col-md-5 mb-3">
+                <input type="text" name="publisher_name" [(ngModel)]="PublishersModel.publisher_name"
+                  class="form-control text-center" id="collegeContact" required placeholder="Enter Publisher Name">
+              </div>
+              <div class="col-md-5 mb-3">
+                <input type="text" name="publisher_place" [(ngModel)]="PublishersModel.publisher_place"
+                  class="form-control text-center" id="collegeAddress" required placeholder="Enter Publisher Place">
+              </div>
+              <div class="col-md-2 mb-3">
+                <button class="button2" type="submit" data-bs-dismiss="modal" aria-label="Close">SAVE</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Vendors -->
+  <div class="modal fade" id="addVendors" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">VENDORS</span>
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addVendor(FormValidation)" #FormValidation="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control text-center" name="vendor_name" id="CollegeName" required
+                  placeholder="Enter Vendor Name" [(ngModel)]="VendorsModel.vendor_name">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control text-center" name="vendor_email" id="CollegeEmail" required
+                  placeholder="Enter Vendor Email" [(ngModel)]="VendorsModel.vendor_email">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control text-center" name="vendor_contact" id="collegeContact" required
+                  placeholder="Enter Vendor Contact" [(ngModel)]="VendorsModel.vendor_contact">
+              </div>
+              <div class="col-md-6 mb-3 ">
+                <input type="text" class="form-control text-center" name="vendor_address" id="collegeAddress" required
+                  placeholder="Enter Vendor Address" [(ngModel)]="VendorsModel.vendor_address">
+              </div>
+            </div>
+            <div class="text-center mt-2 mb-3">
+              <button class="button2" data-bs-dismiss="modal" aria-label="Close">SAVE</button>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Bill No -->
+  <div class="modal fade" id="addBillNos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">Bill
+              Details</span></p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addBilldetails(formvalid)" #formvalid="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <ng-select name="vendor_id" class="mb-3" [(ngModel)]="BilldetailsModel.vendor_id" [items]="Vendors"
+                  placeholder="Select Vendor" bindValue="vendor_id" bindLabel="vendor_name" required>
+                </ng-select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" name="bill_num" [(ngModel)]="BilldetailsModel.bill_num" class="form-control "
+                  id="CollegeEmail" required placeholder="Enter Bill No">
+              </div>
+              <div class="col-md-6 mb-3">
+
+                <input [type]="inputType" name="bill_date" [(ngModel)]="BilldetailsModel.bill_date"
+                  class="form-control " placeholder="Enter Bill Date" (focus)="inputType = 'date'">
+
+
+              </div>
+              <div class="col-md-6 ">
+                <div class="input-group">
+                  <input type="file" name="bill_doc" style="display: none" (change)="onFileSelectedforBill($event)"
+                    #fileInput>
+                  <input type="text" class="form-control " id="BillFile" required
+                    [placeholder]="fileNameforbill || 'Upload bill Document'" (click)="fileInput.click()" readonly>
+                  <span class="input-group-text" (click)="fileInput.click()">
+                    <i class="fas fa-file"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-3 mb-3">
+              <button class="button2">SAVE</button>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal For Departments -->
+  <div class="modal fade" id="addDept" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span
+              class="ms-2 text-danger">DEPARTMENTS</span></p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="AddDepartment(FormValidationn)" #FormValidationn="ngForm">
+            <div class="row">
+              <!-- <div class="col-md-6 mb-3">
+                <ng-select name="College_id" class="mb-3" [(ngModel)]="DeptModel.college_id" [items]="College"
+                  placeholder="Select College" bindValue="college_id" bindLabel="college_name"
+                  (ngModelChange)="onCollegeChange($event)" required>
+                </ng-select>
+              </div> -->
+              <div class="col-md-6 mb-3">
+                <ng-select name="course_id" class="mb-3" [(ngModel)]="DeptModel.course_id" [items]="filteredCourses"
+                  placeholder="Select Course" bindValue="course_id" bindLabel="course_name" required>
+                </ng-select>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="input-group">
+                  <input type="text" name="Department_name" class="form-control text-center" id="deptName" required
+                    placeholder="Enter Department Name" [(ngModel)]="DeptModel.dept_name">
+                </div>
+              </div>
+              <div class="text-center mb-4">
+                <button class="button2" data-bs-dismiss="modal" aria-label="Close">SUBMIT</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Modal For Document Type -->
+  <div class="modal fade" id="addDocType" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">DOC-TYPE</span>
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addDocType(formValidde)" #formValidde="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control " id="collegeAddress" required placeholder="Enter Document Type"
+                  name="document_type" [(ngModel)]="DocTypeModel.document_type">
+              </div>
+              <div class="col-md-6 mb-3">
+                <button class="button2">SAVE</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Location -->
+  <div class="modal fade" id="addLocation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span
+              class="ms-2 text-danger">BOOK-LOCATION</span></p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addLocation(formValidab)" #formValidab="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control text-center" name="almirah_no"
+                  [(ngModel)]="LocationModel.almirah_no" id="deptName" required placeholder="Enter Almirah No">
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control text-center" name="shelf_no" [(ngModel)]="LocationModel.shelf_no"
+                  id="deptName" required placeholder="Enter Shelf No">
+              </div>
+              <!-- <div class=" col-md-6 mb-3">
+                         <input type="text" class="form-control text-center" name="rack_no" [(ngModel)]="LocationModel.rack_no" id="deptName" required
+                             placeholder="Enter Rack No">
+                 </div> -->
+              <div class="text-center">
+                <button class="button2" type="submit">SUBMIT</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Currency -->
+  <div class="modal fade" id="addCurrency" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">CURRENCY</span>
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="AddCurrency(FormValidationgb)" #FormValidationgb="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" name="curr_type" [(ngModel)]="CurrencyModel.curr_type"
+                  id="CourseName" required placeholder="Enter Currency Name">
+              </div>
+              <div class="col-md-6 mb-3">
+                <button class="button2">SUBMIT</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Understood</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal For Currency -->
+
+  <div class="modal fade" id="addClassification" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">SUBJECT</span>
+          </p>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="AddSubject(subjectValidation)" #subjectValidation="ngForm">
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <input type="text" class="form-control" name="subject_name" [(ngModel)]="SubjectMOdel.subject_name"
+                  id="CourseName" required placeholder="Enter Subject name">
+              </div>
+              <div class="text-center">
+                <button class="button2">SUBMIT</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div> -->
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="card box8" [hidden]="!BookDetails">
+    <form (ngSubmit)="addBooks(formvalidreset)" #formvalidreset="ngForm">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="book_title_id" class="form-label"><strong>Book Title:</strong> </label>
+            <ng-select name="book_title_id" class="mb-3" [(ngModel)]="BooksModel.book_title_id" [items]="BookTitles"
+              placeholder="Select Book Title" [virtualScroll]="true" bindValue="book_title_id"
+              bindLabel="book_title_name" required>
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="book_title_id" class="form-label"><strong>Authors:</strong> </label>
+            <div class="input-group mb-3">
+              <ng-select class="custom-select-style" [items]="Authors" placeholder="Enter Author Name"
+                [virtualScroll]="true" bindValue="author_id" bindLabel="author_name" name="first_author_id"
+                [(ngModel)]="BooksModel.first_author_id"></ng-select>
+              <span class="input-group-text" (click)="addField()">
+                <i class="fas fa-plus text-success"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3" *ngFor="let field of fields.slice(1); let i = index">
+            <label for="author{{i+1}}"><strong>Author {{i+2}}:</strong></label>
+            <div class="input-group mb-3">
+              <ng-select class="custom-select-style" [items]="Authors" [placeholder]="'Enter Author ' + (i+1) + ' Name'"
+                name="field{{i}}" [(ngModel)]="fields[i + 1].inputField" [virtualScroll]="true" bindValue="author_id"
+                bindLabel="author_name" required>
+              </ng-select>
+              <span class="input-group-text" (click)="removeField(i + 1)">
+                <i class="fas fa-minus text-danger"></i>
+              </span>
+            </div>
+          </div>
+
+
+          <div class="col-md-4 mb-3">
+            <label for="publisher_id" class="form-label"><strong>Publisher:</strong> </label>
+            <ng-select name="publisher_id" class="mb-3" [(ngModel)]="BooksModel.publisher_id" [items]="Publishers"
+              placeholder="Select Publisher " [virtualScroll]="true" bindValue="publisher_id" bindLabel="publisher_name"
+              required>
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="vendor" class="form-label"> <strong>Vendor</strong> </label>
+            <ng-select name="vendor" class="mb-3" [(ngModel)]="BooksModel.vendor_id" [items]="Vendors"
+              bindValue="vendor_id" [virtualScroll]="true" bindLabel="vendor_name" placeholder="Select Vendor"
+              (ngModelChange)="onVendorChange($event)" id="vendor">
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="bill_id" class="form-label"> <strong>Bill No</strong> </label>
+            <ng-select name="bill_id" class="mb-3" [(ngModel)]="BooksModel.bill_id" [items]="Billno"
+              placeholder="Select Bill Number" [virtualScroll]="true" bindValue="bill_id" bindLabel="bill_num">
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="price" class="form-label"> <strong>Book Image</strong></label>
+
+            <div class="input-group mb-3">
+              <input type="file" style="display: none" (change)="onFileSelected($event)" #fileInput2>
+              <input type="text" class="form-control text-center" id="BillFile" required
+                [placeholder]="fileName2 || 'Upload Book Image'" (click)="fileInput2.click()" readonly>
+              <span class="input-group-text" (click)="fileInput2.click()">
+                <i class="fas fa-book"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="notes" class="form-label"> <strong>Book Price</strong> </label>
+            <input type="text" class="form-control" name="book_price" [(ngModel)]="BooksModel.book_price">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="curr_id" class="form-label"> <strong>Currency Type</strong> </label>
+            <ng-select name="currency_id" class="mb-3" [(ngModel)]="BooksModel.currency_id" [items]="currency"
+              placeholder="Select Currency Type " bindValue="curr_id" bindLabel="curr_type" required>
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="quant" class="form-label"><strong>Enter No of Quantity</strong></label>
+            <input type="number" name="quant" class="form-control" [(ngModel)]="quantity" (input)="takeQuantity()"
+              minlength="1" min="1">
+          </div>
+
+        
+          <div class="col-md-4 mb-3" >
+            <label for="isbn_no" class="form-label"><strong>ISBN No </strong></label>
+            <input type="text" id="isbn_no" name="isbn_no" class="form-control"
+              [(ngModel)]="isbnNumbers" placeholder="ISBN No" ngModel pattern="[a-zA-Z0-9]{10,20}" #ISBN="ngModel"
+              [class.is-invalid]="ISBN.touched && ISBN.invalid"  />
+
+            <span class="text-danger fw-bolder"
+              *ngIf="ISBN.invalid && (ISBN.dirty || ISBN.touched) && (ISBN.errors?.['pattern'])"> ISBN No should be 10 to 20 alphanumeric characters.</span>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="subject_id" class="form-label"> <strong>Subject</strong></label>
+            <ng-select name="subject_id" class="mb-3" [(ngModel)]="BooksModel.subject_id" [items]="subjects"
+              [virtualScroll]="true" placeholder="Select Subject " bindValue="subject_id" bindLabel="subject_name"
+              required>
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="document_id" class="form-label"> <strong>Document Type</strong> </label>
+            <ng-select name="document_id" class="mb-3" [(ngModel)]="BooksModel.document_id" [items]="documentType"
+              placeholder="Select Document " bindValue="document_id" bindLabel="document_type" required>
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="location_id" class="form-label"> <strong>Location</strong> </label>
+            <ng-select name="location_id" class="mb-3" [(ngModel)]="BooksModel.location_id" [items]="location"
+              placeholder="Select location " [virtualScroll]="true" bindValue="location_id" bindLabel="label" required>
+            </ng-select>
+          </div>
+
+          <div class="col md-4 mb-3">     
+              <span class="UNIQUE"> <span class="fw-bolder">Accession No From:
+              </span> <input type="text" placeholder="Accession No From" name="LastAccessioNo" class="text-danger form-control"
+              [(ngModel)]="LastAccessioNo" readonly></span>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <span class="UNIQUE"> <span class="fw-bolder">Accession No To:
+              </span><input type="text" placeholder="Accession No To" name="accession_to" [(ngModel)]="result"
+                class="text-danger form-control" readonly></span>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="content" class="form-label"><strong>Content</strong> </label>
+            <input type="text" class="form-control" name="content" [(ngModel)]="BooksModel.content" id="content">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="series" class="form-label"><strong>Series</strong> </label>
+            <input type="text" class="form-control" name="series" [(ngModel)]="BooksModel.series">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="nature_of_binding" class="form-label"> <strong>Nature Of Binding</strong> </label>
+            <input type="text" class="form-control" name="nature_of_binding" [(ngModel)]="BooksModel.nature_of_binding">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="volume" class="form-label"><strong>Volume:</strong> </label>
+            <input type="text" class="form-control" name="volume" [(ngModel)]="BooksModel.volume" id="volume">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="abstract" class="form-label"><strong>Abstract</strong> </label>
+            <input type="text" class="form-control" name="abstract" [(ngModel)]="BooksModel.abstract" id="abstract">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="keywords" class="form-label"><strong>Keywords</strong> </label>
+            <input type="text" class="form-control" name="keywords" [(ngModel)]="BooksModel.keywords">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="edition" class="form-label"><strong>Edition: </strong></label>
+            <input type="text" class="form-control" name="edition" [(ngModel)]="BooksModel.edition" id="edition">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="call_no" class="form-label"><strong>Call No</strong></label>
+            <input type="text" class="form-control" name="call_no" [(ngModel)]="BooksModel.call_no">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="editor" class="form-label"><strong>Editor:</strong> </label>
+            <input type="text" class="form-control" name="editor" [(ngModel)]="BooksModel.editor" id="editor">
+          </div>
+
+
+
+          <div class="col-md-4 mb-3">
+            <label for="no_of_pages" class="form-label"><strong>No of Pages:</strong> </label>
+            <input type="text" class="form-control" name="no_of_pages" [(ngModel)]="BooksModel.no_of_pages"
+              id="no_of_pages">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="suppl_copies" class="form-label"><strong>Supply Copies:</strong> </label>
+            <input type="text" class="form-control" name="suppl_copies" [(ngModel)]="BooksModel.suppl_copies"
+              id="suppl_copies">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="edition_year" class="form-label"><strong>Edition Year:</strong> </label>
+            <input type="text" class="form-control" name="edition_year" [(ngModel)]="BooksModel.edition_year"
+              id="edition_year">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="source" class="form-label"><strong>Source</strong> </label>
+            <input type="text" class="form-control" name="source" [(ngModel)]="BooksModel.source" id="source">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="publish_year" class="form-label"><strong>Publish Year:</strong> </label>
+            <input type="text" class="form-control" name="publish_year" [(ngModel)]="BooksModel.publish_year"
+              id="publish_year">
+          </div>
+
+          
+          <div class="col-md-4 mb-3">
+            <label for="compiler" class="form-label"> <strong>Compiler</strong> </label>
+            <input type="text" class="form-control" name="compiler" [(ngModel)]="BooksModel.compiler" id="compiler">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="notes" class="form-label"> <strong>Notes</strong> </label>
+            <input type="text" class="form-control" name="notes" [(ngModel)]="BooksModel.notes">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="translator" class="form-label"><strong>Translator:</strong> </label>
+            <input type="text" class="form-control" name="translator" [(ngModel)]="BooksModel.translator"
+              id="translator">
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <label for="language" class="form-label"><strong>Languages:</strong> </label>
+            <input type="text" class="form-control" name="language" [(ngModel)]="BooksModel.language" id="language">
+          </div>
+
+
+        </div>
+      </div>
+      <div class="float-end mt-3 md-2 mb-3">
+        <button type="submit" class="button2 ms-3">Submit</button>
+        <button type="button" class="button1 ms-3" (click)="ResetBtn(formvalidreset)">Reset</button>
+      </div>
+
+    </form>
+  </div>

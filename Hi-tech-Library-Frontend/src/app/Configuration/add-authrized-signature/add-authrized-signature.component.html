@@ -1,0 +1,101 @@
+<div class="container mt-2">
+    <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">AUTHORISED SIGNATURE</span></p>
+
+
+    <form (ngSubmit)="addSignature(formvalid)" #formvalid="ngForm">
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <input type="text" [(ngModel)]="SignatureModel.name" class="form-control input" placeholder="Enter Name" name="name">
+            </div>
+            <div class="col-md-3 mb-3">
+                <input type="text" name="designation" [(ngModel)]="SignatureModel.designation" class="form-control input" placeholder="Enter Designation" name="designation" >
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="input-group">
+                    <input type="file" name="bill_doc" style="display: none" (change)="onFileSelected($event)"
+                        #fileInput>
+                    <input type="text" class="form-control text-center" id="BillFile" required
+                        [placeholder]="fileName || 'Upload Signature'" (click)="fileInput.click()" readonly>
+                    <span class="input-group-text" (click)="fileInput.click()">
+                        <i class="fas fa-file"></i>
+                    </span>
+                </div>
+            </div>
+            <!-- <div class="col-md-3 ">
+                <ng-select name="College_id" class="mb-3" [(ngModel)]="SignatureModel.college_id" [items]="allCollege"
+                appendTo="body" placeholder="Select College" [addTag]="true" bindValue="college_id" bindLabel="college_name"
+                (ngModelChange)="onCollegeChange($event)" required>
+              </ng-select>
+            </div> -->
+        </div>
+        <div class="text-center mt-3 mb-3">
+            <button class="button2" type="submit">SAVE</button>
+        </div>
+    </form>
+  
+    <div class="row mt-3">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table" border="2">
+                  <thead>
+                    <tr style="background-color:#274472;color:white;">
+                      <th scope="col">Sl_no</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Signature Photo</th>
+                      <th scope="col">designation</th>
+                      <th scope="col">Authorised Status</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+  
+                    <tr *ngFor="let cata of data_table;index as i">
+                      <th scope="row">{{i+1}}</th>
+                      <td>{{cata.name}}</td>
+                      <td><img src="{{imagePath}}{{cata.signature}}" width="100"></td>
+                      <td>{{cata.designation}}</td>
+                      <td>{{cata.authorise_status}}</td>
+                      <td><button class="btn text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editAuthorise(cata)"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn text-danger" *ngIf="isSuperAdmin"><i class="fa-solid fa-trash"></i></button> </td>
+                    </tr>
+  
+                  </tbody>
+                </table>
+              </div>
+        </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  <!-- -----------------------------Modal---------------- -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Authorised <span>Person</span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+      <form (ngSubmit)="update()">
+        <div class="modal-body">
+  
+          <div class="col mb-2  mt-2">
+            <input type="text" class="form-control input mt-2" placeholder="Enter Name" name="name" [(ngModel)]="AuthorisedPersonModel.name">
+            <input type="text" class="form-control input mt-2" placeholder="Enter Designation" name="designation"  [(ngModel)]="AuthorisedPersonModel.designation">
+            <input type="file" class="form-control input mt-2" placeholder="Upload Signature" name="signature"  (change)="getFile($event)">
+        </div>
+  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" ata-bs-dismiss="modal">Save</button>
+        </div>
+      </form>
+  
+      </div>
+    </div>
+  </div>

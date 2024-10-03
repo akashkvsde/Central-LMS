@@ -1,0 +1,353 @@
+<div class="nav">
+  <!-- Loop through the navpagesName array and generate navigation links -->
+  <ng-container *ngFor="let navpage of navpagesName">
+    <div class="sb-sidenav-menu-heading">{{ navpage.category_name }}</div>
+    
+    <!-- Check if the navpage has subcategories -->
+    <a *ngIf="navpage.subcategories.length > 0" class="nav-link collapsed" href="#"
+      data-bs-toggle="collapse" [attr.data-bs-target]="'#collapseLayouts' + navpage.category_id"
+      [attr.aria-expanded]="false" [attr.aria-controls]="'collapseLayouts' + navpage.category_id">
+      <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
+      {{ navpage.nav_page_name }}
+      <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+    </a>
+    
+    <!-- Generate subcategory links if available -->
+    <div *ngIf="navpage.subcategories.length > 0" [attr.id]="'collapseLayouts' + navpage.category_id"
+      class="collapse" [attr.aria-labelledby]="'headingOne' + navpage.category_id"
+      data-bs-parent="#sidenavAccordion">
+      <nav class="sb-sidenav-menu-nested nav">
+        <a *ngFor="let subcategory of navpage.subcategories" class="nav-link" [routerLink]="subcategory.routerLink">
+          {{ subcategory.nav_page_name }}
+        </a>
+      </nav>
+    </div>
+    
+    <!-- Generate regular navigation links if no subcategories -->
+    <a *ngIf="navpage.subcategories.length === 0" class="nav-link" [routerLink]="navpage.routerLink">
+      <div class="sb-nav-link-icon"><i class="fas fa-{{ navpage.icon }}"></i></div>
+      {{ navpage.nav_page_name }}
+    </a>
+  </ng-container>
+</div>
+
+
+
+<div class="nav">
+                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <div *ngFor="let navpage of navpagesName">
+                                <a class="nav-link" href="index.html" [routerLink]="navpage.nav_page_name">
+                                    <div class="sb-nav-link-icon"><i [ngClass]="getIconClass(navpage.nav_page_name)"></i></div>
+                                    {{ navpage.nav_page_name }}
+                                </a>
+
+
+
+
+
+
+Chart.js
+npm install chart.js ng2-charts
+
+
+ng generate interceptor interceptors/CustomHeader
+
+ intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    // Retrieve the token from wherever you've stored it (e.g., localStorage)
+    const token = sessionStorage.getItem('token');
+
+    // If a token is found, add it to the request headers
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+
+    return next.handle(request);
+  }
+
+
+    providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomHeaderInterceptor,
+      multi: true,
+    },
+  ],
+
+
+
+
+    <div class="col-md-4 mb-3">
+          <label for="subject_id" class="form-label"> <strong>Subject</strong></label>
+           <ng-select name="subject_id" class="mb-3" [(ngModel)]="BooksModel.subject_id"
+                  [items]="subjects"  placeholder="Select Subject "  bindValue="subject_id"
+                  bindLabel="subject_name" required>
+                </ng-select>
+        </div>
+
+
+
+
+import { Component, OnInit } from '@angular/core';
+import { Currency } from 'src/app/Models/all-model';
+import { AllDataService } from 'src/app/Services/all-data.service';
+// import { HttpClient } from '@angular/common/http';
+import { interval } from 'rxjs';
+
+@Component({
+  selector: 'app-add-currency',
+  templateUrl: './add-currency.component.html',
+  styleUrls: ['./add-currency.component.css']
+})
+export class AddCurrencyComponent implements OnInit {
+  constructor(private service: AllDataService) { }
+  p: number = 1;
+  entry_by:any
+  college_id:any
+  ngOnInit(): void {
+    this.college_id=sessionStorage.getItem('college_id')
+    this.entry_by=sessionStorage.getItem('user_id')
+    this.getCurrency();
+    interval(5000).subscribe(() => {
+      this.getCurrency();
+    });
+
+
+    ng add angular-datatables
+    npm install datatables.net-bs5
+    npm install datatables.net-buttons
+
+    "styles": [
+              "src/styles.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
+              "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.min.js",
+              "node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js",
+              "node_modules/datatables.net-buttons/js/dataTables.buttons.min.js",
+              "node_modules/datatables.net-buttons/js/buttons.html5.min.js",
+              "node_modules/datatables.net-buttons/js/buttons.print.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
+
+
+
+
+            ts file import { Component ,OnInit } from '@angular/core';
+import { AllDataService } from './services/all-data.service';
+import { Subject } from 'rxjs';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent  implements OnInit{
+  title = 'Test';
+  
+  constructor(private service:AllDataService){}
+  dtoptions:DataTables.Settings={}
+  dtTrigger:Subject<any>=new Subject<any>()
+  ngOnInit(): void {
+    this.dtoptions={
+      // pagingType:'full_numbers'
+      // pagingType:'simple',
+      // pagingType:'simple_numbers'
+     
+      pagingType:'full',
+      // lengthChange:true,
+      ordering:true,
+      language:{
+        searchPlaceholder:'Search Here'
+      },
+      dom: 'Bfrtip', // Add Bfrtip to enable buttons
+      buttons: [
+        'csv', 'excel', 'pdf' 
+      ],
+      
+    };
+    this.getFakeDataa();
+  }
+
+  alldata:any;
+  getFakeDataa(){
+    this.service.getFakedata().subscribe((res:any)=>{
+      console.log(res);
+      this.alldata=res;
+      this.dtTrigger.next(null)
+      
+    })
+  }
+}
+
+import   DataTablesModule
+
+
+html <div class="container mt-5">
+  <div class="table-responsive">
+    <table datatable class="table table-border table" [dtOptions]="dtoptions" [dtTrigger]="dtTrigger" >
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">firstName</th>
+          <th scope="col">lastName</th>
+          <th scope="col">countryCode</th>
+          <th scope="col">companyId</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of alldata">
+          <td>{{a.id}}</td>
+          <td>{{a.firstName}}</td>
+          <td>{{a.lastName}}</td>
+          <td>{{a.countryCode}}</td>
+          <td>{{a.companyId}}</td>
+         
+          
+        </tr>
+      
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+ <div class="row mb-3">
+    <div class="col-md-9 mb-3"></div>
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Search....." [(ngModel)]="Search_Books">
+    </div>
+  </div>
+
+group
+ <tr *ngFor="let data of fetchdata| forBookSearch:Search_Books let index = index">
+
+ individual
+  <tr *ngFor="let data of fetchdata | forBookSearch:Search_Books | paginate: { itemsPerPage: 10, currentPage: p }; let index = index">
+
+
+
+
+    <div class="col-md-4 mb-3" *ngFor="let i of range(quantity); let idx = index">
+          <label for="isbn_no_{{i}}" class="form-label"><strong>ISBN No {{i + 1}}</strong></label>
+          <input 
+            type="text" 
+            id="isbn_no_{{i}}" 
+            name="isbn_no_{{i}}" 
+            class="form-control" 
+            [(ngModel)]="isbnNumbers[idx]" 
+            placeholder="ISBN No {{i + 1}}" 
+            ngModel 
+            pattern="\d{13}" 
+            #ISBN="ngModel" 
+            [class.is-invalid]="ISBN.touched && ISBN.invalid"
+            required
+          />
+          
+          <span class="text-danger fw-bolder" *ngIf="ISBN.invalid && (ISBN.dirty || ISBN.touched) && (ISBN.errors?.['required'] || ISBN.errors?.['pattern'])">ISBN No should be 13 digits</span>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// subject
+
+getSub(cid:any){
+  const options = { headers: this.headers };
+  return this.http.get(`${this.apiUrl}/get/subject/`+cid,options);
+}
+
+
+//bookReport Subject Wise
+
+bookSubWiseReport(sub_id:any,cid:any){
+  const options = { headers: this.headers };
+  return this.http.get(`${this.apiUrl}/book_report_subject_wise/`+sub_id+`/`+cid,
+  options)
+}
+
+bookSubWiseSearch(cid:any,sub_name:any){
+  const options = { headers: this.headers };
+  return this.http.get(`${this.apiUrl}/book_report_subject_wise_search/`+cid+`/`+sub_name,
+  options)
+}
+
+ // subject wise cataloging report
+
+ getBookBySub(cid:any,sub:any){
+  const options = { headers: this.headers };
+  return this.http.get(`${this.apiUrl}/book_by_subject/`+cid+`/`+sub,
+  options)
+}
+
+
+
+@media print{
+    .sb-topnav{
+     display: none !important;
+    }
+    .sb-sidenav{
+     display: none !important;
+    }
+    .to-for{
+     display: none !important;
+   }
+   /* .card-header{
+      display: none !important;
+    } */
+    /* .search{
+     display: none !important;
+    } */
+ 
+    .paginate_button {
+     display: none !important;
+    }
+ 
+     }
+   
+
+
+
+
+
+
+
+this.isSuperAdmin= this.service.isSuperAdmin()
+
+
+

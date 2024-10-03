@@ -1,0 +1,125 @@
+<div class="container">
+  <div class="row mt-2">
+      <h6 class="mt-2"  style="color:#274472">Assign <span class="text-danger">Role</span></h6>
+      <div class="col-md-4">
+        <input type="text" class="form-control input" placeholder="Enter Card no or Contact No" [(ngModel)]="Library_Card_NO">
+      </div>
+      <!-- <div class="col d-md-flex mb-3 gap-3"> -->
+          
+          <!-- <input type="text" class="form-control  input" placeholder="Enter Contact no"> -->
+          <!-- <button class="btn x input"><i class="fa-solid fa-magnifying-glass"></i></button> -->
+      <!-- </div> -->
+  </div>
+
+  <div class="row mt-3" >
+      <div class="col" style="color:#274472;border:2px solid #274472;">
+          <div class="table-responsive" >
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Sl_no</th>
+                    <th scope="col">Photo</th>
+                    <th scope="col">Card No</th>
+                    <th scope="col">College Name</th>
+                    <th scope="col">Contact No</th>
+                    <th scope="col">Emp Name</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Assign</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of getassign_role_data | forUsersSearchinAssignrole:Library_Card_NO | paginate: { itemsPerPage: 6, currentPage: p };  let i=index">
+                    <td>{{i+1}}</td>
+                    <td><img src="{{imgPath}}{{data.image}}" width="60"></td>
+                    <td>{{data.library_card_number}}</td>
+                    <td>{{data.college_name}}</td>
+                    <td>{{data.contact}}</td>
+                    <td>{{data.name}}</td>
+                    <td>{{data.designation}}</td>
+                    <td>{{data.roles}}</td>
+                    <td><button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"  (click)="fetChIndassignrole(data.user_id)">Remove</button></td>
+                    <td><button class="btn x" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="takeDataForAssign(data)">Assign</button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <pagination-controls (pageChange)="p = $event"></pagination-controls>
+            </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit user role</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form  (ngSubmit)="Assignrole(rolereload)" #rolereload="ngForm"> 
+      <div class="modal-body">
+
+              <div class="mb-3">
+                <label  class="form-label">Name</label>
+                <input type="text" [(ngModel)]="modelrole.name" name="user_name"  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Assign role</label>
+                <select type="text" class="form-control" id="exampleInputPassword1" [(ngModel)]="modelrole.user_role_id" name="role" required>
+                  <option *ngFor="let data of allrole" value="{{data.user_role_id}}">{{data.user_role}}</option>
+                </select>
+              </div>
+              <button type="submit" class="btn x" data-bs-toggle="modal" data-bs-target="#exampleModal">Assign</button> 
+      </div>
+    </form>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-bs-dismiss="modal" style="color: #1f1f1f; background-color:orange;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!------Model For delete-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModal">Edit user role</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="table-responsive">
+        <table class="table" border="2">
+          <thead>
+            <tr style="background-color:#274472;color:white;">
+              <th>Sl_no</th>
+              <th scope="col">Emp_name</th>
+              <th scope="col">Role</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of get_deldata  let i=index">
+              <td>{{i+1}}</td>
+              <td>{{data.name}}</td>
+              <td>{{data.user_role}}</td>
+              <td><button class="btn text-danger" (click)="delete(data.assign_role_id,data.user_id)"><i class="fa-solid fa-trash"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" data-bs-dismiss="modal" style="color: #1f1f1f; background-color:orange;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

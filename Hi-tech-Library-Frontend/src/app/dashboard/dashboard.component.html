@@ -1,0 +1,272 @@
+
+<body [ngClass]="sbNavFixed ? 'sb-nav-fixed' : 'sb-nav-fixed sb-sidenav-toggled'">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark" style="background-color: #274472;">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3">
+            <span style="font-size: 16px; font-weight: bolder;">Hi-Tech Library</span>
+            <span class="me-3" *ngIf="isSuperAdmin">
+              (
+                <select
+                style="background: none; border: none; font-size: 13px; font-weight: bolder; width: 38%;"
+                (change)="onCollegeChange($event)"
+                [(ngModel)]="collegeChangeID"  
+              >
+                <option
+                  *ngFor="let college of clgData"
+                  [value]="college.college_id"
+                >
+                  {{ college.short_name }}
+                </option>
+              </select>
+              )
+            </span>
+          </a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" #sidebarToggle (click)="toggleSidenav()" id="sidebarToggle" ><i class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <!-- <div class="input-group">
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+            </div> -->
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <!-- <span class="me-3">{{username}}</span>  -->
+                     <span>
+                    <img [src]="imgpath+userImage?.image" alt="" style="width: 30px; height: 30px;">
+                </span></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><span class="ms-3 fw-bold" style="white-space: nowrap;">{{username}}</span></li>
+                    <li [routerLink]="['User Profile', random]"><a class="dropdown-item" >Profile</a></li>
+                    <!-- <li [routerLink]="['Change Password', random]"><a class="dropdown-item" >Change Password</a></li>
+                    <li><hr class="dropdown-divider" /></li> -->
+                    <li><a class="dropdown-item" (click)="Logout()"  >Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav" >
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+
+                        <a class="nav-link fw-bolder" [routerLinkActive]="'active'"  [routerLink]="['Dashboard Charts']" *ngIf="isPagePresent('Dashboard Charts')">
+                            <div class="sb-nav-link-icon"><i class="fas fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <a class="nav-link fw-bolder" [routerLinkActive]="'active'" [routerLink]="['User Profile', random]" *ngIf="isPagePresent('User Profile')">
+                            <div class="sb-nav-link-icon"><i class="fas fas fa-user"></i></div>
+                            User Profile
+                        </a>
+                        <!-- <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Change Password', random]" *ngIf="isPagePresent('Dashboard')">
+                            <div class="sb-nav-link-icon"><i class="fas fas fa-lock"></i></div>
+                            Change Password
+                        </a> -->
+
+
+                        <div class="sb-sidenav-menu-heading">Interface</div>
+
+                        <a *ngIf="isPagePresent('All User Password')  || isPagePresent('Add Subjects')  || isPagePresent('Add Navigations') || isPagePresent('Add Signature') || isPagePresent('Assign Pages') || isPagePresent('Assign Role') || isPagePresent('Assign Role') ||isPagePresent('Add College') || isPagePresent('Add Course') || isPagePresent('Add Department') || isPagePresent('Add Currency') || isPagePresent('Add Fine Policy') || isPagePresent('Add Issue Type') || isPagePresent('Add Issue Policy') || isPagePresent('Add User Role') || isPagePresent('Add Vendors') || isPagePresent('Add Publisher') || isPagePresent('Add Author') || isPagePresent('Add Bill Details') || isPagePresent('Add Book Title') || isPagePresent('Add Book Locations')" class="nav-link collapsed fw-bolder"  data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
+                               Configuration
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div *ngIf="isPagePresent('All User Password') ||isPagePresent('Add Subjects') || isPagePresent('Add Navigations') || isPagePresent('Assign Pages') || isPagePresent('Assign Role') || isPagePresent('Assign Role') ||isPagePresent('Add College') || isPagePresent('Add Course') || isPagePresent('Add Department') || isPagePresent('Add Signature') || isPagePresent('Add Currency') || isPagePresent('Add Fine Policy') || isPagePresent('Add Issue Type') || isPagePresent('Add Issue Policy') || isPagePresent('Add User Role') || isPagePresent('Add Vendors') || isPagePresent('Add Publisher') || isPagePresent('Add Author') || isPagePresent('Add Bill Details') || isPagePresent('Add Book Title') || isPagePresent('Add Book Locations')" class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['All-Password', random]" *ngIf="isPagePresent('All User Password')">All User Password</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Navigations', random]" *ngIf="isPagePresent('Add Navigations')">Add Navigations</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Signature', random]" *ngIf="isPagePresent('Add Signature')">Add Signature</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Assign Pages', random]" *ngIf="isPagePresent('Assign Pages')">Assign Pages</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Assign Role', random]" *ngIf="isPagePresent('Assign Role')">Assign Role</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Subjects', random]" *ngIf="isPagePresent('Add Subjects')">Add Subjects</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add College', random]" *ngIf="isPagePresent('Add College')">Add College</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Course', random]" *ngIf="isPagePresent('Add Course')">Add Course</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Department', random]" *ngIf="isPagePresent('Add Department')">Add Department</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Currency', random]" *ngIf="isPagePresent('Add Currency')">Add Currency</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Document Type', random]" *ngIf="isPagePresent('Add Document Type')">Add Document Type</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Fine Policy', random]" *ngIf="isPagePresent('Add Fine Policy')">Add Fine Policy</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Issue Type', random]" *ngIf="isPagePresent('Add Issue Type')">Add Issue Type</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Issue Policy', random]" *ngIf="isPagePresent('Add Issue Policy')">Add Issue Policy</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add User Role', random]" *ngIf="isPagePresent('Add User Role')">Add User Role</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Vendors', random]" *ngIf="isPagePresent('Add Vendors')">Add Vendors</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Publisher', random]" *ngIf="isPagePresent('Add Publisher')">Add Publisher</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Authors', random]" *ngIf="isPagePresent('Add Authors')">Add Authors</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Bill Details', random]" *ngIf="isPagePresent('Add Bill Details')">Add Bill Details</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Book Title', random]" *ngIf="isPagePresent('Add Book Title')">Add Book Title</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Book Locations', random]" *ngIf="isPagePresent('Add Book Locations')">Add Book Location</a>
+                            </nav>
+                        </div>
+
+
+                        <a *ngIf="isPagePresent('User Registration') || isPagePresent('My Library Card') ||isPagePresent('All Library Card') || isPagePresent('View Users') || isPagePresent('View Log Details') || isPagePresent('Library Card')" class="nav-link collapsed" style="font-weight: bolder; white-space: nowrap;"  data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts2">
+                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                               User Management
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div *ngIf="isPagePresent('User Registration') || isPagePresent('View Users') || isPagePresent('View Log Details') || isPagePresent('My Library Card') || isPagePresent('Library Card') " class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['User Registration', random]" *ngIf="isPagePresent('User Registration')">User Registration</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['AssignLibraryCardNo', random]" *ngIf="isPagePresent('AssignLibraryCardNo')">Assign LibraryCard No</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['My Library Card', random]" *ngIf="isPagePresent('My Library Card')">My Library Card</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['All Library Card', random]" *ngIf="isPagePresent('All Library Card')">All Library Card</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['View Users', random]" *ngIf="isPagePresent('View Users')">View Users</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['View Log Details', random]" *ngIf="isPagePresent('View Log Details')">View Log Details</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Library Card', random]" *ngIf="isPagePresent('Library Card')">Library Card</a>
+                              </nav>
+                        </div>
+
+                        
+                        <a  *ngIf="isPagePresent('Add Books') || isPagePresent('View Users') || isPagePresent('View Books') || isPagePresent('Edit Individual') || isPagePresent('Edit Multiple') || isPagePresent('Books With Bar Code')" class="nav-link collapsed fw-bolder"  data-bs-toggle="collapse" data-bs-target="#catlog" aria-expanded="false" aria-controls="catlog">
+                            <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
+                            Cataloguing 
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="catlog" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Add Books', random]" *ngIf="isPagePresent('Add Books')">Add Books</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['View Books', random]" *ngIf="isPagePresent('View Books')">View Books</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Books With Bar Code', random]" *ngIf="isPagePresent('Books With Bar Code')">Books With Bar Code</a>
+
+                                <a class="nav-link collapsed"  data-bs-toggle="collapse" data-bs-target="#col_any" aria-expanded="false" aria-controls="col_any">
+                                    Edit Books
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="col_any" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Edit Individual', random]" *ngIf="isPagePresent('Edit Individual')">Edit Individual</a>
+                                        <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Edit Multiple', random]" *ngIf="isPagePresent('Edit Multiple')">Edit Multiple</a>
+                                    </nav>
+                                </div>
+                            </nav>
+                        </div>
+
+
+                        <a *ngIf="isPagePresent('Book Issue') ||isPagePresent('Book Issue New') || isPagePresent('Return Books') || isPagePresent('View Books') || isPagePresent('View Transaction') || isPagePresent('User Book requests')" class="nav-link collapsed fw-bolder"  data-bs-toggle="collapse" data-bs-target="#collapseLayouts9" aria-expanded="false" aria-controls="collapseLayouts9">
+                            <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
+                           Circulation
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts9" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <!-- <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Issue', random]" *ngIf="isPagePresent('Book Issue')">Book Issue</a> -->
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Issue New', random]" *ngIf="isPagePresent('Book Issue New')">Book Issue</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Return Books', random]" *ngIf="isPagePresent('Return Books')">Return Book</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['View Transaction', random]" *ngIf="isPagePresent('View Transaction')">View Transaction</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['User Book requests', random]" *ngIf="isPagePresent('User Book requests')">User Book request</a>
+                           </nav>   
+                        </div>
+
+
+
+                        <a *ngIf="isPagePresent('Fine Collection') || isPagePresent('View Fine Collection')"  class="nav-link collapsed fw-bolder"  data-bs-toggle="collapse" data-bs-target="#collapseLayouts10" aria-expanded="false" aria-controls="collapseLayouts10">
+                            <div class="sb-nav-link-icon"><i class="fas fa-money-bill"></i></div>
+                           Fine Management
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts10" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Fine Collection', random]" *ngIf="isPagePresent('Fine Collection')">Fine Collection</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['View Fine Collection', random]" *ngIf="isPagePresent('View Fine Collection')">View Fine Collection</a>
+                         </nav>     
+                        </div>
+<!-- ============================================RePORTS SECTION======================= -->
+                        <a *ngIf="isPagePresent('Books Stock Report') || isPagePresent('Users Passwords')   || isPagePresent('User Login Details Report') || isPagePresent('Department Wise Cataloging Report') || isPagePresent('User Details Report') || isPagePresent('Fine Collection Report') || isPagePresent('Book Transaction Report') || isPagePresent('Book List Report')|| isPagePresent('Book Report Title Wise')|| isPagePresent('Book Report College Wise')|| isPagePresent('Book Report Department Wise')|| isPagePresent('Departmental Issue Book Report')||isPagePresent('Book Issue Report Issue Type wise')|| isPagePresent('College Issue Book Report')|| isPagePresent('Individual Books Report')|| isPagePresent('Book Status Report')|| isPagePresent('Departmentwise Cataloging Report')|| isPagePresent('Quantity Wise Book Report') || isPagePresent('Book Cost Report')|| isPagePresent('Vendor List Report')|| isPagePresent('College List Report')|| isPagePresent('Department List Report')|| isPagePresent('Userwise Book Report') || isPagePresent('Report Based On Author And Publisher')"  class="nav-link collapsed fw-bolder"  data-bs-toggle="collapse" data-bs-target="#collapseLayouts11" aria-expanded="false" aria-controls="collapseLayouts11">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
+                               Reports
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts11" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Books Stock Report', random]" *ngIf="isPagePresent('Books Stock Report')">Books Stock Report</a>
+                               
+                                <a class="nav-link" [routerLinkActive]="'active'"
+                                [routerLink]="['Users Passwords', random]"
+                                *ngIf="isPagePresent('Users Passwords')">Users Passwords</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['User Login Details Report', random]" *ngIf="isPagePresent('User Login Details Report')">User Log Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['User Details Report', random]" *ngIf="isPagePresent('User Details Report')">User Details Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Fine Collection Report', random]" *ngIf="isPagePresent('Fine Collection Report')">Fine Collection Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Transaction Report', random]" *ngIf="isPagePresent('Book Transaction Report')">Book transaction Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book List Report', random]" *ngIf="isPagePresent('Book List Report')">Book List Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Report Title Wise', random]" *ngIf="isPagePresent('Book Report Title Wise')">Book Report Title Wise</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Report College Wise', random]" *ngIf="isPagePresent('Book Report College Wise')">Book Report College Wise</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Report Department Wise', random]" *ngIf="isPagePresent('Book Report Department Wise')">Book Report Department Wise</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Issue Report Issue Type wise', random]" *ngIf="isPagePresent('Book Issue Report Issue Type wise')">Book Issue Report Issue Type wise</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Departmental Issue Book Report', random]" *ngIf="isPagePresent('Departmental Issue Book Report')">Departmental Issue Book Report</a>
+                                <!-- <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['College Issue Book Report', random]" *ngIf="isPagePresent('College Issue Book Report')">College Issue Book Report</a> -->
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Individual Books Report', random]" *ngIf="isPagePresent('Individual Books Report')">Individual Books Report</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Department Wise Cataloging Report', random]" *ngIf="isPagePresent('Department Wise Cataloging Report')">Department Wise Cataloging Report</a>
+
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Status Report', random]" *ngIf="isPagePresent('Book Status Report')">Book Status Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Departmentwise Cataloging Report', random]" *ngIf="isPagePresent('Departmentwise Cataloging Report')">Departmentwise Cataloging Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Quantity Wise Book Report', random]" *ngIf="isPagePresent('Quantity Wise Book Report')">Quantity Wise Book Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Book Cost Report', random]" *ngIf="isPagePresent('Book Cost Report')">Book Cost Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Vendor List Report', random]" *ngIf="isPagePresent('Vendor List Report')">Vender List Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['College List Report', random]" *ngIf="isPagePresent('College List Report')">List Of College </a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Department List Report', random]" *ngIf="isPagePresent('Department List Report')">List Of department</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Userwise Book Report', random]" *ngIf="isPagePresent('Userwise Book Report')">Userwise Book Report</a>
+                                <a class="nav-link" [routerLinkActive]="'active'" [routerLink]="['Report Based On Author And Publisher', random]" *ngIf="isPagePresent('Report Based On Author And Publisher')">Report Based On Author And Publisher</a>
+                               
+                            </nav>
+                        </div>
+
+                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        <a class="nav-link fw-bolder" [routerLinkActive]="'active'" [routerLink]="['Book Reservation', random]" *ngIf="isPagePresent('Book Reservation')">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bookmark"></i></div>
+                            Book Reservation    
+                        </a>
+                        <a class="nav-link fw-bolder" [routerLinkActive]="'active'" [routerLink]="['Transaction History', random]" *ngIf="isPagePresent('Transaction History')">
+                            <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
+                            Transaction History 
+                        </a>
+                        <a class="nav-link fw-bolder" (click)="Logout()"  *ngIf="isPagePresent('Logout')" >
+                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt" style="color:firebrick;"></i></div>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                
+            </nav>
+        </div>
+     
+
+        <!-- <!==============================main=====================> -->
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                   <div class="to-for" style="float: right; display: flex;">
+                    <button class="btn" style="color: #274472;" (click)="back()"><i class="fa-solid fa-arrow-left"></i></button><br>
+                    <button class="btn" style="color: #274472;" (click)="sack()"><i class="fa-solid fa-arrow-right"></i></button><br>
+                   </div>
+                    
+                    
+                    <router-outlet></router-outlet>
+                </div>
+            </main>
+          
+        </div>
+    </div>
+
+    
+
+
+</body>
+
+
+

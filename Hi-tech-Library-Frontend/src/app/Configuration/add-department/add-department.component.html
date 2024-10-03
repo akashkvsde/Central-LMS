@@ -1,0 +1,95 @@
+
+<div class="container mt-2">
+  <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">DEPARTMENT</span></p>
+  <div class="card">
+    <div class="card-header bg-white">
+      <form (ngSubmit)="AddDepartment(FormValidation)" #FormValidation="ngForm">
+        <div class="row">
+      
+          <div class="col-md-2"></div>
+          <div class="col-md-4 mb-3">
+            <ng-select name="course_id" class="mb-3" [(ngModel)]="DeptModel.course_id" [items]="filteredCourses"
+              appendTo="body" placeholder="Select Course" [addTag]="true" bindValue="course_id" bindLabel="course_name"
+              required>
+            </ng-select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+            <div class="input-group">
+              <input type="text" name="Department_name" class="form-control text-center" id="deptName" required
+                placeholder="Enter Department Name" [(ngModel)]="DeptModel.dept_name">
+            </div>
+          </div>
+
+          <div class="col-md-2"> <button class="button2">SUBMIT</button></div>
+       
+        </div>
+      </form>
+    </div>
+    <div class="card-body" style="color:#274472;border:2px solid #274472;">
+      <p class="fw-bolder text-center"><span style="color: #274472 ;">ALL</span><span class="ms-2 text-danger">DEPARTMENTS</span></p>
+      <div class="students-table hide mt-3">
+        <div class="row  justify-content-between">
+          <div class="col-md-2 mb-2">
+          </div>
+          <div class="col-md-3 mb-2">
+              <input type="text" class="form-control text-center" placeholder="Search Here"
+                  [(ngModel)]="dept_search">
+          </div>
+          
+      </div>
+        <div class="table-responsive">
+          <table class="custom-table table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Sl.no</th>
+                <th>Course Name</th>
+                <th>Department Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            
+              <tbody>
+                <tr *ngFor="let dept of Alldept | forDept:dept_search | paginate: { itemsPerPage: 6, currentPage: p }; let i = index">
+                  <td>{{(p - 1) * 6 + i + 1}}</td>
+                  <ng-container *ngIf="!dept.isEditing; else editRow">
+                    <!-- <td>{{ dept.college_name }}</td> -->
+                    <td>{{ dept.course_name }}</td>
+                    <td>{{ dept.dept_name }}</td>
+                    <!-- <td>{{ dept.entry_by }}</td> -->
+                    <td>
+                      <span class="me-5" (click)="EditCourse(dept, i)"><i class="fas fa-edit"></i></span>
+                      <span *ngIf="isSuperAdmin" (click)="DeleteDept(dept.dept_id)"><i class="fas fa-trash-alt"></i></span>
+                    </td>
+                  </ng-container>
+                  <ng-template #editRow>
+                    <!-- <td>
+                      <select class="form-select" name="college_id" [(ngModel)]="dept.college_id" (ngModelChange)="onCollegeChange($event)">
+                        <option *ngFor="let college of allCollege" [value]="college.college_id">
+                          {{ college.college_name }}
+                        </option>
+                      </select>
+                    </td> -->
+                    <td>
+                      <select class="form-select" name="course_id" [(ngModel)]="dept.course_id">
+                        <option *ngFor="let filterCourse of filteredCourses" [value]="filterCourse.course_id">
+                          {{ filterCourse.course_name }}
+                        </option>
+                      </select>
+                    </td>
+                    <td><input class="form-control" type="text" [(ngModel)]="dept.dept_name" /></td>
+                    <td>
+                      <button class="button2" (click)="UpdateCourses(dept, dept.dept_id)">Update</button>
+                      <button class="button1 ms-3" (click)="CancelEdit(dept)">Cancel</button>
+                    </td>
+                  </ng-template>
+                </tr>
+              </tbody>
+          </table>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

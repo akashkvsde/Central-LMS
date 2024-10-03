@@ -1,0 +1,181 @@
+<p class="libarcodehide">Library Card Bar Code</p>
+<div class="container mt-2">
+  <p class="fw-bolder mb-0 d-flex flex-wrap align-items-center ">
+    <span class="hidespan me-3" (click)="handleClick('assignLibraryCard')"  style="cursor: pointer; ">
+      <span style="color: #274472;">Assign</span>
+      <span class="ms-1 text-danger">Library Card Number</span>
+    </span>  ||
+    <span class="hidespan" (click)="handleClick('barCodePrint')" style="cursor: pointer;" class="ms-3">
+      <span class="hidespan" style="color: #274472; text-decoration: underline;">Generate</span>
+      <span  class="ms-2 text-danger hidespan" style="text-decoration: underline;"> Barcode</span>
+    </span>
+  </p>
+
+
+
+
+
+  <!-- ===============================AssignedLibraryCard view============================= -->
+  <div *ngIf="currentView === 'assignLibraryCard'">
+    <div class="row mb-3">
+      <div class="col-md-9 mb-3"></div>
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Search....." [(ngModel)]="Search_Users" (ngModelChange)="filterUsers()">
+      </div>
+    </div>
+  
+    <div class="table-responsive">
+      <table class="table" id="example">
+        <thead>
+          <tr>
+            <th>Sl No</th>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Library Card No</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of paginatedUsers; let i = index">
+            <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+            <td><img [src]="imgPath + user.image" width="60" alt="User Image"></td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.library_card_number }}</td>
+            <td>
+              <button class="button2" (click)="getingleData(user)" data-bs-toggle="modal"
+                data-bs-target="#AssignLibraryCardNo">Assign Library Card</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- Pagination Controls -->
+      <div class="d-flex justify-content-end">
+      <nav aria-label="Page navigation" style="cursor: pointer;">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="setPage(currentPage - 1)" aria-label="Previous">
+              <span aria-hidden="true">Previous</span>
+            </a>
+          </li>
+          <li class="page-item" *ngFor="let page of pageNumbers">
+            <a class="page-link" (click)="setPage(page)" [class.active]="page === currentPage">{{ page }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="setPage(currentPage + 1)" aria-label="Next">
+              <span aria-hidden="true">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      </div>
+    </div>
+  
+    <!-- Assign Library Card Modal -->
+    <div class="modal fade" id="AssignLibraryCardNo" tabindex="-1" aria-labelledby="AssignLibraryCardNoLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="AssignLibraryCardNoLabel">Assign Library Card No</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="card">
+              <div class="card-header">
+                <div class="text-center">
+                  <img [src]="imgPath + AssignModal.image" alt="" width="100px">
+                </div>
+                <div class="card-body">
+                  <input type="text" class="form-control" placeholder="Enter Library Card No..." name="LibraryCardNo" #libcard>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" (click)="UpdateLibraryCard(libcard)">Update</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+
+</div>
+  <!-- ========================BarCodePrintPage================================ -->
+ <div  *ngIf="currentView === 'barCodePrint'" class="mt-3">
+  <div class="container">
+    <div class="card cardbarcode">
+        <div class="card-header bg-transparent border-0">
+            <div class="row align-items-center">
+                <!-- Batch Year Input Field -->
+                <div class="col-sm-6 col-md-3 mb-2">
+                    <!-- <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Batch Year..." name="batchYear" #BatchYear>
+                    </div> -->
+                    <!-- <div class="input-group"> -->
+                        <ng-select name="batchYear" 
+                          [items]="batchyears"
+                          [virtualScroll]="true"
+                          [(ngModel)]="selectedYear"
+                          placeholder="Select Year"
+                          bindValue="batchYear"
+                          bindLabel="batchYear" #BatchYear
+                          required  >
+                        </ng-select>
+                      <!-- </div> -->
+                      
+                </div>
+                <!-- From Input Field -->
+                <div class="col-sm-6 col-md-3 mb-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="From ..." name="fromRange" #FromRange>
+                    </div>
+                </div>
+                <!-- To Input Field -->
+                <div class="col-sm-6 col-md-3 mb-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="To..." name="toRange" #ToRange>
+                    </div>
+                </div>
+                <!-- Submit Button -->
+                <div class="col-sm-12 col-md-3 mb-2">
+                    <div class="input-group">
+                        <button class="input-group-text fw-bolder" style="background-color: #274472; color: white;"
+                            (click)="getRange(FromRange.value, ToRange.value)">SUBMIT</button>
+                        <!-- <button class="input-group-text fw-bolder" style="background-color: #274472; color: white;"
+                            (click)="getRange(FromRange.value, ToRange.value)">SUBMIT</button> -->
+                    </div>
+                </div>
+                <!-- Print Icon -->
+                <div class="col-sm-12 col-md-12 text-end">
+                    <div class="text-end">
+                        <span (click)="printbarcode()" ><i class="fas fa-print fs-5"  style="cursor: pointer;"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     
+
+
+
+
+</div>
+</div>
+
+
+<div class="barcode-card-container mt-2" *ngIf="selectedYear">
+    <div *ngFor="let barcode of getRange(FromRange.value, ToRange.value); let i = index" class="barcode-card">
+      <svg #barcodeLib></svg>
+      <!-- <div class="barcode-text">{{barcode}}</div> -->
+    </div>
+  </div>
+ </div>
+  <!-- ========================BarCodePrintPage================================ -->
+
+  

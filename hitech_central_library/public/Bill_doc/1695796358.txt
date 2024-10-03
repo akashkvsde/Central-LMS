@@ -1,0 +1,54 @@
+USER MANAGEMENT
+=================
+->Add college
+->Add course
+->Add department
+->Add user Role
+->User Registration
+->View User
+->Library card
+->My Library Card
+->Assign Role
+->Assign pages
+
+
+BOOK MANAGEMENT
+=================
+->Add book Title
+->Add Author
+->Add Publisher
+->Add vendor
+->Add Bill details
+->Add Book location
+->Add Currency
+->Add Isssue Type
+->Add Issue Policy
+->Add Fine Policy
+->Add Book
+->Edit Book
+->Book with barcode
+->View all books
+->Book issue
+->Book reservation
+->User Book Request
+->Return Book
+->View Transaction
+->Transaction History(User)
+->Fine Collection 
+->View Fine collection
+
+
+=>REPORTS
+
+ADDITION PAGES
+==============
+->Dash Board
+->user Profile
+->Change Password
+
+
+
+
+
+
+

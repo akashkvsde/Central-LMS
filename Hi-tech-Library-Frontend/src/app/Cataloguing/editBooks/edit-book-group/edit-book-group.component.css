@@ -1,0 +1,19 @@
+
+.btn-show{
+  background:  #274472; width: 190px; gap:20px;
+  border-radius: 20px;
+  border: 2px solid #274472;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  color:white;
+}
+.head-ser{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 10px;
+}
+table {
+  white-space: nowrap;
+}

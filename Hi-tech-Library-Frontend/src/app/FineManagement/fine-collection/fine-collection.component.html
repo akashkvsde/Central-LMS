@@ -1,0 +1,91 @@
+<div class="container mt-3">
+  <!-- {{paidAmount}} -->
+    <p class="fw-bolder"><span style="color: #274472 ;">FINE</span><span class="ms-2 text-danger">COLLECTION</span></p>
+    <div class="card">
+        <div class="card-header bg-white"> 
+            <form class="mt-2" (ngSubmit)="FineCollect(issueForm)" #issueForm="ngForm">
+              <div class="row">
+                <div class="col-md-3 mb-3">
+                    <ng-select name="library_card_number" class="mb-3" [items]="libraryCardNo"
+                    appendTo="body" placeholder="Enter Library Card No" 
+                    bindValue="library_card_number" bindLabel="library_card_number"
+                    [(ngModel)]="selectedLibraryCard" (ngModelChange)="onLibraryCardnoChange($event)" required>
+                  </ng-select>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <ng-select name="accession_no" class="mb-3" [items]="accessionNo"
+                    appendTo="body" placeholder="Enter Book Title Name" 
+                    bindValue="accession_no" bindLabel="book_title_name"
+                    [(ngModel)]="selectedAccessionNo" (ngModelChange)="IssuedBooksAccessionNo($event)" required>
+                  </ng-select>
+                </div>
+                <div class="col-md-3 mb-3">
+                  <div class="input-group">
+                    <input type="text" name="reason" [(ngModel)]="FineCollection.reason"  class="form-control text-center" id="exceedDays" required
+                      placeholder="Enter Reason">
+                  </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                  <div class="input-group">
+                    <input type="text" name="fine_policy_amount" [(ngModel)]="fineAmount"   class="form-control text-center" id="finePolicyAmount" required
+                      placeholder="Calculated Amount" readonly>
+                  </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                  <div class="input-group">
+                    <input type="file" name="bill_doc" style="display: none" (change)="onFileSelected($event)"
+                        #fileInput>
+                    <input type="text" class="form-control text-center" id="BillFile" required
+                        [placeholder]="fileName || 'Upload bill Document'" (click)="fileInput.click()" readonly>
+                    <span class="input-group-text" (click)="fileInput.click()">
+                        <i class="fas fa-file"></i>
+                    </span>
+                </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                  <div class="input-group">
+                    <input type="text" name="fine_policy_amount" [(ngModel)]="paidAmount"   class="form-control text-center" id="finePolicyAmount" required
+                      placeholder="Paid Amount" >
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mb-3">
+                <button  class="button2">SAVE</button>
+              </div>
+            </form>
+          </div>
+          
+      
+    </div>
+</div>
+
+
+
+
+
+<!-- <div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+                <img src="https://www.persofoto.de/apple-touch-icon-180x180.png" class="img-fluid profile-image-pic img-thumbnail rounded-circle" width="120px" alt="">
+            </div>
+            <div class="col-md-8" >
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-2"><strong>Name:</strong> vdjkdfjkhvsdfvbnsdf</p>
+                        <p class="mb-2"><strong>Library Card Number:</strong> vdjkdfjkhvsdfvbnsdf</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="mb-2"><strong>Batch Year:</strong> vdjkdfjkhvsdfvbnsdf</p>
+                        <p class="mb-2"><strong>User's Role:</strong> vdjkdfjkhvsdfvbnsdf</p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="mb-2"><strong>User's Status:</strong> Active</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div> -->

@@ -1,0 +1,39 @@
+<div class="containe"  #printableDiv>
+    <div class="padding">
+        <div class="font">
+        <img src="assets/img_my/hitech_logo.jpeg" style="width:80px;margin:10px;">
+
+            <div class="top">
+                <img src="{{imgPath}}{{allData?.image}}">
+            </div>
+            <div class="bottom">
+                <p>{{allData?.name}}</p>
+                <p class="desi">{{allData?.college_name}}</p>
+                <br>
+                <p class="no">Library Card No: {{allData?.library_card_number}}</p>
+                <p class="no" [class.mb-2]="allData?.designation" *ngIf="allData?.designation">Designation: {{allData?.designation}}</p>
+                <p class="no" *ngIf="allData?.course_name">Course:{{allData?.course_name}}</p>
+                <p class="no" *ngIf="allData?.dept_name">Department:{{allData?.dept_name}}</p>
+                <p class="no" *ngIf="allData?.batch_year===null">Batch Year:{{allData?.batch_year}}</p>
+                <p class="no">Mobile No:{{allData?.contact}}</p>
+                <p class="no">Address:{{allData?.address}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="back">
+        <h1 class="Details">information</h1>
+        <hr class="hr">
+        <div class="details-info">
+            <p><b>•The card should be presented while using the library materials </b></p>
+            <p><b>•The card is not transferable </b></p>
+            <p><b>• In case of loss or any damaged by the card holder a duplicate can be obtained on payment of Rs. 25/-</b></p>
+            <p><b>• The student is responsible for its safe custody </b></p>
+            <p><b>•The library card is to be submitted to the issuing authority after date of expiry of the card </b></p>
+            </div>
+            <div class="logo d-lg-flex">
+                <svg id="barcode"></svg>
+                <img src="{{imagePath2}}{{allData?.signature}}" alt="Signature">
+            </div>
+        </div>
+</div>

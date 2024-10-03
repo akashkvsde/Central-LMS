@@ -1,0 +1,291 @@
+<div class="container mt-2">
+  <p class="fw-bolder"><span style="color: #274472 ;">EDIT</span><span class="ms-2 text-danger">BOOKS-INDIVIDUAL</span>
+  </p>
+  <!-- <ng-container  *ngIf="paginatedBooks.length > 0; else noData"> -->
+    <div class="row">
+      <div class="col-9"></div>
+      <div class="col-md-3 mb-2">
+        <input type="text" class="form-control" placeholder="Search Here..." [(ngModel)]="Search_Books">
+      </div>
+    </div>
+  <div class="table-responsive">
+    <table class="custom-table table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Sl no</th>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Subject</th>
+          <th>Accession no</th>
+          <th>Volume</th>
+          <th>Author</th>
+          <th>Publisher</th>
+          <th>Editor</th>
+          <th>Isbn no</th>
+          <th>Book Status</th>
+          <th>Edition year</th>
+          <th>Bill No</th>
+          <th>Doc type</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="let data of Books | forBookSearch:Search_Books | paginate: { itemsPerPage: 10, currentPage: p }; let index = index">
+          <td>{{(currentPage - 1) * pageSize + index + 1}}</td>
+          <td><img src="{{data?.book_image ? imgPath + data?.book_image : 'assets/noBook.jpg'}}" width="60"></td>
+          <td>{{data.book_title_name}}</td>
+          <td>{{data.subject_name}}</td>
+          <td>{{data.accession_no}}</td>
+          <td>{{ data.volume !== null && data.volume !== "null" ? data.volume : 'NA' }}</td>
+          <td>{{ data.author_name !== null && data.author_name !== "null" ? data.author_name : 'NA' }}</td>
+          <td>{{ data.publisher_name !== null && data.publisher_name !== "null" ? data.publisher_name : 'NA' }}</td>
+          <td>{{ data.editor !== null && data.editor !== "null" ? data.editor : 'NA' }}</td>
+          <td>{{ data.isbn_no !== null && data.isbn_no !== "null" ? data.isbn_no : 'NA' }}</td>
+          <td>{{ data.book_status !== null && data.book_status !== "null" ? data.book_status : 'NA' }}</td>
+          <td>{{ data.edition_year !== null && data.edition_year !== "null" ? data.edition_year : 'NA' }}</td>
+          <td>{{ data.bill_num !== null && data.bill_num !== "null" ? data.bill_num : 'NA' }}</td>
+          <td>{{ data.document_type !== null && data.document_type !== "null" ? data.document_type : 'NA' }}</td>
+          
+          <td class="d-flex mt-3"><button type="button" class="btn text-primary" (click)="EditBook(data)" data-bs-toggle="modal"
+              data-bs-target="#editModal"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button *ngIf="isSuperAdmin" class="btn text-danger"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+
+</div>
+
+
+
+<!-- Edit MOdal Form -->
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="EditMOdalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+     
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="EditMOdalLabel">Edit Book Form</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder fw-bolder">OLD Book Title: <span class="text-danger">{{singleBook.book_title_name}}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Book Title" (input)="filterTitles($event)"
+            name="book_title_id" [(ngModel)]="inputValue">
+            <div class="suggestions-container" *ngIf="showTitleSuggestions">
+              <div *ngFor="let title of filteredTitles" class="suggestion" (click)="selectTitle(title)">{{ title.book_title_name }}</div>
+            </div>
+          </div>
+        <!-- Author Fields -->
+          <div class="col-md-4 mb-3" *ngFor="let index of [0, 1, 2]">
+            <label for="" class="form-label fw-bolder">{{ index === 0 ? 'OLD 1st' : index === 1 ? 'OLD 2nd' : 'OLD 3rd' }} Author:  <span class="text-danger">{{ index === 0 ? singleBook['author_name'] : index === 1 ? singleBook['second_author_name'] : singleBook['third_author_name'] }}</span>
+            </label>
+            <input type="text" class="form-control" [placeholder]="'Enter ' + (index === 0 ? '1st' : index === 1 ? '2nd' : '3rd') + ' Author'"
+              (input)="filterAuthors($event, index)" [(ngModel)]="index === 0 ? firstAuthor : index === 1 ? secondAuthor : thirdAuthor">
+            <div class="suggestions-container" *ngIf="showAuthorSuggestions[index]">
+              <div *ngFor="let author of filteredAuthors[index]" class="suggestion" (click)="selectAuthor(author, index)">{{ author.author_name }}</div>
+            </div>
+          </div>
+        <!-- Publisher Field -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Publisher: <span class="text-danger">{{singleBook.publisher_name}}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Publisher" (input)="filterPublishers($event)"
+              [(ngModel)]="publisher">
+            <div class="suggestions-container" *ngIf="showPublisherSuggestions">
+              <div *ngFor="let publisher of filteredPublishers" class="suggestion" (click)="selectPublisher(publisher)">{{ publisher.publisher_name }}</div>
+            </div>
+          </div>
+
+          <!-- Currency -->
+<div class="col-md-4 mb-3">
+  <label for="" class="form-label fw-bolder">OLD Currency: <span class="text-danger">{{ singleBook.curr_type }}</span></label>
+  <input type="text" class="form-control" placeholder="Enter Currency" (input)="filterCurrency($event)" [(ngModel)]="currency">
+  <div class="suggestions-container" *ngIf="showCurrencySuggestions">
+    <div *ngFor="let currencyItem of filteredCurrency" class="suggestion" (click)="selectCurrency(currencyItem)">{{ currencyItem.curr_type }}</div>
+  </div>
+</div>
+
+          <!-- Amount -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Amount: <span class="text-danger">{{ singleBook.book_price }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter new Amount" [(ngModel)]="updatemodel.book_price" name="book_price">
+          </div>
+          <!-- Book Status -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Book Status: <span class="text-danger">{{ singleBook.book_status }}</span></label>
+            <select name="book_status" id="" class="form-select" [(ngModel)]="updatemodel.book_status" name="Book_status">
+              <option selected disabled>Select Book Status</option>
+              <option value="issued">issued</option>
+              <option value="Damaged">damaged</option>
+              <option value="inlibrary">inlibrary</option>
+              <option value="lost">lost</option>
+            </select>
+          </div>
+
+                  <!-- Vendor -->
+                  <div class="col-md-4 mb-3">
+                    <label for="" class="form-label fw-bolder">Old Vendor: <span class="text-danger">{{ singleBook.vendor_name }}</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Vendor" (input)="filterVendors($event)"
+                      [(ngModel)]="selectedVendor">
+                    <div class="suggestions-container" *ngIf="showVendorSuggestions">
+                      <div *ngFor="let vendor of filteredVendors" class="suggestion" (click)="selectVendor(vendor)">{{ vendor.vendor_name }}</div>
+                    </div>
+                  </div>
+                  <!-- Bill Details -->
+                  <div class="col-md-4 mb-3">
+                    <label for="" class="form-label fw-bolder">OLD Bill No: <span class="text-danger">{{ singleBook.bill_num }}</span></label>
+                    <select class="form-select" name="bill_id" [(ngModel)]="updatemodel.bill_id" (change)="selectBillDetail($event)">
+                      <option selected disabled>Select Bill no</option>
+                      <option *ngFor="let billDetail of billDetails" [value]="billDetail.bill_id">{{ billDetail.bill_num }}</option>
+                    </select>
+                  </div>
+                  
+              <!-- Doc TYpe -->
+                  <div class="col-md-4">
+                    <label for="" class="form-label fw-bolder">Doc Type: <span class="text-danger">{{ singleBook.docType }}</span></label>
+                    <input type="text" class="form-control" placeholder="Enter Doc Type" (input)="filterDocTypes($event)"
+                    [(ngModel)]="docType" name="document_id">
+                    <div class="suggestions-container" *ngIf="showDocTypeSuggestions">
+                      <div *ngFor="let docType of filteredDocTypes" class="suggestion" (click)="selectDocType(docType)">{{ docType.document_type }}</div>
+                    </div>
+                  </div>
+
+                 <!-- Subjects  -->
+                 <div class="col-md-4">
+                  <label for="" class="form-label fw-bolder">Subjects: <span class="text-danger">{{ singleBook.subject_name }}</span></label>
+                  <input type="text" class="form-control" placeholder="Enter Subjects" (input)="filterSubjects($event)"
+                  name="subject_id" [(ngModel)]="subjects">
+                  <div class="suggestions-container" *ngIf="showSubjectsSuggestions">
+                    <div *ngFor="let subject of filteredSubjects" class="suggestion" (click)="selectSubject(subject)">{{ subject.subject_name }}</div>
+                  </div>
+                </div>
+
+                <!-- Locations -->
+                <div class="col-md-4">
+                  <label for="" class="form-label fw-bolder">Locations: <span class="text-danger">almirah_no: {{ singleBook.almirah_no }}</span></label>
+                  <input type="text" class="form-control" placeholder="Enter Locations" (input)="filterLocations($event)"
+                  [(ngModel)]="locations">
+                  <div class="suggestions-container" *ngIf="showLocationsSuggestions">
+                    <div *ngFor="let location of filteredLocations" class="suggestion" (click)="selectLocation(location)">{{ location.almirah_no }}</div>
+                  </div>
+                </div>
+
+                      <!-- Edition-->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Edition: <span class="text-danger">{{ singleBook.edition }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter new edition" [(ngModel)]="updatemodel.edition" name="edition">
+          </div>
+
+                <!-- Edition Year -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Edition Year: <span class="text-danger">{{ singleBook.edition_year }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter new edition Year" [(ngModel)]="updatemodel.edition_year" name="edition_year">
+          </div>
+                <!-- Volume -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Volume: <span class="text-danger">{{ singleBook.volume }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Volume" [(ngModel)]="updatemodel.volume" name="volume">
+          </div>
+                <!-- Editor -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Editor: <span class="text-danger">{{ singleBook.editor }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Editor" [(ngModel)]="updatemodel.editor" name="editor">
+          </div>
+                <!-- Publish -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Publish Year: <span class="text-danger">{{ singleBook.publish_year }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Publish Year" [(ngModel)]="updatemodel.publish_year" name="publish_year">
+          </div>
+                <!-- No OF Pages -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD No Of Pages: <span class="text-danger">{{ singleBook.no_of_pages }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter no of Pages" [(ngModel)]="updatemodel.no_of_pages" name="no_of_pages">
+          </div>
+                  
+                <!-- ISBN No -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD ISBN No: <span class="text-danger">{{ singleBook.isbn_no }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter ISBN no" [(ngModel)]="updatemodel.isbn_no" name="isbn_no">
+          </div>
+                <!-- Language -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Language: <span class="text-danger">{{ singleBook.language }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Language"  [(ngModel)]="updatemodel.language" name="language">
+          </div>
+                <!-- Series -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Series: <span class="text-danger">{{ singleBook.series }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Series" [(ngModel)]="updatemodel.series" name="series">
+          </div>
+                <!-- Source -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Source: <span class="text-danger">{{ singleBook.source }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Source" [(ngModel)]="updatemodel.source" name="source">
+          </div>
+                <!-- Content -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Content: <span class="text-danger">{{ singleBook.content }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Content" [(ngModel)]="updatemodel.content" name="content">
+          </div>
+                <!-- Supply -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Supply: <span class="text-danger">{{ singleBook.suppl_copies }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Supply" [(ngModel)]="updatemodel.suppl_copies" name="suppl_copies">
+          </div>
+                <!-- Nature Of Binding -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Nature Of Binding: <span class="text-danger">{{ singleBook.nature_of_binding }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Nature Of Binding" [(ngModel)]="updatemodel.nature_of_binding" name="nature_of_binding">
+          </div>
+                <!-- Notes -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Notes: <span class="text-danger">{{ singleBook.notes }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Notes" [(ngModel)]="updatemodel.notes" name="notes">
+          </div>
+                <!-- Keywords -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Keywords: <span class="text-danger">{{ singleBook.keywords }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Keywords" [(ngModel)]="updatemodel.keywords" name="keywords">
+          </div>
+                <!-- Call No -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Call No: <span class="text-danger">{{ singleBook.call_no }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Call No" [(ngModel)]="updatemodel.call_no" name="call_no">
+          </div>
+                <!-- Abstract -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">OLD Abstract: <span class="text-danger">{{ singleBook.abstract }}</span></label>
+            <input type="text" class="form-control" placeholder="Enter Abstract" [(ngModel)]="updatemodel.abstract" name="abstract">
+          </div>
+                <!-- Image -->
+          <div class="col-md-4 mb-3">
+            <label for="" class="form-label fw-bolder">Upload Image: </label>
+            <div class="input-group mb-3">
+              <input type="file" class="form-control" aria-describedby="basic-addon1" name="book_image" (change)="getFile($event)">
+              <!-- <span class="input-group-text" id="basic-addon1">New Upload</span> -->
+            </div>
+          </div>
+                  
+
+
+
+        </div>
+        
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button1" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="button2" (click)="onSubmit()" >UPDATE BOOK</button>
+      </div>
+    </div>
+  </div>

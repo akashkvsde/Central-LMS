@@ -1,0 +1,295 @@
+<div class=" mt-2" >
+    <p class="fw-bolder"><span style="color: #274472 ;">BOOK</span><span class="ms-2 text-danger">ISSUE</span> </p>
+
+    <div class="card" [hidden]="IssuePage">
+        <div class="card-body" style="color:#274472;border:2px solid #274472;">
+            <div class="students-table hide">
+                <div class="row  justify-content-between">
+                    <div class="col-md-2 mb-2">
+                        <span class="fw-bolder" style="color: #274472 ;">All</span> <span class="text-danger fw-bolder ms-2">Books</span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <input type="text" class="form-control" placeholder="Enter Book's Title/Accession No "
+                            [(ngModel)]="Book_search">
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="custom-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sl.no</th>
+                                <th>Book Title</th>
+                                <th>Book's Author</th>
+                                <th>Edition Year</th>
+                                <th>Publisher</th>
+                                <th>Volume</th>
+                                <th>Acession No</th>
+                                <th>Location(<span class="text-danger">Order:</span> <span class="text-success">Almirah
+                                        no,Rack no,Shelf no</span>)</th>
+                                        <th>Book Status</th>
+                                        <th>Choose Books</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let a of allBooks | forBookSearch:Book_search | paginate: { itemsPerPage: 7, currentPage: p }; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{a.book_title_name}}</td>
+                                <td>{{a.author_name}}</td>
+                                <td>{{a.edition_year !== 'undefined' ? a.edition_year : 'Not given'}}</td>
+                                <td>{{a.publisher_name}}</td>
+                                <td>{{a.volume !== 'undefined' ? a.volume : 'Not given'}}</td>
+                                <td>{{a.accession_no}}</td>
+                                <td><span class="fw-bolder">Alm-{{a.almirah_no}}, Rack-{{a.rack_no}},
+                                        Shelf-{{a.shelf_no}} </span></td>
+                                <td> <span class="fw-bolder text-success">{{a.book_status}}</span></td>
+
+                                <td><input type="checkbox" class="form-check"
+                                        (change)="handleCheckboxChange(a)"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+                </div>
+                <div class="text-end">
+                    <button class="button2" (click)="SelectedBooks()">SELECT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ===============================ISSUE PAGE=========================== -->
+<div class="IssuePages container mt-3" [hidden]="!IssuePage" style="font-size: 12px;">
+    <div (click)="backTotable()" style="cursor: pointer;"><i class="fa-solid fa-arrow-left"></i></div> 
+    <div class="text-center">
+        <ul class="">
+            <li class="nav-item" (click)="StudentIssuePage()" [ngClass]="{'active': hideIssueStudent}">
+                <a class="">USER</a>
+            </li>
+            <!-- <li class="nav-item" (click)="EmployeeIssuePage()" [ngClass]="{'active': hideIssueEmployee}">
+                <a class="">EMPLOYEE</a>
+            </li> -->
+            <li class="nav-item" (click)="DepartmentIssuePage()" [ngClass]="{'active': hideIssueDepartment}">
+                <a class="">DEPARTMENT</a>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <!-- Student======================   -->
+    <div class="container mt-3" [hidden]="!STD_EMP">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form  >
+                            <input #libraraycardNo type="text" class="form-control text-center" name="libraryCardno"
+                                placeholder="Enter Library card Number" (keyup)="getMaxBookBasedLibraryCard($event)" >
+                                <!-- <span class="float-end mt-2 mb-2 e-mouse-pointer fw-bolder" (click)="getMaxBookBasedLibraryCard(libcard.value)">CLICK HERE</span> -->
+                            <div class="text-center mt-3" style="margin-left: 10%;">
+                                <button type="submit" class="button2 me-3" (click)="BookIssueToSTD_EMP(libraraycardNo.value)">ISSUE</button>
+                            </div>
+                           
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <div class="container mt-3"  [hidden]="!LibraryCardView">
+                    <div class="card">
+                        <div class="background-logo"></div> <!-- Background Logo -->
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 text-center">
+                                    <img [src]="userData?.image ? (imagePath + userData.image) : 'https://m.media-amazon.com/images/I/61xEw4JYWGL.jpg'"
+                                        alt="Logo" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-2"
+                                        width="120px">
+                                </div>
+                                <div class="col-md-8 mt-3 mt-md-0">
+                                    <h4 class="mb-3"><strong>Library Card</strong></h4>
+                                    <p class="mb-2"><strong>Name:</strong> {{userData?.name}}</p>
+                                    <p class="mb-2"><strong>Library Card Number:</strong> {{userData?.library_card_number}}</p>
+                                    <p class="mb-2"><strong>Batch Year:</strong> {{userData?.batch_year}}</p>
+                                    <p class="mb-2"><strong>User's Role:</strong> {{userData?.user_role}}</p>
+                                    <p class="mb-2"><strong>User's Status:</strong> {{userData?.user_status}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col mt-3">
+                <div class="students-table hide">
+                    <form>
+                        <div class="table-responsive">
+                            <table class="custom-table table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Selected Books</th>
+                                        <th>Accession No</th>
+                                        <th>Issue Type</th>
+
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of selectedOptions; let i = index">
+                                        <td>{{ item.book_title_name }}</td>
+                                        <td>{{ item.accession_no }}</td>
+                                        <td>
+                                            <ng-select name="issue_type_id" class="mb-3"
+                                            [(ngModel)]="issueTypeMap[item.accession_no]"
+                                            [items]="BookIssueType" bindValue="issue_type_id" bindLabel="issue_type" appendTo="body"
+                                            placeholder="Select Issue Type"
+                                            (ngModelChange)="onIssueTypeChange(item.accession_no, $event)">
+                                          </ng-select>
+                                          
+                                        </td>
+                                        <td>
+                                            <button class="button1" (click)="cancel(item)">Cancel</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee======================   -->
+
+
+    <!-- Departments======================   -->
+    <div class="container mt-3" [hidden]="!hideIssueDepartment">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <ng-select name="course_id" class="mb-3" [items]="filteredCourses"
+                                appendTo="body" placeholder="Select Course" [addTag]="true" 
+                                bindValue="course_id" bindLabel="course_name"
+                                [(ngModel)]="courseID" (ngModelChange)="onCourseChange($event)" required>
+                              </ng-select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <ng-select name="dept_id" class="mb-3" [items]="departments"
+                                appendTo="body" placeholder="Select Departments" [addTag]="true" 
+                                bindValue="dept_id" bindLabel="dept_name"
+                                [(ngModel)]="dept_id" (ngModelChange)="ondeptChange($event)" required>
+                              </ng-select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-1">
+                                <ng-select name="library_card_number" class="mb-3" [items]="libraryCrdNo"
+                                appendTo="body" placeholder="Enter Library Card No" [addTag]="true" 
+                                bindValue="library_card_number" bindLabel="library_card_number"
+                                [(ngModel)]="libraryCard_no" (ngModelChange)="onLibrarcardChange($event)" required>
+                              </ng-select>
+                            </div>
+                            <div class="col-md-6 mb-1">
+                            <div class="input-group">
+                                <input type="file" style="display: none" (change)="onFileSelected($event)"
+                                    #fileInput>
+                                <input type="text" class="form-control text-center" id="BillFile" required
+                                    [placeholder]="fileName || 'Upload Approved Document'" (click)="fileInput.click()"
+                                    readonly>
+                                <span class="input-group-text" (click)="fileInput.click()">
+                                    <i class="fas fa-file"></i>
+                                </span>
+                            </div>
+                            </div>
+                        </div>
+                        <span style="font-size: 10px;" class="text-danger"><span class="fw-bolder text-dark">Please note:</span> If your library card number is not on record, you will need to enter your name to continue.</span>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <input type="text" name="emp_name" class="form-control" placeholder="Enter Employee Name" [(ngModel)]="emp_name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <input type="text" name="emp_id" class="form-control" placeholder="Enter Emp ID" [(ngModel)]="emp_id">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                               
+                            </div>
+
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="button2 me-3" (click)="DeptIssue()">ISSUE</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="container mt-3">
+                    <div class="card">
+                        <div class="background-logo"></div> <!-- Background Logo -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                     <img [src]="usersDataForDeptIssue?.image ? (imagePath + usersDataForDeptIssue.image) : 'https://m.media-amazon.com/images/I/61xEw4JYWGL.jpg'" alt="Logo"
+                                        class="img-fluid profile-image-pic img-thumbnail rounded-circle my-2"
+                                        width="100px">
+                                </div>
+                                <div class="col-md-8 ">
+                                    <p class="mb-2"><strong>Name:</strong> {{usersDataForDeptIssue?.name}}</p>
+                                    <p class="mb-2"><strong>Library Card Number:</strong> {{usersDataForDeptIssue?.library_card_number}}</p>
+                                    <p class="mb-2"><strong>Batch Year:</strong> {{usersDataForDeptIssue?.batch_year}}</p>
+                                    <p class="mb-2"><strong>User's Role:</strong> {{usersDataForDeptIssue?.user_role}}</p>
+                                    <p class="mb-2"><strong>User's Status:</strong> {{usersDataForDeptIssue?.user_status}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-6 mt-3">
+                <div class="students-table hide">
+                    <div class="">
+                        <div class="table-responsive">
+                            <table class="custom-table table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Selected Books</th>
+                                        <th>Accession No</th>
+
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of selectedOptions; let i = index">
+                                        <td>{{ item.book_title_name }}</td>
+                                        <td>{{ item.accession_no }}</td>
+
+                                        <td>
+                                            <button class="button1" (click)="cancelForDeptIssu(item)">Cancel</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,51 @@
+
+<div class="container">
+  <div class="row mt-2">
+      <h6 class="mt-2"  style="color:#274472">Search <span class="text-danger">Book</span></h6>
+      <div class="col d-md-flex mb-3 gap-3">
+          <input type="text" class="form-control input" #title placeholder="Enter book title" (keyup)="getDatatitle(title.value,author.value)" >
+          <input type="text" class="form-control input" #author placeholder="Enter Author" (keyup)="getauthTitle(title.value,author.value)">
+          <input type="text" class="form-control input" #volume placeholder="volume" (keyup)="getauthTitleVolume(title.value,author.value,volume.value)">
+          <input type="text" class="form-control input" #keyword placeholder="Enter keyword" (keyup)="keyWord(keyword.value)">
+      </div>
+  </div>
+
+  <div class="row mt-5">
+      <div class="col">
+          <div class="table-responsive">
+              <table class="table" border="2">
+                <thead>
+                  <tr style="background-color:#274472;color:white;">
+                    <th scope="col">Sl_no</th>
+                    <th scope="col">Photo</th>
+                    <th scope="col">Book Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Edition_Year</th>
+                    <th scope="col">Volume</th>
+                    <th scope="col">publisher</th>
+                    <th scope="col">Issue Type</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of tabledata;index as i">
+                    <td class="text-primary">{{i+1}}</td>
+                    <td><img src="{{data?.book_image ? imgPath + data?.book_image : 'assets/noBook.jpg'}}"width="70"></td>
+                    <td>{{data.book_title_name}}</td>
+                    <td>{{data.author_name}}</td>
+                    <td>{{data.edition_year}}</td>
+                    <td>{{data.volume}}</td>
+                    <td>{{data.publisher_name}}</td>
+                    <td><select class="form-select form-select-sm" #iss (change)="issueChange(iss.value,data.accession_no)">
+                      <option></option>
+                      <option *ngFor="let iss of issue_data" value="{{iss.issue_type_id}}">{{iss.issue_type}}</option>
+                    </select></td>
+                    <td><button class="btn btn-primary" (click)="bookRequest(iss.value)">Apply</button></td>
+                  </tr> 
+                </tbody>
+              </table>
+              <!-- <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
+            </div>
+      </div>
+  </div>
+</div>

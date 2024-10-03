@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row mt-3">
+      <div class="col p-2" style="color:#274472;border:2px solid #274472;">
+          <h6 class="p-2 text-center"  style="color:#274472;">User Book Transaction <span class="text-danger"> History</span></h6>
+          <div class="table-responsive">
+              <table class="table" >
+                <thead>
+                  <tr>
+                      <th>Sl_no</th>
+                      <th>Book_title</th>
+                      <th>Volume</th>
+                      <th>Author</th>
+                      <th>Publisher</th>
+                      <th>Date_of_issue</th>
+                      <th>Book_status</th>
+                      <th>Return_date</th>
+                      <th>Fine_amt</th>
+                  </tr>
+               </thead>
+               <tbody *ngFor="let history of transaction,index as i">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{history.book_title_name}}</td>
+                  <td>{{history.volume}}</td>
+                  <td>{{history.author_name}}</td>
+                  <td>{{history.publisher_name}}</td>
+                  <td>{{history.issue_date}}</td>
+                  <td>{{history.book_issue_status}}</td>
+                  <td>{{history.return_date}}</td>
+                  <td>{{history.fine_amount}}</td>
+                </tr>
+               </tbody>
+           </table>
+            </div>
+      </div>
+  </div>
+
+</div>

@@ -1,0 +1,190 @@
+<div class="container mt-5">
+    <div class="row pow">
+        <!----------------------for toggle button ----------->
+        <div class="col">
+                 <div class="btn-show d-flex m-2">
+                    <div class="btn-1 ps-3" [style.color]="color" [style.backgroundColor]="bccolor" [style.borderRadius]="brad" [style.paddingRight]="pd" (click)="stClick()">
+                        Student
+                    </div>
+                    <div class="btn-1" [style.color]="color_ep" [style.backgroundColor]="bccolor_ep" [style.borderRadius]="brad_ep" [style.paddingRight]="pd_ep"[style.paddingLeft]="pd_ep" (click)="epClick()">
+                        Employee
+                    </div>
+                 </div>
+
+ <!----------------------for student registration ----------->
+
+                 <form class="my-5 mx-3" [hidden]="hide">
+                    <div class="row jumbotron box8 py-2 px-2">
+                      <div class="col-sm-12 mx-t3 mb-5">
+                        <h4 class="text-center" style="color: #274472;">Registration Of <span class="text-primary">{{regidata}}</span></h4>
+                      </div>
+                      <input type="hidden" value="{{regidata}}"><!-------user type-->
+                      <div class="col-sm-6 form-group">
+                        <label for="name-f">User Name</label>
+                        <input type="text" class="form-control" name="fname" id="name-f" placeholder="Enter your  name." required>
+                      </div>
+                      <div class="col-sm-6 form-group">
+                        <label for="name-l">Profile Picture</label>
+                        <input type="file" class="form-control" name="lname" id="name-l" placeholder="Add profile picture" required>
+                      </div>
+                      <div class="col-sm-6 form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email." required>
+                      </div>
+                      <div class="col-sm-6 form-group">
+                        <label for="address-1">Address Line-1</label>
+                        <input type="address" class="form-control" name="Locality" id="address-1" placeholder="Locality/House/Street no." required>
+                      </div>
+                      <div class="col-sm-6 form-group">
+                        <label for="Country">Select College</label>
+                        <select class="form-control custom-select browser-default">
+                          <option value="Afghanistan">---Select--</option>
+                          <option value="Åland Islands">Dental</option>
+                        </select>
+                      </div>
+
+                      <div class="col-sm-4 form-group">
+                        <label for="State">Batch Year</label>
+                        <input type="text" class="form-control" name="State" id="State" placeholder="Enter Batch Year." required>
+                      </div>
+
+                      <div class="col-sm-6 form-group">
+                        <label for="Country">Course</label>
+                        <select class="form-control custom-select browser-default">
+                          <option value="Afghanistan">---Select--</option>
+                          <option value="Åland Islands">Åland Islands</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-6 form-group">
+                        <label for="Date">Date Of Birth</label>
+                        <input type="Date" name="dob" class="form-control" id="Date" placeholder="" required>
+                      </div>
+                      <div class="col-sm-6 form-group">
+                        <label for="sex">Department</label>
+                        <select id="sex" class="form-control browser-default custom-select">
+                          <option value="male">--Select--</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-2 form-group">
+                        <label for="cod">Gender</label>
+                        <select class="form-control browser-default custom-select">
+                          <option value="male">--Select--</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="unspesified">Unspecified</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-4 form-group">
+                        <label for="tel">Phone</label>
+                        <input type="tel" name="phone" class="form-control" id="tel" placeholder="Enter Your Contact Number." required>
+                      </div>
+                   
+                    
+                
+                      <div class="col-sm-12 form-group mb-0 mt-2 mb-4">
+                        <button class="btn float-right" style="background-color: #274472;color: #fff;">Submit</button>
+                      </div>
+                
+                    </div>
+                  </form>
+
+
+                  
+ <!----------------------for Emp registration ----------->
+
+                 <form class="my-5 mx-3" [hidden]="hide_emp">
+                  <div class="row jumbotron box8 py-2 px-2">
+                    <div class="col-sm-12 mx-t3 mb-5">
+                      <h4 class="text-center" style="color: #274472;">Registration Of <span class="text-primary">{{regidata}}</span></h4>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <label for="name-f">User Name</label>
+                      <input type="text" class="form-control" name="fname" id="name-f" placeholder="Enter your name." required>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <label for="name-l">Profile Picture</label>
+                      <input type="file" class="form-control" name="lname" id="name-l" placeholder="Add profile picture" required>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <label for="email">Email</label>
+                      <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email." required>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <label for="address-1">Address Line-1</label>
+                      <input type="address" class="form-control" name="Locality" id="address-1" placeholder="Locality/House/Street no." required>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                      <label for="Country">Select College</label>
+                      <select class="form-control custom-select browser-default">
+                        <option value="Afghanistan">---Select--</option>
+                        <option value="Åland Islands">Dental</option>
+                      </select>
+                    </div>
+
+                    <div class="col-sm-4 form-group">
+                      <label for="State">Designation</label>
+                      <input type="text" class="form-control" name="State" id="State" placeholder="Enter Designation." required>
+                    </div>
+
+
+
+                    <div class="col-sm-6 form-group">
+                      <label for="Country">Course</label>
+                      <select class="form-control custom-select browser-default">
+                        <option value="Afghanistan">---Select--</option>
+                        <option value="Åland Islands">Åland Islands</option>
+                      </select>
+                    </div>
+              
+                    <div class="col-sm-6 form-group">
+                      <label for="sex">Department</label>
+                      <select id="sex" class="form-control browser-default custom-select">
+                        <option value="male">--Select--</option>
+                      </select>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                      <label for="cod">Gender</label>
+                      <select class="form-control browser-default custom-select">
+                        <option value="male">--Select--</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="unspesified">Unspecified</option>
+                      </select>
+                    </div>
+
+                    <div class="col-sm-2 form-group">
+                      <label for="cod">Emp role</label>
+                      <select class="form-control browser-default custom-select">
+                        <option value="male">--Select--</option>
+                        <option value="male">Teacher</option>
+                        <option value="female">Admin</option>
+                        <option value="unspesified">Student</option>
+                      </select>
+                    </div>
+
+                    <div class="col-sm-4 form-group">
+                      <label for="tel">Phone</label>
+                      <input type="tel" name="phone" class="form-control" id="tel" placeholder="Enter Your Contact Number." required>
+                    </div>
+
+                    <div class="col-sm-4 form-group ">
+                      <label for="tel2">Upload Document(If any)</label>
+                      <input type="file" name="phone" class="form-control" id="tel2" placeholder="Enter Doc." required>
+                    </div>
+             
+                    <div class="col-sm-12 form-group mb-0 mt-2 mb-4">
+                      <button class="btn float-right" style="background-color: #274472;color: #fff;">Submit</button>
+                    </div>
+              
+                  </div>
+                </form>
+
+
+                 
+        </div>
+
+          
+          
+
+    </div>
+</div>

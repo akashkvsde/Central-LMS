@@ -1,0 +1,101 @@
+
+<div class="container-fluid mt-2">
+    <div class="card-header mt-2 xp">
+        <p class="fw-bolder"><span style="color: #274472 ;">BOOK</span><span class="ms-2 text-danger">LIST REPORT</span></p>
+    </div>
+    <div class="">
+        <div class="row justify-content-center xp" >
+            <div class="col-md-10">
+                <!-- <div class="card"> -->
+                    <div class="card-body p-4 text-black row g-3">
+                        <div class="col-md-4">
+                     
+                             <input type="text" name="accno1" 
+                                class="form-control text-center" [(ngModel)]="accessionnoFrom" placeholder="Accession No. From" >
+                        </div>
+                        <div class="col-md-4">
+                  
+                         <input class="form-control text-center" name="accno2" [(ngModel)]="accessionnoTo" placeholder="Accession No. To">
+                        </div>
+                        
+                        <div class="col-md-2" >
+                          <button class="button1 mb-3" type="submit" (click)=" Search()">
+                           Search
+                          </button>
+                        </div>
+                    </div>
+            </div> 
+        </div>
+        </div>
+    </div>
+            <div class="col-sm xp" align="right">
+               <a (click)="exportToExcel()"><i class="fa-solid fa-file-excel fa-xl p-2" style="color:green;"></i></a>
+                <a (click)="printDiv()"> <i class="fa-solid fa-print fa-xl p-2"></i></a>   
+               
+            </div>
+            
+       
+        <div class="card" #printableDiv>
+            <h5 class="text-center">Book List Report </h5>
+            <div class="row m-3">
+                <div class="col-sm text_heading mt-2">
+                    <h6>Hi-Tech Library</h6><p class="p1">{{books[0].college_name}},
+                    {{books[0].college_address}}</p>
+                 </div>
+                 <div class="col-sm img-heading mt-2">
+                    <img src="assets/img_my/hitech_logo.jpeg" class="img-fluid float-end imm" width="100">
+                 </div>     
+            </div>
+        <div class="students-table hide mt-3" >
+            <div class="">
+                <div class="table-responsive">
+                    <table class="custom-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <!-- <th>Sl No.</th> -->
+                                <th>Accession No.</th>
+                                <th>Author</th>
+                                <th>Title</th>
+                                <th>Edition</th>
+                                <th>Publisher</th>
+                                <th>Publish Year</th>
+                                <th>Pages</th>
+                                <th>Volume</th>
+                                <th>Series</th>
+                                <th>Vendor Name</th>
+                                <th>Bill No/Date</th>
+                                <th>Price</th>
+                                <th>Subject</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let book of books | paginate: { itemsPerPage: 15, currentPage: p }; index as i;">
+                                <!-- <td>{{i+1}}</td> -->
+                                <td>{{book.accession_no}}</td>
+                                <td>{{book.author_name ?? 'NA'}}</td>
+                                <td>{{book.book_title_name}}</td>
+                                <td>{{book.edition ?? 'NA'}}</td>
+                                <td>{{book.publisher_name ?? 'NA'}}</td>
+                                <td>{{book.publish_year ?? 'NA'}}</td>
+                                <td>{{book.no_of_pages ?? 'NA'}}</td>
+                                <td>{{book.volume ?? 'NA'}}</td>
+                                <td>{{book.series ?? 'NA'}}</td>
+                                <td>{{book.vendor_name ?? 'NA'}}</td>
+                                <td>{{book.bill_num ?? 'NA'}}<br>{{book.bill_date}}</td>
+                                <td>{{book.book_price ?? 'NA'}}</td>
+                                <td>{{book.subject_name}}</td>
+                            
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                      
+                       
+                </div>
+            </div>
+        </div>
+        </div>
+   
+    

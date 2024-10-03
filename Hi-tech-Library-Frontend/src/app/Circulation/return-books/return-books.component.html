@@ -1,0 +1,349 @@
+<div class="container mt-3">
+    <p class="fw-bolder"><span style="color: #274472 ;">RETURN</span><span class="ms-2 text-danger">BOOKS</span></p>
+
+
+    <div class="text-center">
+        <ul class="">
+            <li class="nav-item" (click)="StudentIssuePage()" [ngClass]="{'active': hideIssueStudent}">
+                <a class="">USER</a>
+            </li>
+            <!-- <li class="nav-item" (click)="EmployeeIssuePage()" [ngClass]="{'active': hideIssueEmployee}">
+                <a class="">EMPLOYEE</a>
+            </li> -->
+            <li class="nav-item" (click)="DepartmentIssuePage()" [ngClass]="{'active': hideIssueDepartment}">
+                <a class="">DEPARTMENT</a>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+
+    <!-- Registered Users Book Returns -->
+
+    <div [hidden]="!STD_EMP">
+        <div class="row justify-content-center">
+            <div class="col-md-2"></div>
+            <div class="col-md-4" *ngIf="!selectedaccessionNo">
+                <div class="text-center">
+
+                    <p class="mt-3">
+                        <ng-select name="library_card_number" class="mb-3"
+                            [(ngModel)]="ReturnBookModel.library_card_number" [items]="LibraryCradList" 
+                            placeholder="Enter Library Card No" bindValue="library_card_number"
+                            bindLabel="library_card_number" [virtualScroll]="true" (ngModelChange)="onLibraryCardChange($event)" required>
+                        </ng-select>
+                    </p>
+                    <!-- <button class="button2 mb-3 mt-2">FIND</button> -->
+                </div>
+            </div>
+            <div class="col-md-4" *ngIf="!SelectedLibraryCardNO">
+                <div class="text-center">
+
+                    <p class="mt-3">
+                        <ng-select name="location_id" class="mb-3" [(ngModel)]="ReturnBookModel.accession_no"
+                            [items]="allBooks"  placeholder="Enter Book Title Or accession_no "
+                            bindValue="accession_no" bindLabel="label" [virtualScroll]="true" (ngModelChange)="onBookAccessionChange($event)"
+                            required>
+                        </ng-select>
+                    </p>
+                    <!-- <button class="button2 mb-3 mt-2">FIND</button> -->
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+        <div class="students-table hide mt-3">
+            <div class="">
+                <div class="table-responsive" *ngIf="SelectedLibraryCardNO">
+                    <div *ngIf="!noIssuedBooks; else noData">
+                        <table class="custom-table table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sl.no</th>
+                                    <th>Book Title</th>
+                                    <th>Accession No</th>
+                                    <th>Name</th>
+                                    <th>Issue Type</th>
+                                    <th>Issued Date</th>
+                                    <th>Exceed Days</th>
+                                    <th>Fine Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let a of issuedBooksData; let i=index">
+                                    <td>{{i+1}}</td>
+
+                                    <td>{{a.book_title_name}}</td>
+                                    <td>{{a.accession_no}}</td>
+                                    <td>{{a.name}}</td>
+                                    <td>{{a.issue_type}}</td>
+                                    <td>{{a.issue_date}}</td>
+                                    <td>{{a.exceed_days}}</td>
+                                    <td>{{a.fine_amount}}</td>
+                                    <td style="white-space: nowrap;">
+                                        <button class="button2"
+                                            (click)="returnBooks(a.id,a.user_id, a.accession_no, a.college_id, a.exceed_days, a.fine_amount)"
+                                            *ngIf="a.fine_amount <= 0">RETURN</button>
+                                        <button style="white-space: nowrap;" class="button2" data-bs-toggle="modal"
+                                            data-bs-target="#fineCollect" (click)="getdataForFineCollection(a)"
+                                            *ngIf="a.fine_amount > 0">Collect Fine</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ng-template #noData>
+                        <p class="text-danger fw-bold text-center">Data not found or data not present</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+
+        <div class="students-table hide mt-3">
+            <div class="">
+                <div class="table-responsive" *ngIf="selectedaccessionNo">
+                    <div *ngIf="!noIssuedBooks2; else noData">
+                        <table class="custom-table table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sl.no</th>
+                                    <th>Book Title</th>
+                                    <th>Accession No</th>
+                                    <th>Name</th>
+                                    <th>Issue Type</th>
+                                    <th>Issued Date</th>
+                                    <th>Exceed Days</th>
+                                    <th>Fine Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let a of issuedBooksData2; let i=index">
+                                    <td>{{i+1}}</td>
+
+                                    <td>{{a.book_title_name}}</td>
+                                    <td>{{a.accession_no}}</td>
+                                    <td>{{a.name}}</td>
+                                    <td>{{a.issue_type}}</td>
+                                    <td>{{a.issue_date}}</td>
+                                    <td>{{a.exceed_days}}</td>
+                                    <td>{{a.fine_amount}}</td>
+                                    <td style="white-space: nowrap;">
+                                        <button class="button2"
+                                            (click)="returnBooks(a.id,a.user_id, a.accession_no, a.college_id, a.exceed_days, a.fine_amount)"
+                                            *ngIf="a.fine_amount <= 0">RETURN</button>
+                                        <button style="white-space: nowrap;" class="button2" data-bs-toggle="modal"
+                                            data-bs-target="#fineCollect" (click)="getdataForFineCollection(a)"
+                                            *ngIf="a.fine_amount > 0">Collect Fine</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ng-template #noData>
+                        <p class="text-danger fw-bold text-center">Data not found or data not present</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Department RETURN BOOKS-->
+
+    <div [hidden]="STD_EMP">
+        <div class="row justify-content-center">
+            <div class="col-md-2"></div>
+            <div class="col-md-4"  *ngIf="!selectedAccessionNO" >
+                <div class="text-center">
+
+                    <p class="mt-3">
+                        <ng-select name="dept_id" class="mb-3"
+                            [(ngModel)]="ReturnBookModel.dept_id" [items]="department_list" appendTo="body"
+                            placeholder="Enter Department Name" bindValue="dept_id"
+                            bindLabel="dept_name"  [virtualScroll]="true"(ngModelChange)="onDepartmentChange($event)" required>
+                        </ng-select>
+                    </p>
+                    <!-- <button class="button2 mb-3 mt-2">FIND</button> -->
+                </div>
+            </div>
+            <div class="col-md-4" *ngIf="!selectedDepartment" >
+                <div class="text-center">
+
+                    <p class="mt-3">
+                        <ng-select name="dept_id" class="mb-3"
+                            [(ngModel)]="ReturnBookModel.accession_no2" [items]="deptAccessionNo" appendTo="body"
+                            placeholder="Enter Accession No" bindValue="accession_no"
+                            bindLabel="label" [virtualScroll]="true" (ngModelChange)="onAccesionChange($event)" required>
+                        </ng-select>
+                    </p>
+                    <!-- <button class="button2 mb-3 mt-2">FIND</button> -->
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+<!-- When Department will present -->
+            <div class="students-table hide mt-3">
+                <div class="">
+                    <div class="table-responsive" *ngIf="selectedDepartment">
+                        <div *ngIf="!noIssuedBooks4; else noData4">
+                            <table class="custom-table table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sl.no</th>
+                                        <th>Book Title</th>
+                                        <th>Library Card</th>
+                                        <th>Accession No</th>
+                                        <th>Emp Name</th>
+                                        <th>Emp ID</th>
+                                        <th>Issued Date</th>
+                                        <th>Document</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let a of deptIssued_data; let i=index">
+                                        <td>{{i+1}}</td>
+    
+                                        <td>{{a.book_title_name}}</td>
+                                        <td>{{a.library_card_number ?? 'NA'}}</td>
+                                        <td>{{a.accession_no}}</td>
+                                        <td>{{a.emp_name ?? 'NA'}}</td>
+                                        <td>{{a.emp_id ?? 'NA'}}</td>
+                                        <td>{{a.issue_date}}</td>
+                                        <td><input type="file" (change)="DepartmentalReturnFile($event,a)" ></td>
+                                        <td style="white-space: nowrap;">
+                                            <button class="button2" (click)="DepartmentBookreturn(a)">RETURN</button>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ng-template #noData4>
+                            <p class="text-danger fw-bold text-center">Data not found or data not present</p>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- When Accession No is present -->
+            <div class="students-table hide mt-3">
+                <div class="">
+                    <div class="table-responsive" *ngIf="selectedAccessionNO">
+                        <div *ngIf="!noIssuedBooks3; else noData5">
+                            <table class="custom-table table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sl.no</th>
+                                        <th>Book Title</th>
+                                        <th>Library Card</th>
+                                        <th>Accession No</th>
+                                        <th>Emp Name</th>
+                                        <th>Emp ID</th>
+                                        <th>Issued Date</th>
+                                        <th>Document</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let a of deptIssued_data2; let i=index">
+                                        <td>{{i+1}}</td>
+    
+                                        <td>{{a.book_title_name}}</td>
+                                        <td>{{a.library_card_number ?? 'NA'}}</td>
+                                        <td>{{a.accession_no}}</td>
+                                        <td>{{a.emp_name ?? 'NA'}}</td>
+                                        <td>{{a.emp_id ??'NA'}}</td>
+                                        <td>{{a.issue_date}}</td>
+                                        <td><input type="file" class="form-control" (change)="DepartmentalReturnFile($event,a)" ></td>
+                                        <td style="white-space: nowrap;">
+                                            <button class="button2" (click)="DepartmentBookreturn(a)">RETURN</button>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <ng-template #noData5>
+                            <p class="text-danger fw-bold text-center">Data not found or data not present</p>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+</div>
+
+
+
+<!-- FineCollection -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="fineCollect" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="fw-bolder"><span style="color: #274472 ;">FINE</span><span
+                        class="ms-2 text-danger">COLLECTION</span></p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <p><span class="fw-bolder">Library Card No:</span> <span><input type="text" class="form-control"
+                                    [(ngModel)]='SelectedLibraryCardNO' readonly></span></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <p><span class="fw-bolder">Book Title Name:</span> <span><input type="text" class="form-control"
+                                    [(ngModel)]='book_title_name' readonly></span></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <p><span class="fw-bolder">Enter Reason:</span> <span><input type="text" class="form-control"
+                                    [(ngModel)]='reason'></span></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <p><span class="fw-bolder">Calculated Amount:</span> <span><input type="text"
+                                    class="form-control" [(ngModel)]='fine_amount' readonly></span></p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <p><span class="fw-bolder">Upload Document:</span> <span>
+                                <div class="input-group">
+                                    <input type="file" name="bill_doc" style="display: none"
+                                        (change)="onFileSelected($event)" #fileInput>
+                                    <input type="text" class="form-control text-center" id="BillFile" required
+                                        [placeholder]="fileName || 'Upload bill Document'" (click)="fileInput.click()"
+                                        readonly>
+                                    <span class="input-group-text" (click)="fileInput.click()">
+                                        <i class="fas fa-file"></i>
+                                    </span>
+                                </div>
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <p><span class="fw-bolder">Paid Amount:</span> <span><input type="number" class="form-control"
+                                    [(ngModel)]='paid_amount' minlength="0" min="0"></span></p>
+                                    
+                    </div>
+                </div>
+                <p class="text-end"><span class="fw-bolder"><button class="button2" data-bs-dismiss="modal"
+                            (click)="FineCollect()">COLLECT</button></span></p>
+            </div>
+        </div>
+
+    </div>
+</div>

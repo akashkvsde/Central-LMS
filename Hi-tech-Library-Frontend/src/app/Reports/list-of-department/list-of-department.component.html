@@ -1,0 +1,57 @@
+<div class="container-fluid mt-2">
+    <p class="fw-bolder xp"><span style="color: #274472 ;">DEPARTMENTS LIST</span><span class="ms-2 text-danger">REPORT</span></p>
+    <div class="row justify-content-center xp" >
+        <div class="col-sm">
+            <div class="xx col-sm" align="right">
+                <a (click)="exportToExcel()"><i class="fa-solid fa-file-excel fa-2xl p-2" style="color:green;"></i></a>
+                 <a (click)="printDiv()"> <i class="fa-solid fa-print fa-2xl p-2"></i></a>
+                 <!-- <a (click)="openPDF()"> <i class="fa-solid fa-file-pdf fa-2xl p-2" style="color:red;"></i></a> -->
+             </div>
+        </div>
+    </div>
+    <div class="card mt-2">
+        <div class="card-header" #printableDiv>
+            <h5 class="text-center">Department List Report </h5>
+            <div class="row m-3">
+                <div class="col-sm text_heading mt-2">
+                    <h6>Hi-Tech Library</h6><p class="p1">{{college_data.college_name}}<br>
+                    {{college_data.college_address}}</p>
+                 </div>
+                 <div class="col-sm img-heading mt-2">
+                    <img src="assets/img_my/hitech_logo.jpeg" class="img-fluid float-end imm" width="150">
+                 </div>     
+            </div>
+        <div class="students-table hide mt-3" >
+            <div class="">
+                <div class="table-responsive">
+                    <table class="custom-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sl No.</th>
+                                <th>Department Name</th>
+                                <th>College Name</th>
+                                <th>Course Name</th>
+                        
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let dept of department | paginate: { itemsPerPage: 20, currentPage: p }; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{dept.dept_name}}</td>
+                                <td> {{dept.college_name}}</td>
+                                <td>{{dept.course_name}}</td>
+                                
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+       
+    </div>

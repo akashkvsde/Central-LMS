@@ -1,0 +1,65 @@
+<div class="container">
+    <p class="fw-bolder"><span style="color: #274472 ;">USER</span><span class="ms-2 text-danger">LOG DETAILS</span></p>
+    <div class="card-bordy">
+        <div class="students-table hide ">
+          <div class="row  justify-content-between">
+            <div class="col-md-2 mb-2">
+
+            </div>
+            <div class="col-md-3 mb-2">
+                <input type="text" class="form-control" placeholder="Search Here"
+                    [(ngModel)]="users_search">
+            </div>
+        </div>
+            <div class="">
+                <div class="table-responsive">
+                    <table class="custom-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sl.no</th>
+                                <th>User Name</th>
+                                <th>User Email</th>
+                                <th>User Contact</th>
+                                <th>IP Address</th>
+                                <th>Process</th>
+                                <th>Process Time</th>
+                                <th>User Status</th>
+                                <th>Action</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let a of userlogData | forUserlogData:users_search | paginate: { itemsPerPage: 9, currentPage: p }; let i = index">
+                            <td>{{(p - 1) * 9 + i + 1}}</td>
+                            <td>{{ a.name }}</td>
+                            <td>{{ a.email }}</td>
+                            <td>{{ a.contact }}</td>
+                            <td>{{ a.ip_address}}</td>
+                            <td>{{ a.process}}</td>
+                            <td>{{ a.process_time}}</td>
+                            <!-- <td>{{ a.user_status}}</td> -->
+                            <td class="text-center">
+                                <i class="fas fa-circle" [style.color]="a.user_status=== 'Active' || a.user_status==='active' ? 'green' : 'red'"></i>
+                              </td>
+                            <td>
+                               
+                                <div class="form-check form-switch ms-2">
+                                    <input class="form-check-input" type="checkbox" #sth role="switch" id="flexSwitchCheckDefault"
+                                      [checked]="a.user_status === 'Active' || a.user_status === 'active'"
+                                      (click)="sendactiveInactiveValue(a.user_id, a.user_status)" />
+                  
+                                  </div>
+                            </td>
+                           
+                          
+                             
+                          </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+   </div>

@@ -1,0 +1,70 @@
+.button1{
+    background-color: #274472;
+    color:white;
+    border: none; 
+    padding: 5px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: -1px 1px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.825), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }
+  span{
+    cursor: pointer;
+  }
+  
+
+  @media print {
+    .pagination {
+      display: none;
+    }
+  }
+  .xx{
+    margin-top: 50px;
+  }
+  @media print{
+    .xp{
+      display: none !important;
+    }
+    .card {
+      width: 100% !important;
+      margin: 0px !important;
+      padding: 0px !important;
+    }
+    /* .container{
+      width: 100% !important;
+      margin: 0px !important;
+      padding: 0px !important;
+    } */
+    .xx{
+      margin: 0px !important;
+      padding: 0px !important;
+      margin-top: 0px !important;
+  
+    }
+    .table-responsive {
+      overflow: visible !important;
+  }
+  
+  .table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+  }
+  
+  .table th,
+  .table td {
+      border: 1px solid #ddd !important;
+      padding: 8px !important;
+  }
+  
+  .table thead {
+      display: table-header-group !important;
+  }
+  }
+  
+  
+   
+  

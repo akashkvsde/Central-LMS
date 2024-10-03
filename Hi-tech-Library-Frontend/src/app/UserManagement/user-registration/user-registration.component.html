@@ -1,0 +1,346 @@
+<div class="container mt-2">
+  <p class="fw-bolder"><span style="color: #274472 ;">USER</span><span class="ms-2 text-danger">REGISTRATION</span></p>
+    <div class="row pow">
+      <!----------------------for toggle button ----------->
+      <div class="col">
+        <div class="btn-show d-flex m-2">
+          <div class="btn-1 ps-3" [style.color]="color" [style.backgroundColor]="bccolor" [style.borderRadius]="brad"
+            [style.paddingRight]="pd" (click)="stClick()" style="font-size: 15px;">
+            Student
+          </div>
+          <div class="btn-1" [style.color]="color_ep" [style.backgroundColor]="bccolor_ep" [style.borderRadius]="brad_ep"
+            [style.paddingRight]="pd_ep" [style.paddingLeft]="pd_ep" (click)="epClick()" style="font-size: 15px;">
+            Employee
+          </div>
+        </div>
+
+        <!----------------------for student registration ----------->
+
+        <form class="my-5 mx-3" [hidden]="hide" (ngSubmit)="studentRegister(formvalid)" #formvalid="ngForm">
+          <div class="row jumbotron box8 py-2 px-2">
+            <div class="col-sm-12 mx-t3 mb-5">
+              <h4 class="text-center" style="color: #274472;">Registration Of <span
+                  class="text-primary">{{regidata}}</span></h4>
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="name-f"> Full Name</label>
+              <input type="text" [(ngModel)]="studentResmodel.name" class="form-control" name="name" id="name-f" placeholder="Enter your name."
+                   ngModel required  pattern="^(?!.*\s{4})[A-Za-z\s'\-.,]+$"  #name="ngModel"
+                [class.is-invalid]="name.touched && name.invalid ">
+
+              <span class="text-danger fw-bolder"
+                *ngIf=" name.invalid && (name.dirty || formvalid.submitted|| name.touched) && name.errors?.['required']">Please Enter  name
+              </span>
+
+              <span class="text-success fw-bolder"
+                *ngIf="name.invalid && (name.dirty || name.touched)  && name.errors?.['pattern']">Please enter
+
+                 a valid name</span>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="name-l">Profile Picture(limit is 2048 KiB)</label>
+              <input type="file" class="form-control" name="image" id="name-l" placeholder="Add profile picture"
+                (change)="getFile($event)"
+                 ngModel    #image="ngModel"
+                [class.is-invalid]="image.touched && image.invalid" required>
+
+
+                <span class="text-danger fw-bolder"
+                *ngIf=" image.invalid && (image.dirty || formvalid.submitted|| image.touched) && image.errors?.['required']">Please Enter Image
+              </span>
+
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" [(ngModel)]="studentResmodel.email" id="email"
+                placeholder="Enter your email." required
+                [(ngModel)]="studentResmodel.email" ngModel required  pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}"  #email="ngModel"
+                [class.is-invalid]="email.touched && email.invalid">
+
+                <span class="text-danger fw-bolder"
+                *ngIf=" email.invalid && (email.dirty ||formvalid.submitted||email.touched) && email.errors?.['required']">Field Can't be null
+              </span>
+
+              <span class="text-success fw-bolder"
+                *ngIf="email.invalid && (email.dirty ||formvalid.submitted|| email.touched)  && email.errors?.['pattern']">
+                Please Enter  email(@gmail.com)format</span>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="address-1">Address Line-1</label>
+              <input type="address" class="form-control" name="address"
+                id="address-1" placeholder="Locality/House/Street no." required
+                [(ngModel)]="studentResmodel.address" ngModel required    #address="ngModel"
+                [class.is-invalid]="address.touched && address.invalid">
+                <span class="text-danger fw-bolder"
+                *ngIf=" address.invalid && (address.dirty ||formvalid.submitted|| address.touched) && address.errors?.['required']">Field cant be null
+              </span>
+            </div>
+
+            <!-- <div class="col-sm-6 form-group">
+              <label for="Country">Select College</label>
+              <select class="form-control custom-select browser-default" name="college_id"
+                [(ngModel)]="studentResmodel.college_id"  required    #college_id="ngModel"
+                [class.is-invalid]="college_id.touched && college_id.invalid">
+                <option></option>
+                <option *ngFor="let col of viewCollege " value="{{col.college_id}}">{{col.college_name}}</option>
+              </select>
+              <span class="text-danger fw-bolder"
+              *ngIf="college_id.invalid && (college_id.dirty || college_id.touched) && college_id.errors?.['required']">Field cant be null
+            </span>
+            </div> -->
+
+            <div class="col-sm-4 form-group">
+              <label for="State">Batch Year</label>
+              <input type="text" class="form-control" name="batch_year" id="State" placeholder="Enter Batch Year."
+                [(ngModel)]="studentResmodel.batch_year" required
+                 pattern="(1\d{3}|[2-9]\d{3})"  #batch_year="ngModel"
+                [class.is-invalid]="batch_year.touched && batch_year.invalid">
+
+                <span class="text-danger fw-bolder"
+                *ngIf=" batch_year.invalid && (batch_year.dirty ||formvalid.submitted|| batch_year.touched) && batch_year.errors?.['required']">              Field Can't be null
+              </span>
+
+              <span class="text-success fw-bolder"
+                *ngIf="batch_year.invalid && (batch_year.dirty || batch_year.touched)  && batch_year.errors?.['pattern']">
+                Use year Format like(20147)</span>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="Country">Course</label>
+              <select class="form-control custom-select browser-default" required name="course_id"
+                [(ngModel)]="studentResmodel.course_id"
+                #course_id="ngModel"
+                [class.is-invalid]="course_id.touched && course_id.invalid" (change)="viewDepartment(course_id.value,formvalid)">
+                <option></option>
+                <option *ngFor="let co of viewCourse" value="{{co.course_id}}">{{co.course_name}}</option>
+              </select>
+
+              <span class="text-danger fw-bolder"
+              *ngIf=" course_id.invalid && (course_id.dirty ||formvalid.submitted|| course_id.touched) && course_id.errors?.['required']">  Field Can't be null
+            </span>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="sex">Department</label>
+              <select id="sex" class="form-control browser-default custom-select" name="dept_id"
+                [(ngModel)]="studentResmodel.dept_id"  #dept_id="ngModel"
+                [class.is-invalid]="dept_id.touched && dept_id.invalid" required>
+                <option></option>
+                <option  *ngFor="let co of viewdePart" value="{{co.dept_id}}">{{co.dept_name}}</option>
+              </select>
+              <span class="text-danger fw-bolder"
+              *ngIf=" dept_id.invalid && (dept_id.dirty ||formvalid.submitted|| dept_id.touched) && dept_id.errors?.['required']">  Field Can't be null
+            </span>
+            </div>
+
+            <div class="col-sm-2 form-group">
+              <label for="cod">Gender</label>
+              <select class="form-control browser-default custom-select" name="gender"
+                [(ngModel)]="studentResmodel.gender" #gender="ngModel"
+                [class.is-invalid]="gender.touched && gender.invalid" required>
+                <option value="male"></option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="unspesified">Unspecified</option>
+              </select>
+              <span class="text-danger fw-bolder"
+              *ngIf=" gender.invalid && (gender.dirty ||formvalid.submitted|| gender.touched) && gender.errors?.['required']">  Field Can't be null
+            </span>
+            </div>
+
+            <div class="col-sm-4 form-group" >
+              <label for="tel">Phone</label>
+              <input type="number" name="contact" [(ngModel)]="studentResmodel.contact" class="form-control" id="tel"
+                placeholder="Enter Your Contact Number." required
+                ngModel required  pattern="\d{10}" #contact="ngModel"
+                [class.is-invalid]="contact.touched && contact.invalid">
+
+                <span class="text-danger fw-bolder"
+                *ngIf=" contact.invalid && (contact.dirty ||formvalid.submitted|| contact.touched) && contact.errors?.['required']">              Field Can't be null
+              </span>
+
+              <span class="text-success fw-bolder"
+                *ngIf="contact.invalid && (contact.dirty ||formvalid.submitted|| contact.touched)  && contact.errors?.['pattern']">
+               Enter phone no(9178**)</span>
+            </div>
+
+
+
+            <div class="col-sm-12 form-group mb-0 mt-2 mb-4">
+              <button class="btn float-right" type="submit" style="background-color: #274472;color: #fff;">Submit</button>
+            </div>
+
+          </div>
+        </form>
+
+
+
+        <!----------------------for Emp registration ----------->
+
+        <form class="my-5 mx-3" [hidden]="hide_emp" (ngSubmit)="empRegister(formvalid_emp)" #formvalid_emp="ngForm">
+          <div class="row jumbotron box8 py-2 px-2">
+            <div class="col-sm-12 mx-t3 mb-5">
+              <h4 class="text-center" style="color: #274472;">Registration Of <span
+                  class="text-primary">{{regidata}}</span></h4>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="name-f">Full Name</label>
+              <input type="text" class="form-control" name="name_emp" [(ngModel)]="empRegistreModel.name" id="name-f"
+                placeholder="Enter your name."
+                ngModel required  pattern="^[A-Za-z\s'-]+$"  #name_emp="ngModel"
+                [class.is-invalid]="name_emp.touched && name_emp.invalid">
+                <span class="text-danger fw-bolder"
+                *ngIf=" name_emp.invalid && (name_emp.dirty ||formvalid_emp.submitted|| name_emp.touched) && name_emp.errors?.['required']">Field Can't be null
+              </span>
+                <span class="text-success fw-bolder"
+                *ngIf="name_emp.invalid && (name_emp.dirty ||formvalid_emp.submitted|| name_emp.touched)  && name_emp.errors?.['pattern']">Please a valid name</span>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="name-l">Profile Picture(limit is 2048 KiB)</label>
+              <input type="file" class="form-control" name="image" (change)="getFile($event)" id="name-l" ngModel  #image_emp="ngModel"
+              [class.is-invalid]="image_emp.touched && image_emp.invalid" required>
+
+              <span class="text-danger fw-bolder"
+              *ngIf=" image_emp.invalid && (image_emp.dirty ||formvalid_emp.submitted|| image_emp.touched) && image_emp.errors?.['required']">This field is required
+            </span>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" [(ngModel)]="empRegistreModel.email" id="email"
+                placeholder="Enter your email." required
+               ngModel   pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}"  #email_emp="ngModel"
+                [class.is-invalid]="email_emp.touched && email_emp.invalid">
+
+              <span class="text-danger fw-bolder"
+                *ngIf=" email_emp.invalid && (email_emp.dirty ||formvalid_emp.submitted|| email_emp.touched) && email_emp.errors?.['required']">Field Can't be null
+              </span>
+
+              <span class="text-success fw-bolder"
+                *ngIf="email_emp.invalid && (email_emp.dirty ||formvalid_emp.submitted|| email_emp.touched)  && email_emp.errors?.['pattern']">
+                Please Enter  email(@gmail.com)format</span>
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="address-1">Address Line-1</label>
+              <input type="address" class="form-control" name="address" [(ngModel)]="empRegistreModel.address"
+                id="address-1" placeholder="Locality/House/Street no."
+                ngModel  #add_emp="ngModel"
+                [class.is-invalid]="add_emp.touched && add_emp.invalid" required>
+
+                <span class="text-danger fw-bolder"
+              *ngIf=" add_emp.invalid && (add_emp.dirty ||formvalid_emp.submitted|| add_emp.touched) && add_emp.errors?.['required']">Please Enter  Address
+            </span>
+            </div>
+
+            <!-- <div class="col-sm-6 form-group">
+              <label for="Country">Select College</label>
+              <select class="form-control custom-select browser-default"  name="college_id"
+                [(ngModel)]="empRegistreModel.college_id"
+                ngModel  #college_emp="ngModel"
+                [class.is-invalid]="college_emp.touched && college_emp.invalid" required (change)="getStduserroleValue()">
+                <option *ngFor="let co of viewCollege " value="{{co.college_id}}">{{co.college_name}}</option>
+              </select>
+
+              <span class="text-danger fw-bolder"
+              *ngIf=" college_emp.invalid && (college_emp.dirty || college_emp.touched) && college_emp.errors?.['required']">This field is required
+            </span>
+            </div> -->
+
+            <div class="col-sm-6 form-group">
+              <label for="Country">Select Role</label>
+              <select class="form-control custom-select browser-default" name="emp_role"
+                [(ngModel)]="empRegistreModel.emp_role" #emp_role="ngModel"
+                [class.is-invalid]="emp_role.touched && emp_role.invalid" required>
+                <option></option>
+                <option *ngFor="let co of allRole " value="{{co.user_role_id}}">{{co.user_role}}</option>
+              </select>
+
+              <span class="text-danger fw-bolder"
+              *ngIf=" emp_role.invalid && (emp_role.dirty ||formvalid_emp.submitted|| emp_role.touched) && emp_role.errors?.['required']">This field is required
+            </span>
+            </div>
+
+            <div class="col-sm-4 form-group">
+              <label for="State">Designation</label>
+              <input type="text" class="form-control" name="designation" [(ngModel)]="empRegistreModel.designation"
+                id="State" placeholder="Enter Designation."  #designation="ngModel"
+                [class.is-invalid]="designation.touched && designation.invalid" required>
+
+                <span class="text-danger fw-bolder"
+                *ngIf=" designation.invalid && (designation.dirty ||formvalid_emp.submitted|| designation.touched) && designation.errors?.['required']">This field is required
+              </span>
+            </div>
+
+
+
+            <div class="col-sm-2 form-group">
+              <label for="cod">Gender</label>
+              <select class="form-control browser-default custom-select" name="gender"
+                [(ngModel)]="empRegistreModel.gender"
+                #emp_gen="ngModel"
+                [class.is-invalid]="emp_gen.touched && emp_gen.invalid" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+
+              <span class="text-danger fw-bolder"
+                *ngIf=" emp_gen.invalid && (emp_gen.dirty ||formvalid_emp.submitted|| emp_gen.touched) && emp_gen.errors?.['required']">This field is required
+              </span>
+            </div>
+
+
+
+
+            <div class="col-sm-4 form-group">
+              <label for="tel">Phone</label>
+              <input type="number" name="phone" class="form-control" id="tel" placeholder="Enter Your Contact Number."
+                name="contact" [(ngModel)]="empRegistreModel.contact"
+                required
+                ngModel required  pattern="\d{10}" #contact_emp="ngModel"
+                [class.is-invalid]="contact_emp.touched && contact_emp.invalid"
+                >
+
+                <span class="text-danger fw-bolder"
+                *ngIf=" contact_emp.invalid && (contact_emp.dirty ||formvalid_emp.submitted|| contact_emp.touched) && contact_emp.errors?.['required']">Field Can't be null
+                </span>
+
+                <span class="text-success fw-bolder"
+                *ngIf="contact_emp.invalid && (contact_emp.dirty ||formvalid_emp.submitted|| contact_emp.touched)  && contact_emp.errors?.['pattern']">
+                Enter phone no(9178**)</span>
+            </div>
+
+            <div class="col-sm-4 form-group ">
+              <label for="tel2">Upload Document(If any)</label>
+              <input type="file" name="document" (change)="getDoc($event)" class="form-control" id="tel2"
+                placeholder="Enter Doc." ngModel  #doc="ngModel"
+                [class.is-invalid]="doc.touched && doc.invalid" required>
+
+                <span class="text-danger fw-bolder"
+              *ngIf=" doc.invalid && (doc.dirty ||formvalid_emp.submitted|| doc.touched) && doc.errors?.['required']">This field is required
+            </span>
+            </div>
+
+            <div class="col-sm-12 form-group mb-0 mt-2 mb-4">
+              <button class="btn float-right" type="submit" style="background-color: #274472;color: #fff;">Submit</button>
+            </div>
+
+          </div>
+        </form>
+
+
+
+      </div>
+
+
+
+
+    </div>
+  </div>
+

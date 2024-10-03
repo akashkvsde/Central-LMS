@@ -1,0 +1,20 @@
+
+
+
+
+.chartBody:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 17px rgb(78, 74, 74);
+    transition: box-shadow 0.3s ease-in-out;
+    
+    
+  }
+
+   .chartBody:hover  {
+    fill: rgb(105, 103, 103);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  #iconColor{
+    color:#FF8080 ;
+  }

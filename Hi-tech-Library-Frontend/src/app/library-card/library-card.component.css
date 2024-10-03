@@ -1,0 +1,360 @@
+.card{
+    box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);
+    background-color:azure;
+}
+
+.head{
+    color:#1f1f1f;
+    font-weight: 600;
+}
+p{
+
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 14px;
+}
+.main_card{
+    width: 35rem; height:auto;
+}
+.my-flex{
+    display: flex;
+}
+
+@media(max-width:350px){
+    .my-flex{
+        flex-wrap: wrap;
+    } 
+    .scan{
+        margin-top: 0px;
+        margin-bottom: 20px;
+    }
+}
+
+.btn-show{
+    background:  #274472; width: 174px; gap:20px;
+    border-radius: 20px;
+    border: 2px solid #274472;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color:white;
+}
+.head-ser{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin-bottom: 10px;
+} 
+
+/* #barcode {
+    width: 170px;
+    height: auto;
+    margin-top: 80px;
+  }
+
+
+
+  .library-card {
+    width: 400px;
+    height: 250px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #FFF;
+    border: 1px solid #ccc;
+    text-align: left;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);
+    background-color:azure;
+} */
+
+/* .card-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    float: left;
+    margin-right: 20px;
+} */
+
+/* .card-content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.card-content p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+.card-content2 p {
+    margin: 5px 0;
+    font-size: 14px;
+} */
+
+/* .signature img {
+    max-width: 100px;
+    display: block;
+    margin-top: -5%;
+}
+
+.back-content {
+    display: block;
+}
+
+.barcode svg{
+    max-width: 200px;
+    display: block;
+    margin-top: -5%;
+    margin-left: 26%;
+} */
+
+/* @media (max-width: 767px) {
+    .library-card {
+        width: 100%;
+        height: auto;
+        padding: 5px;
+        font-size: 12px; 
+    }
+
+    .profile-pic {
+        width: 60px;
+        height: 60px;
+        margin-right: 10px;
+    }
+
+    .card-content p {
+        margin: 3px 0;
+        font-size: 10px;
+    }
+    .card-content2 p {
+        margin: 3px 0;
+        font-size: 10px;
+    }
+    .card-header{
+        font-size: 15px;
+        text-align: center;
+    }
+    .barcode svg{
+        margin-left: 50px; 
+    }
+} */
+
+/* @media print {
+    .library-card {
+        width: 60%;
+        height: 250px;
+     
+    }
+    .back-content {
+        padding: 15px;
+    }
+    .front-content {
+        padding: 25px;
+    }
+    .signature img {
+        margin-top:20px;
+    }
+    
+
+    
+    } */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*{
+    margin: 00px;
+    padding: 00px;
+    box-sizing: content-box;
+}
+
+.containe {
+    height: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.font{
+    height: 375px;
+    width: 250px;
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid #1f1f1f;
+}
+
+.top{
+    height: 30%;
+    width: 100%;
+    /* background-color: #274472; */
+    position: relative;
+    z-index: 5;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.bottom{
+    height: 70%;
+    width: 100%;
+    /* background-color: #e6ebe0; */
+    position: absolute;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.top img{
+    height: 80px;
+    width: 80px;
+    /* background-color: #e6ebe0; */
+    border-radius: 10px;
+    position: absolute;
+    top:10px;
+    left: 75px;
+}
+.bottom p{
+    position: relative;
+    /* top: 2px; */
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: 16px;
+    text-emphasis: spacing;
+}
+.bottom .desi{
+    font-size:12px;
+    color: grey;
+    font-weight: normal;
+}
+.bottom .no{
+    font-size: 12px;
+    font-weight: normal;
+}
+.barcode img
+{
+    height: 65px;
+    width: 65px;
+    text-align: center;
+    margin: 5px;
+}
+.barcode{
+    text-align: center;
+    position: relative;
+    top: 70px;
+}
+
+.back
+{
+    border: 1px solid #1f1f1f;
+    height: 375px;
+    width: 250px;
+    border-radius: 10px;
+
+}
+.qr img{
+    height: 80px;
+    width: 100%;
+    margin: 20px;
+    background-color: white;
+}
+.Details {
+    color: #1f1f1f;
+    text-align: center;
+    padding: 10px;
+    font-size: 25px;
+}
+
+
+.details-info{
+    color: #1f1f1f;
+    text-align: left;
+    padding:5px;
+    line-height: 20px;
+    font-size: 16px;
+    margin-top: 5px;
+    line-height: 22px;
+}
+.details-info p b{
+    font-size: 11px;
+}
+.logo {
+    height: 40px;
+    width: 100%;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+
+.logo svg,
+.logo img{
+    height: 100%;
+    width: 50%;
+}
+.padding{
+    padding-right: 20px;
+}
+
+@media screen and (max-width:400px)
+{
+    .containe{
+        height: auto;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+    .containe .front{
+        margin-top: 40px;
+    }
+  .back{
+    margin-right: 20px;
+  }
+}
+@media screen and (max-width:600px)
+{
+    .containe{
+        height:auto;
+    }
+    .containe .front{
+        margin-top: 40px;
+    }
+
+}

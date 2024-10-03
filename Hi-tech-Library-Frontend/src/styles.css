@@ -1,0 +1,95 @@
+/* You can add global styles to this file, and also import other style files */
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.button2{
+    background-color: #274472;
+    color:white;
+    border: none; 
+    padding: 5px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: -1px 1px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.825), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }
+  .button1{
+    background-color: #AC3E31;
+    color:white;
+    border: none; 
+    padding: 5px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: -1px 1px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.825), 0 6px 20px 0 rgba(0,0,0,0.19);
+  }
+  table{
+    white-space: nowrap;
+  }
+  
+  /* table thead tr th{
+    background-color: #274472;
+    color: white;
+} */
+
+
+
+.table-responsive table thead th,
+.table-responsive table tbody td,
+.table-responsive table tbody button{
+  /* Define print-specific styles here */
+  word-wrap: break-word;
+  white-space:normal;
+  font-size: 13px;
+}
+
+
+
+.disable-inspect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+
+
+@media print{
+  .sb-topnav{
+   display: none !important;
+  }
+  .sb-sidenav{
+   display: none !important;
+  }
+  .to-for{
+   display: none !important;
+ }
+ /* .card-header{
+    display: none !important;
+  } */
+  /* .search{
+   display: none !important;
+  } */
+
+  .paginate_button {
+   display: none !important;
+  }
+
+   }

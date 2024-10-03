@@ -1,0 +1,69 @@
+How To Use custom pipe in Angular For Searching
+--------------------------------------------
+           Step-1:
+	-----------
+Create  a pipe to write the following command:
+----------------------------------------------
+	=> ng g p Pipes/PipeName(ForVendor)
+
+		Step-2:
+	------------
+Import it "App.module.ts":
+import {ForVendorPipe} from './CustomPipes/for-college.pipe';
+declaration[
+ ForVendorPipe,
+]
+
+		Step-3:
+		--------
+	Pipe.ts
+	---------
+@Pipe({
+  name: 'forVendor'
+})
+export class ForVendorPipe implements PipeTransform {
+
+  transform(value: any,args?:any): any {
+    // console.log(args);
+
+    if(!args){
+      return value
+    }
+    return value.filter((item:any)=>item.vendor_name.indexOf(args) > -1 || item.vendor_email.indexOf(args) > -1 || item.vendor_contact.indexOf(args) > -1 || item.vendor_address.indexOf(args) > -1);
+  }
+
+}
+		component .html
+		-------------------
+<input type="text" [(ngModel)]="Vendor_search" placeholder="Search" >
+
+<tbody *ngFor="let ab of vendor | forVendor:Vendor_search | paginate:{itemsPerPage:3,currentPage:p}; let i = index">
+            <tr>
+              <td>{{ i + 1 }}</td>
+              <td>{{ab.vendor_name}}</td>
+              <td>{{ab.vendor_email}}</td>
+              <td>{{ab.vendor_contact}}</td>
+              <td>{{ab.vendor_address}}</td>
+		</tr>
+          </tbody>
+
+   		component.ts
+		 ------------
+Vendor_search:any;
+vendor:any;
+
+To Fetch Vendor:
+----------------
+getVendors(){
+  this.service.FetchVendors().subscribe((res:any)=>{
+    console.log(res);
+    this.vendor=res;
+
+  })
+}
+
+
+
+
+
+

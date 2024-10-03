@@ -1,0 +1,101 @@
+<div class="container mt-3">
+    <p class="fw-bolder"><span style="color: #274472 ;">ADD</span><span class="ms-2 text-danger">ISSUE POLICY</span></p>
+    <div class="card">
+        <div class="card-header bg-white">
+            <form (ngSubmit)="addIssuePolicy(issueForm)" #issueForm="ngForm">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <ng-select name="user_role_id" class="mb-3"
+                        [(ngModel)]="IsuePolicyMOdel.user_type" 
+                        [items]="userRole" appendTo="body"
+                        placeholder="Select User Type" [addTag]="true"
+                        bindValue="user_role_id" bindLabel="user_role" required>
+                      </ng-select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <ng-select name="issue_type_id" class="mb-3"
+                    [(ngModel)]="IsuePolicyMOdel.issue_type_id" 
+                    [items]="issueTypes" appendTo="body"
+                    placeholder="Select Issue Type" [addTag]="true"
+                    bindValue="issue_type_id" bindLabel="issue_type" required>
+                  </ng-select>
+                    </div>
+               
+                <div class="col-md-3 mb-3">
+                        <input type="number" name="max_book" class="form-control text-center" id="collegeContact" required
+                            placeholder="Enter Maximum Books" [(ngModel)]="IsuePolicyMOdel.max_book" minlength="1" min="1">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="button2">SAVE</button>
+                </div>
+            </div>
+            </form>
+        </div>
+        <div class="card-body" style="color:#274472;border:2px solid #274472;">
+          <p class="fw-bolder  text-center"><span style="color: #274472 ;">ALL</span><span class="ms-2 text-danger">ISSUE POLICY</span></p>
+            <div class="students-table hide">
+              <div class="row  justify-content-between">
+                <div class="col-md-2 mb-2">
+
+                </div>
+                <div class="col-md-3 mb-2">
+                    <input type="text" class="form-control text-center" placeholder="Search Here"
+                        [(ngModel)]="issuePolicy_search">
+                </div>
+            </div>
+                <div class="">
+                    <div class="table-responsive">
+                        <table class="custom-table table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Sl.no</th>
+                                    <th>User Type</th>
+                                    <th>Issue Type</th>
+                                    <th>Maximum Books</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let course of IssuePolicy | forIssuePolicy:issuePolicy_search; let i = index">
+                                  <td>{{ i + 1 }}</td>
+                                  <ng-container *ngIf="!course.isEditing; else editRow">
+                                    <td>{{ course.user_type }}</td>
+                                    <td>{{ course.issue_type }}</td>
+                                    <td>{{ course.max_book }}</td>
+                                    
+                                    <td>
+                                      <span class="me-5" (click)="EditCourse(course, i)"><i class="fas fa-edit"></i></span>
+                                      <span *ngIf="isSuperAdmin" (click)="DeleteIssuePolicy(course.issue_policy_id)"><i class="fas fa-trash-alt"></i></span>
+                                    </td>
+                                  </ng-container>
+                                  <ng-template #editRow>
+                                    <td>
+                                      <select class="form-select" name="user_role_id" [(ngModel)]="course.user_role_id">
+                                        <option *ngFor="let college of userRole" [value]="college.user_role_id">
+                                          {{ college.user_role }}
+                                        </option>
+                                      </select>
+                                    </td>
+                                    <td>
+                                      <select class="form-select" name="issue_type_id" [(ngModel)]="course.issue_type_id">
+                                        <option *ngFor="let college of issueTypes" [value]="college.issue_type_id">
+                                          {{ college.issue_type }}
+                                        </option>
+                                      </select>
+                                    </td>
+                                    <td><input class="form-control" type="text" [(ngModel)]="course.max_book" /></td>
+                                    
+                                    <td>
+                                      <button class="button2" (click)="UpdateIssuePolicy(course, course.issue_policy_id)">Update</button>
+                                      <button class="button1 ms-3" (click)="CancelEdit(course)">Cancel</button>
+                                    </td>
+                                  </ng-template>
+                                </tr>
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

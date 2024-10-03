@@ -1,0 +1,382 @@
+<div class=" mt-2">
+    <p class="fw-bolder"><span style="color: #274472 ;">BOOK</span><span class="ms-2 text-danger">ISSUE</span> </p>
+    <!-- {{issue_type_id}} -->
+    <div class="text-center">
+        <ul class="">
+            <li class="nav-item" (click)="StudentIssuePage()" [ngClass]="{'active': hideIssueStudent}">
+                <a class="">USER</a>
+            </li>
+            <!-- <li class="nav-item" (click)="EmployeeIssuePage()" [ngClass]="{'active': hideIssueEmployee}">
+                <a class="">EMPLOYEE</a>
+            </li> -->
+            <li class="nav-item" (click)="DepartmentIssuePage()" [ngClass]="{'active': hideIssueDepartment}">
+                <a class="">DEPARTMENT</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- For Users Book Issue  -->
+    <div class="container mt-4" [hidden]="!STD_EMP">
+        <div class="row">
+            <div class="col-md-3 mb-2">
+                <input type="text" class="form-control" placeholder="Enter Library Card no"
+                    (keyup)="getUserDetailsbyLibraryCardNo($event)" (change)="getUserDetailsbyLibraryCardNo($event)">
+            </div>
+           
+            <div class="col-md-2"></div>
+            <div class="col-md-7" [hidden]="!LibraryCardView">
+                <div class="card" style="font-size: 10px;">
+                    <div class="card-body ms-2">
+                        <div class="d-md-flex align-items-center">
+                            <div class="text-center mb-3 mb-md-0">
+                                <img [src]="userData?.image ? (imagePath + userData.image) : 'https://m.media-amazon.com/images/I/61xEw4JYWGL.jpg'"
+                                    alt="Logo" class="img-fluid profile-image-pic img-thumbnail rounded-circle"
+                                    width="80px">
+                            </div>
+                            <div class="ms-md-4">
+                                <h6 class="mb-3"><strong>Library Card</strong><span
+                                        [ngStyle]="{'color': userData?.user_status === 'active' ? 'green' : 'red'}">
+                                        ({{ userData?.user_status }})
+                                    </span>
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <p><strong>Name:</strong> {{userData?.name}}</p>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p><strong>Library Card Number:</strong> {{userData?.library_card_number}}</p>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p><strong>Batch Year:</strong> {{userData?.batch_year}}</p>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p><strong>User's Role:</strong> {{userData?.user_role}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <!-- For Departmental Book Issue  -->
+    <div class="container" [hidden]="!hideIssueDepartment">
+
+        <form (ngSubmit)="DeptIssue(FormValidationDeptIssue)" #FormValidationDeptIssue="ngForm">
+            <div class="row">
+                <div class="col-md-3 mb-2">
+                    <ng-select name="course_id" class="mb-3" [items]="filteredCourses" appendTo="body"
+                        placeholder="Select Course" [addTag]="true" bindValue="course_id" bindLabel="course_name"
+                        [(ngModel)]="courseID" (ngModelChange)="onCourseChange($event)" required>
+                    </ng-select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <ng-select name="dept_id" class="mb-3" [items]="departments" appendTo="body"
+                        placeholder="Select Departments" [addTag]="true" bindValue="dept_id" bindLabel="dept_name"
+                        [(ngModel)]="dept_id" (ngModelChange)="ondeptChange($event)" required>
+                    </ng-select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <ng-select name="librarycardno" class="mb-3" [items]="libraryCrdNo" appendTo="body"
+                        placeholder="Enter Library Card No" [addTag]="true" bindValue="libraryCrdNo"
+                        bindLabel="libraryCrdNo" [(ngModel)]="libraryCard_no"
+                        (ngModelChange)="onLibrarcardChange($event)" [required]="!emp_id || !emp_name">
+                    </ng-select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <div class="input-group">
+                        <input type="file" style="display: none" (change)="onFileSelected($event)" #fileInput>
+                        <input type="text" class="form-control text-center" id="BillFile" required
+                            [placeholder]="fileName || 'Upload Approved Document'" (click)="fileInput.click()" readonly>
+                        <span class="input-group-text" (click)="fileInput.click()">
+                            <i class="fas fa-file"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <input type="text" name="emp_name" class="form-control" placeholder="Enter Employee Name"
+                        [(ngModel)]="emp_name" [required]="!libraryCard_no">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <input type="text" name="emp_id" class="form-control" placeholder="Enter Emp ID"
+                        [(ngModel)]="emp_id" [required]="!libraryCard_no">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <button class="button2" type="submit">ISSUE</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row mt-3" [hidden]="!LibraryCardViewForDept">
+            <div class="col-md-5">
+                <div class="card" style="font-size: 10px;">
+                    <div class="card-body ms-2">
+                        <div class="d-md-flex align-items-center">
+                            <div class="text-center mb-3 mb-md-0">
+                                <img [src]="departmentalUsersData?.image ? (imagePath + departmentalUsersData.image) : 'https://m.media-amazon.com/images/I/61xEw4JYWGL.jpg'"
+                                    alt="Logo" class="img-fluid profile-image-pic img-thumbnail rounded-circle"
+                                    width="80px">
+                            </div>
+                            <div class="ms-md-4">
+                                <h6 class="mb-3"><strong>Library Card</strong><span
+                                        [ngStyle]="{'color': departmentalUsersData?.user_status === 'active' ? 'green' : 'red'}">
+                                        ({{ departmentalUsersData?.user_status }})
+                                    </span>
+                                </h6>
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <p><strong>Name:</strong> {{departmentalUsersData?.name}}</p>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p><strong>Library Card Number:</strong>
+                                            {{departmentalUsersData?.library_card_number}}</p>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p><strong>Batch Year:</strong> {{departmentalUsersData?.batch_year}}</p>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <p><strong>User's Role:</strong> {{departmentalUsersData?.user_role}}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Isuue for users -->
+
+    <div class="card mt-2" [hidden]="!STD_EMP">
+        <div class="card-body" style="color:#274472;border:2px solid #274472;">
+            <div class="students-table hide">
+                <div class="row  justify-content-between">
+                    <div class="col-md-2">
+                        <span class="fw-bolder" style="color: #274472 ;">All</span> <span
+                            class="text-danger fw-bolder ms-2">Books</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-1">
+                            <ng-select name="issue_type_id" class="mb-3" [(ngModel)]="BookisseModel.issue_type_id"
+                                [items]="issue_data" appendTo="body" placeholder="Select Issue Type"
+                                (ngModelChange)="issueChange($event)" [addTag]="true" bindValue="issue_type_id"
+                                bindLabel="issue_type" required>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-3 mb-1">
+                            <input type="text" placeholder="Search..." class="form-control" [(ngModel)]="Book_search">
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="custom-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sl.no</th>
+                                <th>Book Title</th>
+                                <th>Book's Author</th>
+                                <th>Edition Year</th>
+                                <th>Publisher</th>
+                                <th>Document Type</th>
+                                <th>Volume</th>
+                                <th>Acession No</th>
+                                <th>Location(<span class="text-danger">Order:</span> <span class="text-success">Almirah
+                                        no,Rack no,Shelf no</span>)</th>
+                                <th>Book Status</th>
+                                <!-- <th [hidden]="!BookisseModel.user_id">Choose Issue Type</th> -->
+                                <th [hidden]="!BookisseModel.user_id">Choose Books</th>
+                                <th>Single Issue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let a of allBooks | forBookSearch:Book_search | paginate: { itemsPerPage: 7, currentPage: p }; let i=index">
+                                <td>{{(p - 1) * 7 + i + 1}}</td>
+                                <td>{{a.book_title_name}}</td>
+                                <td>{{a.author_name ?? 'NA'}}</td>
+                                <td>{{a.edition_year ?? 'NA' }}</td>
+                                <td>{{a.publisher_name ?? 'NA'}}</td>
+                                <td>{{a.document_type}}</td>
+                                <td>{{a.volume ?? 'NA'}}</td>
+                                <td>{{a.accession_no}}</td>
+                                <td><span class="fw-bolder">Alm-{{a.almirah_no}}, Rack-{{a.rack_no}},
+                                        Shelf-{{a.shelf_no}} </span></td>
+                                <td> <span class="fw-bolder text-success">{{a.book_status}}</span></td>
+
+                                <td [hidden]="!BookisseModel.user_id">
+                                    <input type="checkbox" #checkbox class="form-check" [checked]="isChecked"
+                                        [disabled]="!(a.book_status === 'inlibrary') ||!BookisseModel.issue_type_id || BookisseModel.issue_type_id === 0"
+                                        (change)="handleCheckboxChange(a.accession_no,a.book_title_name)">
+                                </td>
+                                <td>
+                                    <button class="button2" (click)="singleIssue(a.accession_no)"
+                                            [hidden]="a.book_status == 'requested'"
+                                            style="white-space: nowrap;">
+                                      SINGLE ISSUE
+                                    </button>
+                                  </td>
+                                  
+
+
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="text-end">
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                        <button class="button2  mb-3" (click)="OpenConfirmModalForUserIssue()">ISSUE</button>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Departmental Issue -->
+
+
+    <div class="card mt-2" [hidden]="!hideIssueDepartment">
+        <div class="card-body" style="color:#274472;border:2px solid #274472;">
+            <div class="students-table hide">
+                <div class="row  justify-content-between">
+                    <div class="col-md-2">
+                        <span class="fw-bolder" style="color: #274472 ;">Alld</span> <span
+                            class="text-danger fw-bolder ms-2">Books</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-1">
+
+                            <!-- <ng-select name="issue_type_id" class="mb-3" [(ngModel)]="BookisseModel.issue_type_id" [items]="issue_data"
+                        appendTo="body" placeholder="Select Issue Type" (ngModelChange)="issueChange($event)" [addTag]="true" bindValue="issue_type_id" bindLabel="issue_type"
+                        required>
+                      </ng-select> -->
+                        </div>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-3 mb-1">
+                            <input type="text" placeholder="Search..." class="form-control" [(ngModel)]="Book_search">
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="custom-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Sl.no</th>
+                                <th>Book Title</th>
+                                <th>Book's Author</th>
+                                <th>Edition Year</th>
+                                <th>Publisher</th>
+                                <th>Document Type</th>
+                                <th>Volume</th>
+                                <th>Acession No</th>
+                                <th>Location(<span class="text-danger">Order:</span> <span class="text-success">Almirah
+                                        no,Rack no,Shelf no</span>)</th>
+                                <th>Book Status</th>
+                                <!-- <th [hidden]="!BookisseModel.user_id">Choose Issue Type</th> -->
+                                <th>Choose Books</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let a of allBooks | forBookSearch:Book_search | paginate: { itemsPerPage: 7, currentPage: p }; let i=index">
+                                <td>{{i+1}}</td>
+                                <td>{{a.book_title_name}}</td>
+                                <td>{{a.author_name ?? 'NA'}}</td>
+                                <td>{{a.edition_year ?? 'NA'}}</td>
+                                <td>{{a.publisher_name ?? 'NA'}}</td>
+                                <td>{{a.document_type}}</td>
+                                <td>{{a.volume ?? 'NA'}}</td>
+                                <td>{{a.accession_no}}</td>
+                                <td><span class="fw-bolder">Alm-{{a.almirah_no}}, Rack-{{a.rack_no}},
+                                        Shelf-{{a.shelf_no}} </span></td>
+                                <td> <span class="fw-bolder text-success">{{a.book_status}}</span></td>
+
+                                <td>
+                                    <input type="checkbox" #checkbox class="form-check" [checked]="isChecked"
+                                        [disabled]="!(a.book_status === 'inlibrary')"
+                                        (change)="handleCheckboxChangeForDept(a.accession_no)" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-end">
+
+                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <!-- Showing Selected Book Confirmation MOdal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog modal-dialog-centered modal-mine" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Selected Books</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="closeModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Your modal body content here -->
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="white-space: nowrap;">Slno</th>
+                                    <th scope="col" style="white-space: nowrap;">Book Title</th>
+                                    <th scope="col" style="white-space: nowrap;">Accession no</th>
+                                    <th scope="col" style="white-space: nowrap;">Issue Type</th>
+                                    <th scope="col" style="white-space: nowrap;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let a of selectedIssues; let i=index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td>{{a.book_title}}</td>
+                                    <td>{{a.accession_no}}</td>
+                                    <td>{{issueTypeMap[a.issue_type_id] || 'Unknown'}}</td>
+                                    <td><button class="button2"
+                                            (click)="removeItemByAccessionNo(a.accession_no)">Remove</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="button2" data-bs-dismiss="modal"
+                        (click)="MultipleBookIssue()">CONFIRM</button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,208 @@
+<div class="container mt-2">
+  <p class="fw-bolder"><span style="color: #274472 ;">ALL</span><span class="ms-2 text-danger">USERS</span></p>
+  <div class="head-ser">
+    <!---------toggle start-->
+    <div class="btn-show d-flex m-2">
+      <div class="btn-1 ps-3" [style.color]="color" [style.backgroundColor]="bccolor" [style.borderRadius]="brad"
+        [style.paddingRight]="pd" (click)="stClick()">
+        Student
+      </div>
+      <div class="btn-1" [style.color]="color_ep" [style.backgroundColor]="bccolor_ep"
+        [style.borderRadius]="brad_ep" [style.paddingRight]="pd_ep" [style.paddingLeft]="pd_ep" (click)="epClick()">
+        Employee
+      </div>
+    </div>
+    <!---------toggle ended-->
+  </div>
+  <div class="row mb-3">
+    <div class="col-md-9 mb-3"></div>
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Search....." [(ngModel)]="Search_Users">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col"  style="color:#274472;border:2px solid #274472;">
+
+      <!-------------Table For Student-------->
+      <div class="table-responsive">
+        <table class="table" id="example">
+          <thead>
+            <tr>
+              <th>Sl No</th>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Card no</th>
+              <th>contact</th>
+              <!-- <th>Address</th> -->
+              <th [hidden]="ep">Designation</th>
+              <!-- <th>Gender</th> -->
+              <th >College</th>
+              <th [hidden]="st">Course</th>
+              <th [hidden]="st">Department</th>
+              <th>Status</th>
+              <th [hidden]="ep">Document</th>
+              <th [hidden]="st">Batch year</th>
+
+
+              <th>Action</th>
+              <th>Activation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of getUserdata | forUsersSearch:Search_Users | paginate: { itemsPerPage: 6, currentPage: p }; let i=index">
+              <td>{{(p - 1) * 6 + i + 1}}</td>
+              <td><img src="{{imgPath}}{{data.image}}" width="60"></td>
+              <td>{{data.name}}</td>
+              <td class="email">{{data.email}}</td>
+              <td>{{data.library_card_number}}</td>
+              <td>{{data.contact}}</td>
+              <!-- <td>{{data.address}}</td> -->
+              <td [hidden]="ep">{{data.designation}}</td>
+              <!-- <td>{{data.gender}}</td> -->
+              <td>{{data.college_name}}</td>
+              <td [hidden]="st">{{data.course_name}}</td>
+              <td [hidden]="st">{{data.dept_name}}</td>
+              <td>{{data.user_status}}</td>
+              <td [hidden]="ep">  
+                <a [href]="getDownloadLink(data.document)" download target="_blank"><img [src]="getImageSource(data.document)" alt="img" class="bill-image" width="60"></a> 
+              </td>
+              <td [hidden]="st">{{data.batch_year}}</td>
+
+              <td>
+               <div class="row">
+                <div class="col-4"> <button type="button" class="btn text-primary" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal" (click)="editUser(data)">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button> 
+                
+              </div>
+                <div class="col-4">
+                  <button *ngIf="isSuperAdmin" class="btn text-danger" (click)="deleteUser(data.user_id)">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+               </div>
+              </td>
+
+              <td>
+                <div class="form-check form-switch mt-3 ms-2">
+                  <input class="form-check-input" type="checkbox" #sth role="switch" id="flexSwitchCheckDefault"
+                    [checked]="data.user_status === 'Active' || data.user_status === 'active'"
+                    (click)="sendactiveInactiveValue(data.user_id, data.user_status)" />
+
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+      <!------------------------Table for employee-->
+
+      <!------------------------Table for employee ended-->
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!--form started----->
+        <form class="mx-3" #formvalid_emp="ngForm" (ngSubmit)="updateUser()">
+          <div class="mb-3">
+            <label for="name" class="form-label">User Name </label>
+            <input type="text" class="form-control" id="name" [(ngModel)]="editModel.name" name="name"
+              aria-describedby="emailHelp">
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" [(ngModel)]="editModel.address" name="address"
+              aria-describedby="emailHelp">
+          </div>
+          <div class="mb-3" [hidden]="ep">
+            <label for="designation" class="form-label">Designation</label>
+            <input type="text" class="form-control" id="designation" [(ngModel)]="editModel.designation"
+              name="designation" aria-describedby="emailHelp">
+          </div>
+          <!-- <div class="mb-3">
+                <label for="User Status " class="form-label">User Status </label>
+                <select type="text" class="form-control" id="User Status " aria-describedby="emailHelp" [(ngModel)]="editModel.user_status" name="user_status">
+                    <option value="editModel.user_status">{{editModel.user_status}}</option>
+                    <option>Intive</option>
+                </select>
+            </div> -->
+          <div class="mb-3" [hidden]="st">
+            <label for="College " class="form-label">Course </label>
+            <select type="text" class="form-control" id="Course" #course aria-describedby="emailHelp"
+              [(ngModel)]="editModel.course_id" name="course_id" (change)="viewDepartment(course.value,formvalid_emp)">
+              <option></option>
+              <option *ngFor="let co of viewCourse" value="{{co.course_id}}">{{co.course_name}}
+              </option>
+            </select>
+          </div>
+          <!-- <div class="mb-3" [hidden]="st">
+            <label for="Course " class="form-label">Course</label>
+            <select type="text" class="form-control" id="Course" #course aria-describedby="emailHelp"
+              [(ngModel)]="editModel.course_id" name="course_id" (change)="viewDepartment(course.value,formvalid_emp)">
+              <option></option>
+              <option *ngFor="let co of viewCourse" value="{{co.course_id}}">{{co.course_name}}</option>
+            </select>
+          </div> -->
+          <div class="mb-3" [hidden]="st">
+            <label for="Deapartment" class="form-label">Deapartment</label>
+            <select type="text" class="form-control" id="Deapartment" aria-describedby="emailHelp"
+              [(ngModel)]="editModel.dept_id" name="dept_id">
+              <option></option>
+              <option *ngFor="let dpt of viewdePart" value="{{dpt.dept_id}}">{{dpt.dept_name}}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="Contact " class="form-label">Contact </label>
+            <input type="number" class="form-control" id="Contact " aria-describedby="emailHelp"
+              [(ngModel)]="editModel.contact" name="contact">
+          </div>
+          <div class="mb-3" [hidden]="st">
+            <label for="batch_year " class="form-label">Batch year</label>
+            <input type="number" class="form-control" id="batch_year " aria-describedby="emailHelp"
+              [(ngModel)]="editModel.batch_year" name="batch_year">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+              [(ngModel)]="editModel.email" name="email">
+          </div>
+          <div class="mb-3">
+            <label for="image" class="form-label">Image(limit is 2048 KiB)</label>
+            <input type="file" class="form-control" id="image" aria-describedby="emailHelp" name="editModel.image"
+              (change)="getFile($event)">
+          </div>
+          <div class="mb-3" [hidden]="ep">
+            <label for="document" class="form-label">Document</label>
+            <input type="file" class="form-control" id="document" aria-describedby="emailHelp" name="editModel.document"
+              (change)="getDoc($event)">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <!---form ended-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-primary">Save</button> -->
+      </div>
+    </div>
+  </div>
+</div>

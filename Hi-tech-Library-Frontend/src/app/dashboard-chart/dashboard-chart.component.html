@@ -1,0 +1,58 @@
+<div class="container mt-2">
+  <p class="fw-bolder"><span style="color: #274472 ;">ALL</span><span class="ms-2 text-danger">CHARTS</span></p>
+
+  <!-- <div class="card mt-5">
+      <div class="card-body">
+          <div class="row">
+              <div class="col-lg-6">
+                  <h6>Book Statistics</h6>
+                  <canvas id="piechart"></canvas>
+                  
+              </div>
+          </div>
+      </div>
+  </div> -->
+
+
+  <div class="card mt-5 border-0" *ngIf="isstudentorFaculty">
+    <!-- First set of cards for students and faculty -->
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 mb-3" *ngFor="let property of ['total_books', 'available_books']">
+          <div class="card-body chartBody border">
+            <div class="card-header" style="background: #274472; color: white;">
+              <h5 class="">{{ getPropertyLabel(property) }}</h5>
+            </div>
+            <p class="fs-3 mt-4">
+              <i [ngClass]="getIconClass(property)" id="iconColor"></i>
+              <span class="hoverNumbers ms-4 fw-bolder" style="color:#274472">{{ chartNOs[property]?.toFixed(0) }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card mt-5 border-0" *ngIf="!isstudentorFaculty">
+    <!-- Second set of cards for others (not students and faculty) -->
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 mb-3" *ngFor="let property of ['total_books', 'available_books', 'issued_books', 'students', 'employee']">
+          <div class="card-body chartBody border">
+            <div class="card-header" style="background: #274472; color: white;">
+              <h5 class="">{{ getPropertyLabel(property) }}</h5>
+            </div>
+            <p class="fs-3 mt-4">
+              <i [ngClass]="getIconClass(property)" id="iconColor"></i>
+              <span class="hoverNumbers ms-4 fw-bolder" style="color:#274472">{{ chartNOs[property]?.toFixed(0) }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+ 
+</div>
+
